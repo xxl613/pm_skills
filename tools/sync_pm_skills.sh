@@ -21,6 +21,7 @@ sync_skill() {
   mkdir -p "$(dirname "$ROOT_DIR/$target_dir")"
   rsync -a --delete \
     --exclude '.DS_Store' \
+    --exclude 'README.md' \
     "$source_dir/" \
     "$ROOT_DIR/$target_dir/"
 
@@ -38,4 +39,3 @@ sync_skill "html-prototype-to-figma" \
 sync_skill "figma-prototype-system" \
   "/Users/xiaolongxiong/.codex/skills/figma-prototype-system" \
   "pm_skills/figma-prototype-system"
-
