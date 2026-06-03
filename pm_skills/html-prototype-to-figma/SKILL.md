@@ -42,12 +42,12 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
    - For a first import from a web page, call `generate_figma_design` first to capture the rendered page.
    - For an existing Figma file, capture into the requested file or page only after confirming the target file/key.
    - If `generate_figma_design` creates a non-editable or noisy result, use it as a pixel reference and rebuild/clean with `use_figma` in small steps.
-   - Name frames with the prototype page name, route id, and viewport, for example `作业创建 / drawer-state / 1440`.
+   - Name frames with the prototype page name, route id, and viewport, for example `Order detail / drawer-state / 1440`.
 
 6. Expand hidden content and interaction states.
    - If a page, panel, list, drawer, modal body, table, chat area, or form section scrolls, draw the off-screen content in Figma too.
    - If a button, tab, dropdown, segmented control, hover menu, popover, modal, drawer, validation message, submit result, or error state changes hidden UI, create an adjacent state frame.
-   - Label adjacent states with the source component and state, for example `创建作业按钮 / loading`, `选择班级下拉 / expanded`, or `提交按钮 / validation-error`.
+   - Label adjacent states with the source component and state, for example `Create button / loading`, `Filter dropdown / expanded`, or `Submit button / validation-error`.
    - Keep adjacent state frames near the main frame, aligned on a simple grid, and do not mix them into the primary default-state frame.
 
 7. Clean and structure the Figma result.
@@ -79,7 +79,7 @@ Exclude content that exists only to operate, explain, or review the prototype:
 - Comparison boards explaining multiple design options, unless the business product truly contains that comparison UI.
 - Placeholder descriptions of future behavior that are not actual user-facing UI.
 
-If uncertain, ask: "Would a real teacher/student/operator see this in the product?" If no, exclude it.
+If uncertain, ask: "Would a real end user see this in the product?" If no, exclude it.
 
 ## Fidelity Rules
 
@@ -137,12 +137,12 @@ HTML prototypes often use scroll containers that hide content inside a fixed pag
 - Inspect likely scroll roots: `body`, `main`, drawers, modal bodies, side panels, chat histories, tables, lists, cards, and form sections.
 - Compare each element's `scrollHeight` vs `clientHeight` and `scrollWidth` vs `clientWidth`.
 - For vertical overflow, extend the Figma frame or create a nearby `continued` frame that shows the rest of the content.
-- For first-pass HTML-to-Figma capture of a vertically scrolling primary area, prefer recapturing with a browser viewport tall enough to expose the whole scroll root: `targetHeight = scrollRoot.scrollHeight + fixedHeaderHeight + fixedFooterHeight`. For this V5 shell pattern, that usually means `main.scrollHeight + 257px` (`60px` top chrome plus `197px` input area). Record the formula and the measured values.
+- For first-pass HTML-to-Figma capture of a vertically scrolling primary area, prefer recapturing with a browser viewport tall enough to expose the whole scroll root: `targetHeight = scrollRoot.scrollHeight + fixedHeaderHeight + fixedFooterHeight`. For shell patterns with fixed top chrome and bottom input areas, include both fixed regions in the target height formula. Record the formula and the measured values.
 - After recapturing, validate the source screenshot dimensions. If the screenshot or capture artifact is still only the old viewport height, the hidden content was not captured; do not proceed by stretching Figma nodes.
 - When a scroll container is represented by a captured image or large child group, compare that child height to the parent height. If the child is taller and the parent clips it, expand the parent/root frame to `ceil(child.y + child.height)` and re-check screenshot output.
 - For horizontal overflow, preserve the full content width when it represents a real product canvas; if it is accidental overflow, report it instead of normalizing it away.
 - Keep sticky headers, sticky footers, and fixed input bars in the main frame, then show the scrollable content continuation separately when needed. If a full-scroll frame is created by expanding the root height, move fixed bottom elements to the bottom only after recalculating their absolute position relative to the root frame. Example: for a `2560px` root and a `2480px` input bar, the final relative x should be `80`, not `80 + parentOffset`.
-- For fixed bottom input areas, inspect the source DOM hierarchy before resizing or moving in Figma. In this project pattern, the outer footer spans the content column, while the actual `V5DrawerInput` is centered with `w-1/2 min-w-[640px] max-w-[980px]`. If Figma captures the visible rounded input as the outer width, shrink the visible frame back to the source component width and preserve inner children by absolute position.
+- For fixed bottom input areas, inspect the source DOM hierarchy before resizing or moving in Figma. In common shell patterns, the outer footer can span the full content column while the actual input card is centered with a narrower min/max width. If Figma captures the visible rounded input as the outer wrapper width, shrink the visible frame back to the source component width and preserve inner children by absolute position.
 - Do not rely on a single clipped screenshot as the full Figma output when business content exists below or beside the visible viewport.
 
 ## Viewport Mismatch Recovery
@@ -162,7 +162,7 @@ Static Figma output must include hidden states that are reachable through real u
 - Identify interactive triggers from the prototype code and UI: buttons, tabs, selects, dropdowns, upload controls, accordions, modals, drawers, menus, toggles, submit actions, validation rules, and hover-only controls.
 - Trigger each meaningful state in the browser or infer it from the component code when browser triggering is impractical.
 - Draw each hidden state next to the default frame, not on top of it.
-- Label every state with `组件 / 状态`, and optionally add a short state note outside the frame, for example `发布按钮 / disabled` or `题库选择弹窗 / open`.
+- Label every state with `Component / State`, and optionally add a short state note outside the frame, for example `Publish button / disabled` or `Resource picker / open`.
 - Include only states that affect product UI. Do not draw debug-only, PRD-only, or prototype-navigation states.
 - When a state depends on backend response, include the representative states defined by the prototype: loading, success, empty, validation error, permission error, or retryable failure.
 
