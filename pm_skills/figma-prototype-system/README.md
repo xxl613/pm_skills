@@ -1,43 +1,38 @@
 # figma-prototype-system
 
-Builds a first-version React/Vite prototype foundation from existing Figma
-nodes. The goal is to recreate supplied canvases well enough to extract a
-transferable design language for future prototype work.
+基于已有 Figma 节点搭建第一版 React/Vite 原型基础工程。目标不是直接做完整产品，而是先复现给定画板，校准并沉淀可复用的设计语言。
 
-## Use When
+## 适用场景
 
-- Bootstrapping a prototype design system from existing Figma nodes.
-- Recreating multiple Figma canvases as preview pages.
-- Generating `DESIGN.md`, `README.md`, reusable shells, and local assets.
-- Creating a floating review shell with page catalog, PRD panel, change records,
-  and page-state controls.
+- 从已有 Figma 节点启动一套原型设计系统。
+- 将多个 Figma 画板复现为预览页面。
+- 生成 `DESIGN.md`、`README.md`、可复用外壳和本地素材。
+- 创建带有页面目录、PRD 面板、变更记录和页面状态控制的浮动评审外壳。
 
-## Main Output
+## 主要产出
 
-- Runnable React/Vite preview project.
-- Recreated Figma-node pages.
-- `DESIGN.md` with supported design rules.
-- `README.md` explaining how to use the foundation.
-- Localized assets instead of temporary Figma URLs.
-- Floating review controls for catalog, PRD information, change records, and
-  material registry.
+- 可运行的 React/Vite 预览项目。
+- 复现后的 Figma 节点页面。
+- 记录已验证设计规则的 `DESIGN.md`。
+- 说明如何使用原型基础工程的 `README.md`。
+- 本地化素材，避免依赖临时 Figma URL。
+- 用于页面目录、PRD 信息、变更记录和素材库的浮动评审控件。
 
-## Source
+## 源路径
 
-Local source:
+本地源目录：
 
 ```text
 /Users/xiaolongxiong/.codex/skills/figma-prototype-system
 ```
 
-Published copy:
+仓库发布副本：
 
 ```text
 pm_skills/figma-prototype-system
 ```
 
-## Notes
+## 说明
 
-Use this skill for first-time foundation setup. Later page drawing should use
-the target project's normal prototype skill and read the generated `DESIGN.md`.
+这个 skill 适合第一次搭建原型基础工程。后续新增页面时，应使用目标项目自己的原型 skill，并读取已生成的 `DESIGN.md`。
 

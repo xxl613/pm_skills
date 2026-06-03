@@ -1,25 +1,24 @@
-# Published PM Skills
+# 已发布的 PM Skills
 
-This directory contains the published copies of selected local Codex skills.
+这个目录存放从本地同步过来的 Codex skill 发布副本。
 
-Each child directory should include:
+每个子目录通常包含：
 
-- `SKILL.md`: the actual skill instruction file.
-- `README.md`: a human-facing summary of the skill and its source mapping.
-- Optional support files such as `agents/`, `references/`, `templates/`, or
-  `scripts/`.
+- `SKILL.md`：真正的 skill 指令文件。
+- `README.md`：面向人的说明文档，解释这个 skill 的用途和源路径。
+- 可选支持文件，例如 `agents/`、`references/`、`templates/` 或 `scripts/`。
 
-Source skills remain in their original local locations. Run the sync script from
-the repository root before committing updates:
+源 skill 仍然保留在原本的本地目录中。提交更新前，在仓库根目录运行同步脚本：
 
 ```bash
 ./tools/sync_pm_skills.sh
 ```
 
-Current synced skills are listed in `../pm_skills.manifest.yaml`.
+当前同步的 skill 列表见 `../pm_skills.manifest.yaml`。
 
-## Included Skills
+## 当前包含
 
 - `project-workspace-init`
 - `html-prototype-to-figma`
 - `figma-prototype-system`
+

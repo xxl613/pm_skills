@@ -1,16 +1,14 @@
 # project-workspace-init
 
-Initializes a reusable project workspace with a standard `00` to `07` directory
-system, root collaboration documents, and per-directory `_README.md` files.
+用于初始化一个可长期协作的项目空间，包含标准的 `00` 到 `07` 目录体系、根目录协作文档，以及各主目录下的 `_README.md`。
 
-## Use When
+## 适用场景
 
-- Starting a new project workspace.
-- Standardizing an existing project folder without overwriting current files.
-- Creating a durable structure for product design, agent capability notes,
-  architecture, research, validation, design files, and meeting records.
+- 启动一个新的项目工作区。
+- 在不覆盖现有文件的前提下，标准化已有项目目录。
+- 为产品设计、智能体能力沉淀、技术架构、业务调研、交付验证、设计文件和会议记录建立稳定结构。
 
-## Main Output
+## 主要产出
 
 - `00_项目管理/`
 - `01_产品设计/`
@@ -20,26 +18,24 @@ system, root collaboration documents, and per-directory `_README.md` files.
 - `05_交付验证/`
 - `06_设计文件/`
 - `07_会议记录/`
-- Root `AGENTS.md`, `MEMORY.md`, and `README.md`
-- Main-directory `_README.md` files
+- 根目录 `AGENTS.md`、`MEMORY.md` 和 `README.md`
+- 各主目录下的 `_README.md`
 
-## Source
+## 源路径
 
-Local source:
+本地源目录：
 
 ```text
 /Users/xiaolongxiong/.codex/skills/project-workspace-init
 ```
 
-Published copy:
+仓库发布副本：
 
 ```text
 pm_skills/project-workspace-init
 ```
 
-## Notes
+## 说明
 
-This skill is intentionally conservative: it creates missing structure, avoids
-business-specific content, and writes `.new.md` candidates instead of overwriting
-existing documents.
+这个 skill 的策略比较保守：只创建缺失的结构，不写入具体业务内容；如果目标文件已经存在，会生成 `.new.md` 候选文件，而不是覆盖原文件。
 
