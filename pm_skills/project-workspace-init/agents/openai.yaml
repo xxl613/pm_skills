@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Workspace Init"
+  short_description: "按00到07目录初始化项目协作工作区、记忆文件和导航文档"
+  default_prompt: "Use $project-workspace-init to initialize this project workspace with 00-07 directories, AGENTS.md, MEMORY.md, and README.md."

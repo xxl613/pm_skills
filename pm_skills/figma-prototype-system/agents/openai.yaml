@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma Prototype System"
+  short_description: "Build prototype foundations from Figma nodes"
+  default_prompt: "Use $figma-prototype-system to bootstrap a React/Vite prototype system from selected Figma nodes."

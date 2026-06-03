@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTML Prototype to Figma"
+  short_description: "把真实HTML业务原型同步为可验证的Figma画板"
+  default_prompt: "Use $html-prototype-to-figma to convert this HTML prototype into a Figma design while excluding non-business review UI."

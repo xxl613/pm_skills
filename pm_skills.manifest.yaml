@@ -1,0 +1,13 @@
+skills:
+  - name: project-workspace-init
+    source: /Users/xiaolongxiong/.codex/skills/project-workspace-init
+    target: pm_skills/project-workspace-init
+
+  - name: html-prototype-to-figma
+    source: /Users/xiaolongxiong/.codex/skills/html-prototype-to-figma
+    target: pm_skills/html-prototype-to-figma
+
+  - name: figma-prototype-system
+    source: /Users/xiaolongxiong/.codex/skills/figma-prototype-system
+    target: pm_skills/figma-prototype-system
+
