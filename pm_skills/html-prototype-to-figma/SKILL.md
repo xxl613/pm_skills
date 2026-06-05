@@ -34,15 +34,28 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
 4. Choose frame dimensions.
    - Capture at explicit viewports. Default desktop is `1440px` wide unless the prototype or user gives another design width.
    - Treat the browser viewport that fully represents the prototype as the source of truth. Verify `innerWidth`, `innerHeight`, and `devicePixelRatio` in the browser before capture; do not accept a smaller generated Figma frame just because it was successfully created.
+   - Final Figma frames use fixed `1440px` width by default unless the user explicitly requests another width. If the generated frame is larger because of browser DPR or capture scaling, do not immediately run `frame.rescale(...)`. First compare at least one container width, one text font size, and one icon size against the source CSS/DOM.
+   - For editable HTML-to-Figma output, only use whole-frame proportional scaling when containers, text, icons, strokes, and spacing all share the same scale factor. If containers are DPR-scaled but text/icons are already close to source CSS sizes, whole-frame scaling will make text/icons too small; recapture at DPR/deviceScaleFactor `1` or normalize layout containers without scaling text/icons.
    - If a previous or current source screenshot shows a larger intended canvas, keep that larger canvas unless the user asks for a different breakpoint. Do not downscale the browser to match an accidentally generated Figma frame.
    - For responsive prototypes, create one Figma frame per requested breakpoint, for example desktop and mobile. Do not stretch one generated frame to represent all responsive states.
    - Record viewport width, height, device scale factor, route, and state for each frame.
 
-5. Generate the initial Figma layout.
-   - For a first import from a web page, call `generate_figma_design` first to capture the rendered page.
-   - For an existing Figma file, capture into the requested file or page only after confirming the target file/key.
-   - If `generate_figma_design` creates a non-editable or noisy result, use it as a pixel reference and rebuild/clean with `use_figma` in small steps.
-   - Name frames with the prototype page name, route id, and viewport, for example `Order detail / drawer-state / 1440`.
+5. Generate the editable Figma layout with captureId.
+   - The default editable-import path for HTML/React/Vite/local web pages is Figma MCP `generate_figma_design` plus the HTML-to-design capture script. Do not use screenshots, `upload_assets`, image fills, or PNG exports as the final deliverable when the user asks for editable Figma.
+   - For each page or state, call `generate_figma_design` with the target `fileKey` and no `captureId` to generate one single-use captureId. Use one captureId per page/state; never reuse it.
+   - For local/dev pages, temporarily inject this script into the HTML entry such as `index.html`, `public/index.html`, or the app layout:
+     ```html
+     <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+     ```
+     Remove the script after the capture batch unless the user explicitly asks to keep manual recapture available.
+   - Open the exact route with this hash-based capture URL:
+     ```text
+     <target-url>#figmacapture=<captureId>&figmaendpoint=<encoded-submit-endpoint>&figmadelay=1000&figmaselector=<business-root-selector>
+     ```
+   - Use a selector such as `.figma-page`, `main[data-capture-root]`, or another real business root so the capture excludes route catalogs, PRD buttons, review bars, browser chrome, and page-switching shells. If the first capture grabs the whole app wrapper, discard/delete it and recapture with a tighter selector.
+   - Poll `generate_figma_design` with the same `fileKey` and `captureId` every 5 seconds until it completes.
+   - For multiple pages, generate one captureId per page and capture them independently.
+   - Name final frames exactly with the prototype page name or user-facing page name when the user asks for names to stay unchanged. Do not append route ids or viewport suffixes unless they are needed to distinguish duplicate states or breakpoints.
 
 6. Expand hidden content and interaction states.
    - If a page, panel, list, drawer, modal body, table, chat area, or form section scrolls, draw the off-screen content in Figma too.
@@ -54,6 +67,9 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
    - Remove captured helper UI that slipped in: page menus, PRD buttons, review notes, route selectors, dev toolbars, and explanatory text not visible to real users.
    - Preserve real product chrome: app navigation, sidebars, headers, input bars, drawers, dialogs, cards, and empty/error states when they are part of the target screen.
    - When placing a main page and its child pages into an existing business section, keep the main page and all of its direct child pages on the same horizontal row. Start a new row for each different main page. Do not put all main pages in one row and all child pages in later rows unless the prototype has no reliable parent-child mapping.
+   - Keep imported page names unchanged when the task is to copy existing prototype pages into Figma. Rename root frames to the exact prototype page name after capture if the generated name differs.
+   - Do not use `frame.rescale(1440 / frame.width)` as a default cleanup step for editable HTML-to-Figma imports. Use it only after proving text font sizes and icon sizes are scaled by the same factor as the containers. If text or icons would become smaller than the source CSS values, the capture is mismatched and must be recaptured or corrected selectively.
+   - Delete or clearly move aside invalid captures after the editable frame is verified, especially whole-browser captures, whole-body captures, and screenshot-only frames.
    - Keep proportions from the source screenshot. Do not compress content to fit an arbitrary frame height; increase frame height when the real page is taller.
    - If the generated Figma frame is smaller than the verified browser viewport, discard or recapture it. If it contains the right content but clips scroll content, expand the frame height and parent containers to the full content height; never scale the captured image or child group to force it into the shorter frame.
    - When moving fixed or floating elements after expanding a frame, compute their position from `absoluteBoundingBox` relative to the root frame, not from local `x/y` alone. Parent frames may already have offsets, so local moves can accidentally push dialogs, chat input bars, popovers, or drawers outside the root frame.
@@ -84,6 +100,8 @@ If uncertain, ask: "Would a real end user see this in the product?" If no, exclu
 ## Fidelity Rules
 
 - Treat the rendered browser screenshot as the source of truth for visual layout.
+- A `1440px` root frame is not sufficient proof of correctness. After HTML-to-Figma capture, compare representative CSS/DOM values against Figma values: card/input width, row height, badge size, text font size, and icon size. A common failure is a "false-correct" root frame where the outer frame has been scaled to `1440px`, but text becomes `7px` instead of source `12px` and icons become `10px` instead of source `18px`.
+- Never fix a false-correct root frame by continuing to move or resize only visible containers. The content scale is already broken. Either recapture with a correct DPR/device scale, or selectively restore text/icon sizes from source CSS while preserving verified container dimensions.
 - Keep image aspect ratios. Never stretch screenshots, icons, avatars, or product images to fill a mismatched box.
 - Check broken images after capture. Missing or blank image nodes are failures, not acceptable placeholders.
 - Preserve scroll height. If the source page or any internal region is taller than the viewport, draw the full content in a taller frame or adjacent continuation frame; do not leave important content invisible just because the browser viewport hides it.
@@ -112,6 +130,7 @@ Required checks after each generated frame:
 - Check floating UI such as popovers, dropdowns, hover menus, sticky headers, fixed footers, modals, drawers, tooltips, badges, and command menus. These are likely to be reordered or reparented during conversion.
 - Check every visible descendant against the root frame bounds: `child.left >= root.left`, `child.right <= root.right`, `child.top >= root.top`, and `child.bottom <= root.bottom`, allowing only intentional continuation frames or explicitly labeled off-canvas states. Do this with `absoluteBoundingBox`; local coordinates are not enough when parents are nested or offset.
 - Repeat the root-boundary check with `absoluteRenderBounds` for visible descendants and for the root frame itself. A clean `absoluteBoundingBox` check is not sufficient when fixed footers, input bars, cards, dialogs, or floating panels have shadows or blur effects.
+- Check occlusion, not only overflow. A fixed footer/input bar can cover a business card while both nodes remain fully inside the root frame. Measure overlap between bottom-fixed areas and previous business content; if overlap is greater than `0`, expand the frame or create a continuation state and move the fixed area below the content.
 - Check layer order when a visible HTML element is missing in Figma. A node behind an opaque sibling is a failure even if metadata says it exists.
 - For nested floating UI with CSS `z-index`, verify the ancestor stacking context, not only the floating node itself. In Figma, a child cannot visually rise above a later sibling of its ancestor. If a dropdown, command menu, popover, tooltip, or modal is captured inside a lower sibling and overlaps a later section/card, reparent the floating layer to the nearest shared parent, preserve its `absoluteBoundingBox` position, and append it after the overlapped sibling.
 - Check for nodes with width or height near `0`, opacity `0`, invisible fills, missing image fills, or masks that make children disappear.
@@ -129,6 +148,7 @@ Common failure patterns:
 - Responsive layout was captured at the wrong viewport or device scale factor.
 - An image becomes an empty frame or a stretched fill after conversion.
 - A bottom-fixed input bar or modal has a drop shadow whose `absoluteRenderBounds` extends outside the root frame. If the source browser clips the shadow at the viewport edge, clip the root viewport/shell frame; do not move the component upward just to hide the overflow.
+- A bottom-fixed input bar overlaps a result card, table, list, or form inside the root frame. Root-boundary checks pass, but business content is still hidden. Treat this as a failed scroll/visibility conversion.
 
 ## Scroll And Overflow States
 
@@ -137,6 +157,7 @@ HTML prototypes often use scroll containers that hide content inside a fixed pag
 - Inspect likely scroll roots: `body`, `main`, drawers, modal bodies, side panels, chat histories, tables, lists, cards, and form sections.
 - Compare each element's `scrollHeight` vs `clientHeight` and `scrollWidth` vs `clientWidth`.
 - For vertical overflow, extend the Figma frame or create a nearby `continued` frame that shows the rest of the content.
+- For bottom-fixed input/footer patterns, check whether the fixed area visually covers the last business card/list/table/form. If it does, extend the Figma frame height and move the fixed area below the complete business content, or create a labeled continuation frame. Do not leave the fixed area covering content just because the original browser viewport would scroll.
 - For first-pass HTML-to-Figma capture of a vertically scrolling primary area, prefer recapturing with a browser viewport tall enough to expose the whole scroll root: `targetHeight = scrollRoot.scrollHeight + fixedHeaderHeight + fixedFooterHeight`. For shell patterns with fixed top chrome and bottom input areas, include both fixed regions in the target height formula. Record the formula and the measured values.
 - After recapturing, validate the source screenshot dimensions. If the screenshot or capture artifact is still only the old viewport height, the hidden content was not captured; do not proceed by stretching Figma nodes.
 - When a scroll container is represented by a captured image or large child group, compare that child height to the parent height. If the child is taller and the parent clips it, expand the parent/root frame to `ceil(child.y + child.height)` and re-check screenshot output.
@@ -151,6 +172,9 @@ If a capture is generated at the wrong size:
 
 - Stop and identify the verified browser viewport, output Figma frame size, and any scroll-root dimensions.
 - If the browser viewport was wrong, recapture at the correct explicit viewport.
+- If the browser viewport was correct but the generated Figma frame is larger, diagnose what is scaled before changing it. Measure representative source CSS/DOM values and Figma values for: root frame width, a card/input container, a text font size, and an icon.
+- If every measured value shares the same scale factor, proportional scaling is allowed.
+- If containers are larger but font sizes/icons are not enlarged by the same factor, do not scale the whole frame. This creates a false-correct outer frame with tiny text/icons. Prefer recapturing with DPR/deviceScaleFactor `1`; if recapture is impossible, resize only the affected layout containers and preserve or restore text/icon sizes from the source CSS.
 - If the browser viewport was correct but the Figma frame is smaller, treat that frame as invalid and recapture or replace it.
 - If the frame width is correct but content is vertically clipped, expand the root frame and clipped parent containers to the full rendered content height. Keep image and child proportions unchanged.
 - Delete or clearly mark invalid earlier captures so the user does not mistake them for final deliverables.
@@ -198,15 +222,25 @@ Complete this checklist for every delivered Figma conversion:
 
 - [ ] Target Figma file behavior is confirmed: new file or specified existing file.
 - [ ] Target route/state and viewport are recorded.
+- [ ] Editable import used `generate_figma_design` captureId plus capture script; no screenshot/image-fill frame is treated as the final deliverable.
+- [ ] Each page/state used a distinct captureId and was polled until completed.
+- [ ] Temporary capture script was removed after capture, or intentionally left in place because the user asked for manual recapture.
 - [ ] Prototype-only PRD/review/navigation helpers are excluded.
+- [ ] Business-root selector used for capture is recorded, for example `.figma-page` or `main[data-capture-root]`.
 - [ ] Browser source screenshot exists or was visually inspected at the exact viewport.
 - [ ] Figma frame screenshot was checked after generation.
 - [ ] Browser and Figma screenshots were compared at the same viewport, or the conversion is explicitly reported as partial.
 - [ ] Metadata was not used as the only proof of correctness.
+- [ ] Final frame names match the prototype page names when names must be preserved.
+- [ ] Final frame width is `1440px` by default, or the exact width requested by the user.
+- [ ] Capture scaling mismatch was diagnosed with representative container, text, and icon measurements before any scaling operation.
+- [ ] If `frame.rescale(...)` was used, containers, text font sizes, icon sizes, strokes, and spacing were confirmed to share the same scale factor. If not, recapture or selective correction was used instead.
+- [ ] Editable proof was checked: text/vector/group layers exist, and the final root is not a single screenshot/image fill.
 - [ ] Layer visibility was checked: clipping, overflow, z-order, masks, opacity, zero-size nodes, and off-canvas children.
 - [ ] Root-boundary validation was checked on both axes with `absoluteBoundingBox`; no visible child unintentionally extends outside the root frame.
 - [ ] Render-boundary validation was checked with `absoluteRenderBounds`; shadows, blurs, strokes, and effects do not make the screenshot larger than the root frame unless intentionally labeled.
 - [ ] Floating UI was checked: dropdowns, popovers, modals, drawers, sticky/fixed areas, badges, and command menus.
+- [ ] Bottom-fixed input/footer areas were checked for occluding business content inside the root frame. Passing root-boundary checks alone is not enough.
 - [ ] Nested floating UI was checked against ancestor sibling order; any overlay that overlaps later sibling content is reparented to a shared stacking context and visually confirmed above the overlapped content.
 - [ ] Images and icons are present, not blank, stretched, or wrong-format.
 - [ ] Text is not clipped, overlapped, or unexpectedly wrapped.
@@ -223,7 +257,8 @@ Complete this checklist for every delivered Figma conversion:
 When finished, report:
 
 - Source: URL/route, viewport, and state.
-- Figma target: file/page/frame name and changed node IDs when available.
+- Figma target: file/page/frame name, changed node IDs when available, final frame size, captureId, and selector.
+- Editable proof: whether text/vector/group layers were found and whether the final frame avoids single-image fills.
 - Excluded helper UI: short list.
 - Scroll coverage: whether hidden/off-screen business content was expanded.
 - Interaction states: adjacent state frames created, or reason none were needed.
