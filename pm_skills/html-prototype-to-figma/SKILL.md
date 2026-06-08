@@ -40,7 +40,31 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
    - For responsive prototypes, create one Figma frame per requested breakpoint, for example desktop and mobile. Do not stretch one generated frame to represent all responsive states.
    - Record viewport width, height, device scale factor, route, and state for each frame.
 
-5. Generate the editable Figma layout with captureId.
+5. Run the asset portability gate before capture.
+   - Inspect the business root and source files for asset patterns that often fail in HTML-to-Figma conversion:
+     - CSS `mask-image` / `-webkit-mask-image`;
+     - key logos or icons rendered only through `background-image`;
+     - white or transparent PNGs that require CSS color/background composition;
+     - remote images, temporary MCP asset URLs, icon fonts, emoji, or pseudo-elements used as product icons;
+     - inline SVGs or CSS-generated shapes that stand in for real brand assets.
+   - Treat brand logos, school emblems, avatars, product icons, feature icons, illustrations, and textures as key assets. They must be local, independently visible, and usable by Figma as normal images/SVG/vector content.
+   - If a key asset is currently shown only through CSS mask, alpha mask, or browser composition, create or use a capture-friendly visible version before capture, such as a fixed-color SVG/PNG or an already-composited local image.
+   - Do not proceed with capture when key assets are only visible because the browser combines a white mask with CSS background color. Figma may import that as an empty node, a white-on-white image, a solid color block, or a missing fill.
+   - If the HTML prototype is the approved source, keep the source behavior intact unless the asset expression itself is not portable. A capture-friendly real image/SVG for the same visual asset is an acceptable source improvement; layout compensation for Figma import defects is not.
+   - Record any asset conversion decisions, for example `brand logo mask -> brand logo red SVG`, in the final report or project change note.
+
+6. Run the font fidelity gate.
+   - For important Chinese UI pages that already have a trusted Figma standard artboard, prefer editing or cloning that artboard directly in Figma instead of treating raw HTML capture as the final deliverable. Use HTML capture only as a visual reference in this case.
+   - Before capture, record representative browser computed font data from the business root: `font-family`, `font-size`, `font-weight`, and `line-height` for headings, body text, buttons, tags, and card text.
+   - Do not assume the browser font name will survive HTML-to-Figma import. `PingFang SC`, `PingFang_SC`, `PingFangSC`, and style names such as `Semibold` / `Semi Bold` may resolve differently in Figma.
+   - After capture, call `figma.listAvailableFontsAsync()` with `use_figma` and build a real font map from fonts available to the current Figma environment. Never hardcode a style name without checking availability.
+   - Normalize imported text nodes in Figma to the approved design font. For Chinese prototypes, prefer `PingFang SC` when available; preserve source font weight by mapping `400 -> Regular`, `500 -> Medium`, `600 -> Semibold/Semi Bold`, `700 -> Bold/Semibold` based on the actual available Figma styles.
+   - If the approved font family is not available in the current Figma environment, stop and report the blocker. Do not silently replace it with Inter, Arial, Microsoft YaHei, a browser fallback, or a visually similar font.
+   - If Figma shows the font in the UI but `use_figma` still reports it as unavailable, re-run `figma.listAvailableFontsAsync()` after the user restarts Figma Desktop or refreshes the file. Treat the tool result, not the UI dropdown alone, as the writeability source of truth.
+   - After normalization, compare representative text sizes and line heights against the source DOM. A correct frame width with wrong font family or weight is not a completed conversion.
+   - Return mutated text node IDs from the normalization script, and include the chosen family/style mapping in the final report.
+
+7. Generate the editable Figma layout with captureId.
    - The default editable-import path for HTML/React/Vite/local web pages is Figma MCP `generate_figma_design` plus the HTML-to-design capture script. Do not use screenshots, `upload_assets`, image fills, or PNG exports as the final deliverable when the user asks for editable Figma.
    - For each page or state, call `generate_figma_design` with the target `fileKey` and no `captureId` to generate one single-use captureId. Use one captureId per page/state; never reuse it.
    - For local/dev pages, temporarily inject this script into the HTML entry such as `index.html`, `public/index.html`, or the app layout:
@@ -57,15 +81,17 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
    - For multiple pages, generate one captureId per page and capture them independently.
    - Name final frames exactly with the prototype page name or user-facing page name when the user asks for names to stay unchanged. Do not append route ids or viewport suffixes unless they are needed to distinguish duplicate states or breakpoints.
 
-6. Expand hidden content and interaction states.
+8. Expand hidden content and interaction states.
    - If a page, panel, list, drawer, modal body, table, chat area, or form section scrolls, draw the off-screen content in Figma too.
    - If a button, tab, dropdown, segmented control, hover menu, popover, modal, drawer, validation message, submit result, or error state changes hidden UI, create an adjacent state frame.
    - Label adjacent states with the source component and state, for example `Create button / loading`, `Filter dropdown / expanded`, or `Submit button / validation-error`.
    - Keep adjacent state frames near the main frame, aligned on a simple grid, and do not mix them into the primary default-state frame.
 
-7. Clean and structure the Figma result.
+9. Clean and structure the Figma result.
    - Remove captured helper UI that slipped in: page menus, PRD buttons, review notes, route selectors, dev toolbars, and explanatory text not visible to real users.
    - Preserve real product chrome: app navigation, sidebars, headers, input bars, drawers, dialogs, cards, and empty/error states when they are part of the target screen.
+   - If the HTML prototype is already the approved source and the captured Figma output differs from it, fix the generated Figma frame directly with `use_figma` instead of changing the original HTML/CSS/React source. Only modify the source prototype when the source itself is wrong, when a capture-only wrapper is explicitly needed, or when the user asks for a prototype change.
+   - If the generated capture has noisy raw frames but a clean existing Figma standard artboard exists, use the capture as a pixel reference and update the standard artboard directly. Do not promote the noisy capture to final just because it is editable.
    - When placing a main page and its child pages into an existing business section, keep the main page and all of its direct child pages on the same horizontal row. Start a new row for each different main page. Do not put all main pages in one row and all child pages in later rows unless the prototype has no reliable parent-child mapping.
    - Keep imported page names unchanged when the task is to copy existing prototype pages into Figma. Rename root frames to the exact prototype page name after capture if the generated name differs.
    - Do not use `frame.rescale(1440 / frame.width)` as a default cleanup step for editable HTML-to-Figma imports. Use it only after proving text font sizes and icon sizes are scaled by the same factor as the containers. If text or icons would become smaller than the source CSS values, the capture is mismatched and must be recaptured or corrected selectively.
@@ -76,11 +102,12 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
    - Distinguish layout wrappers from visible components. A fixed footer, full-width docking area, or padded shell can be much wider than the actual rounded input card, modal, popover, or business dialog. Do not let the wrapper's width become the visible component's background or border.
    - Convert obvious groups into readable layer names, but avoid speculative componentization unless requested.
 
-8. Verify fidelity before declaring done. This is a hard delivery gate.
+10. Verify fidelity before declaring done. This is a hard delivery gate.
    - Capture a browser screenshot of the source page at the same viewport.
    - Capture a Figma screenshot of the generated frame.
    - Do not use metadata alone as proof of correctness. Metadata can show that nodes exist while they are clipped, hidden, behind another layer, transparent, or placed in the wrong parent frame.
    - Compare structure, spacing, cropping, text wrapping, image loading, aspect ratios, hidden scroll content, and adjacent interaction-state frames.
+   - Compare font family, font weight, font size, and line height for representative headings, body text, buttons, and card text.
    - Run the layer visibility checks below for the generated frame before reporting success.
    - Fix issues and re-check. Do not claim "1:1" unless a same-viewport visual check was completed.
    - If browser/Figma screenshot comparison or layer visibility checks cannot be completed, report the conversion as partial and list the missing verification. Do not say the Figma conversion is complete.
@@ -104,10 +131,15 @@ If uncertain, ask: "Would a real end user see this in the product?" If no, exclu
 - Never fix a false-correct root frame by continuing to move or resize only visible containers. The content scale is already broken. Either recapture with a correct DPR/device scale, or selectively restore text/icon sizes from source CSS while preserving verified container dimensions.
 - Keep image aspect ratios. Never stretch screenshots, icons, avatars, or product images to fill a mismatched box.
 - Check broken images after capture. Missing or blank image nodes are failures, not acceptable placeholders.
+- Check key visual assets after capture: brand logo, school emblem, product icon, feature icons, avatar, illustration, and texture. If any asset becomes blank, white-on-white, a solid rectangle, wrong color, or a different cropped shape, treat it as a failed asset portability check, not a minor visual difference.
+- CSS mask and alpha-mask assets are high risk. If they appear in the source, verify that the captured Figma layer is a visible image/SVG/vector with correct color and alpha. If not, replace the source asset expression with a capture-friendly real asset and recapture, or repair the generated Figma node directly only when the user explicitly wants to preserve the source unchanged.
 - Preserve scroll height. If the source page or any internal region is taller than the viewport, draw the full content in a taller frame or adjacent continuation frame; do not leave important content invisible just because the browser viewport hides it.
 - Compare every scroll root's `scrollHeight/clientHeight` at the selected viewport. A region can look acceptable in a screenshot while still having `scrollHeight > clientHeight`; the Figma output must represent the full `scrollHeight` without distorting the child content.
 - Do not treat a resized Figma frame as scroll coverage. If the source capture screenshot was only the visible viewport, increasing the Figma frame height only creates empty/clipped space; it does not add the hidden DOM content. Recapture the page with the scroll root fully visible, or create a clearly labeled continuation frame from a real scrolled state.
 - Match the source viewport. Differences caused by browser width, DPR, font loading, or collapsed responsive layouts must be resolved before comparison.
+- Match the source font deliberately. Browser rendering and Figma import can disagree even when both appear to use `PingFang SC`. Verify the Figma text node's actual `fontName` via Plugin API, not only the visual dropdown. If the text node uses an unavailable, fallback, or differently named family/style, normalize it before fidelity review.
+- Preserve font weight semantics. Do not flatten every imported text node to Regular. Map source CSS weights to the closest approved Figma style that actually exists in `figma.listAvailableFontsAsync()`, and record any fallback within the same family.
+- If the approved font is missing or not writable through `use_figma`, the conversion is blocked or partial. Do not silently substitute another family just to make the write succeed.
 - Keep text readable and uncropped. Pay attention to line-height, overflow clipping, ellipsis, and Chinese text wrapping.
 - Do not hide overflow with `clipsContent` just to mask layout mistakes.
 - Treat unexpected `clipsContent`, zero-size containers, fully transparent nodes, and off-canvas children as possible conversion failures until checked visually.
@@ -135,6 +167,7 @@ Required checks after each generated frame:
 - For nested floating UI with CSS `z-index`, verify the ancestor stacking context, not only the floating node itself. In Figma, a child cannot visually rise above a later sibling of its ancestor. If a dropdown, command menu, popover, tooltip, or modal is captured inside a lower sibling and overlaps a later section/card, reparent the floating layer to the nearest shared parent, preserve its `absoluteBoundingBox` position, and append it after the overlapped sibling.
 - Check for nodes with width or height near `0`, opacity `0`, invisible fills, missing image fills, or masks that make children disappear.
 - Check text nodes for clipped line height, unexpected wrapping, ellipsis, or being placed inside a parent that is too small.
+- Check text nodes for wrong font family or missing font style. A node can render visually close in Figma but still use a fallback that will shift when the user edits it; treat that as a fidelity issue.
 - If `generate_figma_design` re-parents components into noisy raw frames, use the capture as a pixel reference and fix with targeted `use_figma` edits. Return `mutatedNodeIds` for every fix.
 - If a visibility issue is found and cannot be fixed quickly, label it as a residual difference in the final report with the affected component and likely cause.
 
@@ -147,6 +180,8 @@ Common failure patterns:
 - A hidden interaction state was not triggered before capture.
 - Responsive layout was captured at the wrong viewport or device scale factor.
 - An image becomes an empty frame or a stretched fill after conversion.
+- A logo or icon that relied on `mask-image` becomes invisible, white-on-white, or turns into a plain rectangle.
+- A key asset is technically present in Figma metadata but has missing image fill, invisible fill, wrong opacity, or lost mask/color composition.
 - A bottom-fixed input bar or modal has a drop shadow whose `absoluteRenderBounds` extends outside the root frame. If the source browser clips the shadow at the viewport edge, clip the root viewport/shell frame; do not move the component upward just to hide the overflow.
 - A bottom-fixed input bar overlaps a result card, table, list, or form inside the root frame. Root-boundary checks pass, but business content is still hidden. Treat this as a failed scroll/visibility conversion.
 
@@ -171,6 +206,7 @@ HTML prototypes often use scroll containers that hide content inside a fixed pag
 If a capture is generated at the wrong size:
 
 - Stop and identify the verified browser viewport, output Figma frame size, and any scroll-root dimensions.
+- When the verified browser prototype is correct and only the Figma import is distorted, repair the Figma nodes directly. Do not make prototype-source changes just to compensate for an HTML-to-Figma conversion artifact.
 - If the browser viewport was wrong, recapture at the correct explicit viewport.
 - If the browser viewport was correct but the generated Figma frame is larger, diagnose what is scaled before changing it. Measure representative source CSS/DOM values and Figma values for: root frame width, a card/input container, a text font size, and an icon.
 - If every measured value shares the same scale factor, proportional scaling is allowed.
@@ -222,6 +258,13 @@ Complete this checklist for every delivered Figma conversion:
 
 - [ ] Target Figma file behavior is confirmed: new file or specified existing file.
 - [ ] Target route/state and viewport are recorded.
+- [ ] Asset portability gate was completed before capture: no key logo/icon/avatar/illustration relies only on CSS mask, remote image, white transparent PNG, icon font, emoji, or browser-only composition.
+- [ ] Any high-risk asset was converted to or paired with a capture-friendly local SVG/PNG before capture, or the residual limitation is explicitly listed.
+- [ ] Font fidelity gate was completed: representative browser computed fonts were recorded for headings, body text, buttons, tags, and card text.
+- [ ] Figma available fonts were checked with `figma.listAvailableFontsAsync()` before any font normalization or text rewrite.
+- [ ] Imported text nodes were normalized to the approved Figma font family and available styles; Chinese prototypes prefer `PingFang SC` when available.
+- [ ] Source CSS font weights were mapped to real Figma styles instead of flattening all text to Regular.
+- [ ] Missing or unwritable approved fonts are reported as blockers or residual differences, not silently replaced with another family.
 - [ ] Editable import used `generate_figma_design` captureId plus capture script; no screenshot/image-fill frame is treated as the final deliverable.
 - [ ] Each page/state used a distinct captureId and was polled until completed.
 - [ ] Temporary capture script was removed after capture, or intentionally left in place because the user asked for manual recapture.
@@ -243,7 +286,9 @@ Complete this checklist for every delivered Figma conversion:
 - [ ] Bottom-fixed input/footer areas were checked for occluding business content inside the root frame. Passing root-boundary checks alone is not enough.
 - [ ] Nested floating UI was checked against ancestor sibling order; any overlay that overlaps later sibling content is reparented to a shared stacking context and visually confirmed above the overlapped content.
 - [ ] Images and icons are present, not blank, stretched, or wrong-format.
+- [ ] Key visual assets are visually checked in Figma, especially brand logos, school emblems, product icons, feature icons, avatars, illustrations, and textures.
 - [ ] Text is not clipped, overlapped, or unexpectedly wrapped.
+- [ ] Text font family, weight, size, and line height were checked against representative source DOM values after import or direct Figma edits.
 - [ ] Visible component sizes match the source screenshot/DOM rects; full-width layout wrappers have not become stretched cards, dialogs, bubbles, or input boxes.
 - [ ] Long pages and internal scroll regions show hidden/off-screen business content.
 - [ ] Scroll coverage was proven from real captured content, not by merely resizing the Figma frame; bottom sentinels such as the final item, final scene label, final error message, or footer/input are present.
@@ -262,6 +307,8 @@ When finished, report:
 - Excluded helper UI: short list.
 - Scroll coverage: whether hidden/off-screen business content was expanded.
 - Interaction states: adjacent state frames created, or reason none were needed.
+- Asset portability: key assets checked, converted, or listed as residual differences.
+- Font fidelity: browser computed font sample, approved Figma family/style mapping, normalized text node IDs, and any missing-font blocker.
 - Verification: browser/Figma screenshot check result.
 - Layer visibility: clipping/z-order/overflow issues checked and fixed, or listed as residual differences.
 - Residual differences: only if any remain.

@@ -71,7 +71,7 @@ Create `_README.md` in each main directory from `templates/directory-readme.md`:
 | `03_技术架构/` | Architecture diagrams, technical plans, data structures, interface boundaries, system dependencies |
 | `04_业务调研/` | Interviews, competitor research, business materials, raw research notes |
 | `05_交付验证/` | Demo acceptance, test records, issue lists, delivery materials, review feedback |
-| `06_设计文件/` | `DESIGN.md`, prototype projects, Figma materials, screenshots, visual rules, design deliverables |
+| `06_设计文件/` | `DESIGN.md`, prototype projects, Figma materials, screenshots, visual rules, page catalog, PRD reference layer, change records, design deliverables |
 | `07_会议记录/` | Raw meeting notes, cleaned summaries, meeting conclusions, action items |
 
 ## Workflow

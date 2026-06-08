@@ -39,3 +39,7 @@ sync_skill "html-prototype-to-figma" \
 sync_skill "figma-prototype-system" \
   "/Users/xiaolongxiong/.codex/skills/figma-prototype-system" \
   "pm_skills/figma-prototype-system"
+
+sync_skill "figma-to-html-replica" \
+  "/Users/xiaolongxiong/.codex/skills/figma-to-html-replica" \
+  "pm_skills/figma-to-html-replica"

@@ -7,6 +7,8 @@ The goal is to provide a project-agnostic floating review shell:
 - Floating review toolbar, not a permanent left sidebar.
 - Top toolbar includes only `页面目录`, `PRD 信息`, `变更记录`.
 - `素材库` lives at the bottom of the page catalog popover.
+- `素材库` must include every recreated Figma page as a rendered prototype-page material.
+- Calibration-only Figma recreation pages do not appear in the page catalog.
 - Do not include `说明信息`, `素材库`, or `打开 Figma` in the top toolbar.
 - Page catalog opens as a popover and closes after navigation.
 - Page catalog supports parent/child hierarchy, child-row expand/collapse, and a `收起全部` action in the catalog header.
@@ -15,6 +17,17 @@ The goal is to provide a project-agnostic floating review shell:
 - Change records have `标记完成` and `还原未完成` actions that update the current page marker.
 - PRD/change/material panels are overlays and do not resize the recreated Figma canvas.
 - Canvas keeps the original Figma design size internally, but the preview frame scales it to fill the browser.
+
+## Material Registry Rule
+
+The material registry stores rendered prototype-page materials:
+
+- One item for every recreated Figma node/page.
+- Each item must reference the rendered page component, not only a text description.
+- The material panel should show a scaled preview of the prototype page.
+- Selecting a page material should load that page into the preview canvas.
+
+Do not only show text cards. Do not put calibration-only Figma recreation pages into the page catalog.
 
 ## React Pattern
 

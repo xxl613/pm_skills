@@ -11,3 +11,6 @@ skills:
     source: /Users/xiaolongxiong/.codex/skills/figma-prototype-system
     target: pm_skills/figma-prototype-system
 
+  - name: figma-to-html-replica
+    source: /Users/xiaolongxiong/.codex/skills/figma-to-html-replica
+    target: pm_skills/figma-to-html-replica

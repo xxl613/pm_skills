@@ -11,6 +11,7 @@
 | `project-workspace-init` | 初始化结构化项目空间，用于产品设计、业务调研、交付验证、会议记录等长期协作。 | `pm_skills/project-workspace-init/` |
 | `html-prototype-to-figma` | 将 HTML/React/Vite 原型或本地页面转换为可编辑 Figma 设计稿，并进行还原度校验。 | `pm_skills/html-prototype-to-figma/` |
 | `figma-prototype-system` | 基于已有 Figma 节点搭建可复用的 React/Vite 原型基础工程，并沉淀设计语言。 | `pm_skills/figma-prototype-system/` |
+| `figma-to-html-replica` | 将 Figma 画板高保真复刻为 HTML/CSS 或项目栈页面，并通过截图对比迭代缩小视觉差异。 | `pm_skills/figma-to-html-replica/` |
 
 ## 仓库结构
 
@@ -19,6 +20,7 @@ pm_skills/
   project-workspace-init/
   html-prototype-to-figma/
   figma-prototype-system/
+  figma-to-html-replica/
 pm_skills.manifest.yaml
 tools/
   sync_pm_skills.sh
@@ -53,4 +55,3 @@ git push
 - `tools/sync_pm_skills.sh`
 
 然后运行同步脚本，并在新的 skill 目录下补充一个简短的 `README.md`。
-

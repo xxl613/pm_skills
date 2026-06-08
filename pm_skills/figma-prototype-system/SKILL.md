@@ -1,6 +1,6 @@
 ---
 name: figma-prototype-system
-description: "Use when bootstrapping a transferable prototype design system from existing Figma nodes: extracting design language, recreating supplied Figma canvases in a React/Vite preview project, generating DESIGN.md and README.md, localizing Figma assets, and creating a floating review shell with page catalog, PRD, change-record, and page-state controls. Use for first-time design-system/prototype foundation setup, not for drawing later new pages from an already established system."
+description: "Use when bootstrapping a transferable prototype design system from existing Figma nodes: extracting design language, recreating supplied Figma canvases in a React/Vite preview project, generating DESIGN.md and README.md, localizing Figma assets, registering recreated pages as rendered prototype-page materials, and creating a floating review shell with page catalog, PRD, change-record, and page-state controls. Use for first-time design-system/prototype foundation setup, not for drawing later new pages from an already established system."
 ---
 
 # Figma Prototype System
@@ -14,6 +14,7 @@ Use this skill only for **build-library mode**:
 - Create the first prototype foundation from existing Figma nodes.
 - Recreate each supplied Figma node as a preview page.
 - Extract tokens, layout rules, shell patterns, and reusable components from the recreated pages.
+- Register every recreated page as a rendered prototype-page material in the material library.
 - Deliver both `DESIGN.md` and a runnable React/Vite project.
 
 Do not use this skill for later feature/page drawing after a design system already exists. That should use the target project's normal prototype skill and read the generated `DESIGN.md`.
@@ -39,7 +40,7 @@ Ask for more when any of these are missing:
 - A real PRD/requirements document when the user expects PRD binding.
 - Evidence for critical design rules such as primary color, typography, spacing, radius, shadow, or navigation structure.
 
-If the user refuses to provide more, continue only if a useful low-confidence foundation can still be made. Mark low-confidence pages in the page catalog, `README.md`, and final response. Do not write guesses as confirmed rules in `DESIGN.md`.
+If the user refuses to provide more, continue only if a useful low-confidence foundation can still be made. Mark low-confidence recreated pages in the material library, `README.md`, and final response. Do not write guesses as confirmed rules in `DESIGN.md`.
 
 ## Figma Acquisition
 
@@ -91,21 +92,21 @@ project/
       shared/
 ```
 
-Adapt names to the project. Keep `App.tsx` as a catalog entry point. Put node recreations in `pages/`. Register every page in `src/figma/catalog.ts`.
+Adapt names to the project. Keep `App.tsx` as the preview entry point. Put node recreations in `pages/`, but do not list calibration-only Figma recreation pages in the page catalog. Register them as material-library prototype pages instead.
 
 ## Preview Requirements
 
 The prototype project must include:
 
 - Before implementing the shell, read `references/floating-review-shell.md` and use it as the default code pattern for page catalog, PRD/change buttons, overlay panels, catalog collapse behavior, status markers, and responsive canvas scaling.
-- Page catalog: switch between all Figma node recreation pages.
+- Page catalog: show only real prototype/product pages that should be reviewed as project pages. Calibration-only Figma recreation pages must not appear in the page catalog.
 - Floating catalog presentation: use a lightweight floating page-catalog trigger near the top-left of the preview, not a permanently occupied left sidebar. The catalog opens as an overlay/popover and closes after page selection or outside click.
-- Page catalog structure: support parent/child page hierarchy. Parent rows with children must have an expand/collapse arrow; the catalog header must include `收起全部`. If the input pages have an obvious main page plus related subpages, organize them into that hierarchy.
+- Page catalog structure: support parent/child page hierarchy for real prototype/product pages. Parent rows with children must have an expand/collapse arrow; the catalog header must include `收起全部`. If no real prototype/product page exists yet, show an empty state and keep the material-library entry available.
 - Page status: at least `not-recreated`, `recreated-needs-calibration`, `calibrated`, `changed-needs-review`, and `low-confidence`. In the page catalog, every page row must include a separate clickable status marker button that cycles `none -> yellow -> green -> red`, matching the review workflow: unmarked, done-not-reviewed, reviewed, reviewed-but-changed.
 - Page catalog rows must not show text status labels such as `已复现待校准`; the colored marker button is the visible status control.
 - PRD button: keep `PRD 信息` in the top toolbar. If a real PRD or requirements document is bound, open the bound page-level PRD content. If no document exists, show a grey/empty PRD state such as `当前页面未绑定独立 PRD 功能模块`; do not invent PRD text.
 - Change record panel: show page changes, why they changed, completion status, and whether `DESIGN.md` needs updating. Each change record must support `标记完成` and `还原未完成`; completion should update the current page marker to green when all records are completed and red when any record is incomplete. This panel must be an overlay panel next to the PRD controls, not content inside the user-facing prototype canvas.
-- Material registry: register reusable Figma-derived shells, cards, dialogs, drawers, lists, and navigation fragments. The material-library entry belongs at the bottom of the page catalog popover, not in the top review toolbar.
+- Material registry: register every recreated Figma page as a rendered prototype-page material. The material panel must display the actual rendered prototype page preview, not a text-only card. Selecting a page material should load that prototype page into the preview canvas. The material-library entry belongs at the bottom of the page catalog popover, not in the top review toolbar.
 - Review toolbar: include only `页面目录`, `PRD 信息`, and `变更记录` controls in a compact floating toolbar. Do not place `说明信息`, `素材库`, or `打开 Figma` in the top toolbar. These controls are for prototype review only and must be visually separated from the recreated product UI.
 
 ## Responsive Preview Standard
@@ -125,7 +126,10 @@ The recreated Figma canvas must adapt to the browser viewport by default:
 
 - Create one recreation page for every input Figma node. Do not merge or skip nodes.
 - Recreate the visible canvas first. This is the calibration surface for the design language.
+- After recreating a Figma node page, add it to `src/material-library/registry.ts` as a prototype-page material with page title, node id, source Figma URL if available, and the rendered page component id.
+- Do not add calibration-only Figma node pages to the page catalog. They belong in the material library only.
 - Extract shared components only after a structure appears in at least two supplied nodes or is clearly a global shell.
+- Extracted shared components may be documented in `DESIGN.md`, but the visible material panel for this skill should prioritize rendered prototype-page materials over text descriptions.
 - Keep one-off structures local to the page.
 - Prefer project tokens over scattered hard-coded values once a value is confirmed.
 - Preserve visual hierarchy, spacing, typography, radius, shadows, and asset proportions.
@@ -152,9 +156,10 @@ Generate `README.md` to explain how to use the foundation:
 
 - Figma sources used for calibration.
 - How to run the React/Vite project.
-- Page catalog and node mapping.
+- Page catalog behavior and Figma node-to-material mapping.
 - How to use `DESIGN.md` before future prototype work.
-- Which shells/components are reusable and where content should be inserted.
+- Which recreated prototype pages are stored in the material library and how to use them as starting points.
+- Which shells/components are reusable and where content should be inserted, documented in `DESIGN.md` or README as needed.
 - How to update the catalog, material registry, change records, and `DESIGN.md`.
 - Confidence notes and recommended additional Figma nodes.
 
@@ -164,9 +169,10 @@ Before final delivery:
 
 - Start the React/Vite dev server.
 - Open the local preview and verify no white screen.
-- Check page catalog navigation.
+- Check page catalog navigation when real prototype/product pages exist; if no such pages exist, check the empty state and material-library entry.
 - Check PRD button behavior: bound PRD opens page-level PRD content; missing PRD shows a grey/empty unbound state without invented content.
 - Check change record panel and material panel.
+- Check that every recreated Figma page appears only in the material panel as a rendered prototype-page material, not in the page catalog.
 - Check page catalog hierarchy, status marker cycling, `收起全部`, parent expand/collapse, and outside-click close behavior.
 - Check responsive sizing at multiple viewport widths, including a wide desktop viewport. The recreated canvas must fill the available preview area instead of staying small in the center with large empty margins.
 - Check that opening page catalog, PRD, change-record, or material panels does not permanently squeeze the canvas.
@@ -185,6 +191,7 @@ Report:
 - `README.md` path.
 - Recreated Figma nodes/pages.
 - Calibrated pages and low-confidence pages.
+- Recreated pages registered as materials.
 - Reusable shells/components/materials.
 - PRD binding status.
 - Remaining information needed to improve confidence.
