@@ -12,6 +12,8 @@
 | `html-prototype-to-figma` | 将 HTML/React/Vite 原型或本地页面转换为可编辑 Figma 设计稿，并进行还原度校验。 | `pm_skills/html-prototype-to-figma/` |
 | `figma-prototype-system` | 基于已有 Figma 节点搭建可复用的 React/Vite 原型基础工程，并沉淀设计语言。 | `pm_skills/figma-prototype-system/` |
 | `figma-to-html-replica` | 将 Figma 画板高保真复刻为 HTML/CSS 或项目栈页面，并通过截图对比迭代缩小视觉差异。 | `pm_skills/figma-to-html-replica/` |
+| `prd-writing-style` | 教师中心 PRD、功能说明、需求池和研发对齐文档的写作与改写风格。 | `pm_skills/prd-writing-style/` |
+| `html-prototype-style` | HTML/React 原型页面绘制和修改的质量约束，适用于框架页面、卡片、弹窗、抽屉流程和状态机制。 | `pm_skills/html-prototype-style/` |
 
 ## 仓库结构
 
@@ -21,6 +23,8 @@ pm_skills/
   html-prototype-to-figma/
   figma-prototype-system/
   figma-to-html-replica/
+  prd-writing-style/
+  html-prototype-style/
 pm_skills.manifest.yaml
 tools/
   sync_pm_skills.sh

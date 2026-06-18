@@ -43,3 +43,11 @@ sync_skill "figma-prototype-system" \
 sync_skill "figma-to-html-replica" \
   "/Users/xiaolongxiong/.codex/skills/figma-to-html-replica" \
   "pm_skills/figma-to-html-replica"
+
+sync_skill "prd-writing-style" \
+  "/Users/xiaolongxiong/PycharmProjects/ai_group/.agents/skills/prd-writing-style" \
+  "pm_skills/prd-writing-style"
+
+sync_skill "html-prototype-style" \
+  "/Users/xiaolongxiong/PycharmProjects/ai_group/.agents/skills/html-prototype-style" \
+  "pm_skills/html-prototype-style"

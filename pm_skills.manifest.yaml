@@ -14,3 +14,11 @@ skills:
   - name: figma-to-html-replica
     source: /Users/xiaolongxiong/.codex/skills/figma-to-html-replica
     target: pm_skills/figma-to-html-replica
+
+  - name: prd-writing-style
+    source: /Users/xiaolongxiong/PycharmProjects/ai_group/.agents/skills/prd-writing-style
+    target: pm_skills/prd-writing-style
+
+  - name: html-prototype-style
+    source: /Users/xiaolongxiong/PycharmProjects/ai_group/.agents/skills/html-prototype-style
+    target: pm_skills/html-prototype-style

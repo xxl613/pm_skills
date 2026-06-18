@@ -22,3 +22,5 @@
 - `html-prototype-to-figma`
 - `figma-prototype-system`
 - `figma-to-html-replica`
+- `prd-writing-style`
+- `html-prototype-style`
