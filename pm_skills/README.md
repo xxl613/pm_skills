@@ -24,3 +24,5 @@
 - `figma-to-html-replica`
 - `prd-writing-style`
 - `html-prototype-style`
+- `v5-page-planning`
+- `v5-ux-rule`

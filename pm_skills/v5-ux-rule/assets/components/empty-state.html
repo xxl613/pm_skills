@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- 派生组件：Figma 无此设计，按 V5 令牌与既有组件风格规格补充。
+     空状态 empty-state · 居中：占位图标(64-96) + 说明文案(secondary) + 可选主操作按钮(近黑)。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 空状态 empty-state</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; gap: var(--v5-space-6); flex-wrap: wrap; }
+  .demo-label { width: 100%; font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .v5-empty { width: 380px; background: var(--v5-color-surface); border: 1px solid var(--v5-color-border);
+    border-radius: var(--v5-radius-lg); padding: var(--v5-space-6); display: flex; flex-direction: column; align-items: center; gap: var(--v5-space-4); }
+  .v5-empty__ico { width: 72px; height: 72px; border-radius: 50%; background: var(--v5-color-fill);
+    display: grid; place-items: center; color: var(--v5-color-text-disabled); }
+  .v5-empty__text { font-size: var(--v5-font-size-body); color: var(--v5-color-text-secondary); text-align: center; line-height: var(--v5-line-height-body); }
+  .v5-btn--primary { height: 36px; padding: 0 var(--v5-space-5); border-radius: var(--v5-radius-md); border: none;
+    background: var(--v5-color-text); color: #fff; font: inherit; font-size: var(--v5-font-size-caption); cursor: pointer; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <div class="demo-label">空状态（纯说明 / 带主操作）</div>
+  <div class="v5-empty">
+    <div class="v5-empty__ico"><svg width="34" height="34" viewBox="0 0 36 36" fill="none"><rect x="7" y="9" width="22" height="20" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 15h22M13 9V6h10v3" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="v5-empty__text">这里还没有内容</div>
+  </div>
+  <div class="v5-empty">
+    <div class="v5-empty__ico"><svg width="34" height="34" viewBox="0 0 36 36" fill="none"><rect x="7" y="7" width="22" height="22" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M13 13h10M13 18h10M13 23h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="v5-empty__text">还没有作业，去创建第一个吧</div>
+    <button class="v5-btn--primary">＋ 新建作业</button>
+  </div>
+</body>
+</html>

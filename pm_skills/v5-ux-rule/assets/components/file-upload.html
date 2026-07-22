@@ -1,0 +1,203 @@
+<!doctype html>
+<!-- 文件上传组件
+     对话中传文件样式：忠于 Figma 节点 3695:6968「添加文件」/ 输入台 3695:7188 实测——
+       输入台顶部横排文件卡(≈270×70)：文件类型图标(36) + 名称(截断) + 大小 + 删除(hover 白pill红字)，右侧 > 滚动。
+     上传状态机(已选/上传中/解析中/失败/已发送)为派生(见 references/05-ai-patterns.md 状态机)，Figma 仅「就绪+删除」态。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 文件上传 file-upload</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  body {
+    margin: 0; background: var(--v5-color-bg);
+    font-family: var(--v5-font-family); color: var(--v5-color-text);
+    padding: var(--v5-space-6);
+    display: flex; flex-direction: column; gap: var(--v5-space-6); align-items: center;
+  }
+  .demo-label {
+    width: var(--v5-content-max); font-size: var(--v5-font-size-caption);
+    color: var(--v5-color-text-secondary); margin-bottom: calc(-1 * var(--v5-space-4));
+  }
+
+  /* ---------- 文件卡（对话中传文件 · 忠于 Figma 270×70） ---------- */
+  .v5-filecard {
+    position: relative;
+    box-sizing: border-box;
+    width: 270px; height: 70px;            /* Figma 实测 */
+    flex: none;
+    display: flex; align-items: center; gap: var(--v5-space-3);
+    padding: var(--v5-space-3) var(--v5-space-4);
+    background: var(--v5-color-bg);
+    border-radius: var(--v5-radius-lg);    /* 16 */
+    overflow: hidden;
+  }
+  .v5-filecard__icon {
+    width: 36px; height: 36px; flex: none;  /* Figma 实测 36 */
+    display: grid; place-items: center;
+    border-radius: var(--v5-radius-sm);
+    color: #ffffff;
+  }
+  /* 文件类型色（真实产品用业务文件图标资源，此处用语义色占位区分类型） */
+  .v5-filecard__icon[data-type="sheet"] { background: var(--v5-color-success); }   /* 表格-绿 */
+  .v5-filecard__icon[data-type="doc"]   { background: var(--v5-color-info); }      /* 文档-蓝 */
+  .v5-filecard__icon[data-type="other"] { background: var(--v5-color-text-tertiary); }
+  .v5-filecard__meta { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .v5-filecard__name {
+    font-size: var(--v5-font-size-body); line-height: 22px; color: var(--v5-color-text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .v5-filecard__sub {
+    font-size: 12px; line-height: 20px; color: var(--v5-color-text-secondary);  /* 12MB 等 */
+  }
+  /* 删除浮层：hover 时右侧白 pill 红字（Figma 实测样式） */
+  .v5-filecard__del {
+    position: absolute; top: 0; right: 0; height: 100%;
+    display: none; align-items: center; padding: 0 var(--v5-space-4);
+    background: linear-gradient(90deg, transparent, var(--v5-color-surface) 30%);
+  }
+  .v5-filecard__del > span {
+    background: var(--v5-color-surface);
+    color: var(--v5-color-error);
+    font-size: var(--v5-font-size-caption);
+    padding: var(--v5-space-1) var(--v5-space-3);
+    border-radius: var(--v5-radius-md);
+    box-shadow: var(--v5-shadow-card);
+    cursor: pointer;
+  }
+  .v5-filecard:hover .v5-filecard__del,
+  .v5-filecard[data-show-del] .v5-filecard__del { display: flex; }
+
+  /* 状态：上传中/解析中（进度条） */
+  .v5-filecard__progress {
+    position: absolute; left: 0; bottom: 0; height: 3px; width: 100%;
+    background: var(--v5-color-border);
+  }
+  .v5-filecard__progress > i { display: block; height: 100%; background: var(--v5-color-brand); }
+  .v5-filecard[data-state="failed"] { background: var(--v5-color-error-bg); }      /* 错误浅底（语义配套） */
+  .v5-filecard[data-state="failed"] .v5-filecard__sub { color: var(--v5-color-error); }
+
+  /* ---------- 输入台容器（复用对话流 dock，附件横排在顶部） ---------- */
+  .v5-composer {
+    width: var(--v5-content-max); box-sizing: border-box;
+    background: var(--v5-color-surface);
+    border: 1px solid var(--v5-color-border);
+    border-radius: var(--v5-radius-lg);
+    padding: var(--v5-space-4);
+    display: flex; flex-direction: column; gap: var(--v5-space-3);
+  }
+  .v5-composer__files {
+    position: relative;
+    display: flex; gap: var(--v5-space-3);
+    overflow-x: auto; padding-bottom: var(--v5-space-1);
+  }
+  .v5-composer__more {
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    width: 24px; height: 24px; display: grid; place-items: center;
+    background: var(--v5-color-surface); border-radius: 50%;
+    box-shadow: var(--v5-shadow-card); color: var(--v5-color-text-secondary);
+  }
+  .v5-composer__field {
+    min-height: 28px; font-size: var(--v5-font-size-body); line-height: var(--v5-line-height-body);
+    padding: var(--v5-space-1);
+  }
+  .v5-composer__field[data-empty]::before { content: attr(data-empty); color: var(--v5-color-text-disabled); }
+  .v5-composer__actions { display: flex; align-items: center; justify-content: space-between; }
+  .v5-composer__cluster { display: flex; align-items: center; gap: var(--v5-space-2); }
+  .v5-model {
+    height: 40px; display: inline-flex; align-items: center; padding: 0 var(--v5-space-4);
+    border-radius: var(--v5-radius-pill); border: 1px solid var(--v5-color-border);
+    font-size: var(--v5-font-size-caption); color: var(--v5-color-text-tertiary);
+  }
+  .v5-iconbtn {
+    width: 40px; height: 40px; flex: none; display: grid; place-items: center;
+    border: none; background: transparent; border-radius: var(--v5-radius-pill);
+    color: var(--v5-color-text-secondary); cursor: pointer;
+  }
+  .v5-iconbtn:hover { background: var(--v5-color-fill); }
+  .v5-send { color: var(--v5-color-brand); }
+  svg { display: block; }
+
+  /* ---------- 状态机画廊 ---------- */
+  .gallery { width: var(--v5-content-max); display: flex; flex-wrap: wrap; gap: var(--v5-space-4); }
+</style>
+</head>
+<body>
+
+  <!-- A. 对话中传文件（忠于 Figma 3695:6968）：输入台顶部横排文件卡 + 删除 hover -->
+  <div class="demo-label">A · 对话中传文件（忠于 Figma「添加文件」：输入台顶部横排文件卡，hover 显示删除）</div>
+  <div class="v5-composer" role="group" aria-label="输入台（含附件）">
+    <div class="v5-composer__files">
+      <div class="v5-filecard" data-show-del>
+        <span class="v5-filecard__icon" data-type="sheet">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l3 3v11H5V3Z" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 9l5 5M12.5 9l-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </span>
+        <span class="v5-filecard__meta">
+          <span class="v5-filecard__name">关于具体物理研究主题.xlsx</span>
+          <span class="v5-filecard__sub">12MB</span>
+        </span>
+        <span class="v5-filecard__del"><span>删除</span></span>
+      </div>
+      <div class="v5-filecard">
+        <span class="v5-filecard__icon" data-type="sheet"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l3 3v11H5V3Z" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 9l5 5M12.5 9l-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+        <span class="v5-filecard__meta"><span class="v5-filecard__name">关于具体物理研究主题.xlsx</span><span class="v5-filecard__sub">12MB</span></span>
+        <span class="v5-filecard__del"><span>删除</span></span>
+      </div>
+      <div class="v5-filecard">
+        <span class="v5-filecard__icon" data-type="sheet"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l3 3v11H5V3Z" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 9l5 5M12.5 9l-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+        <span class="v5-filecard__meta"><span class="v5-filecard__name">关于具体物理研究主题.xlsx</span><span class="v5-filecard__sub">12MB</span></span>
+        <span class="v5-filecard__del"><span>删除</span></span>
+      </div>
+      <span class="v5-composer__more"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+    <div class="v5-composer__field" data-empty="继续和 V5 小管家说说你要处理的教学事务，可以使用 @ 挑选你的小帮手哦"></div>
+    <div class="v5-composer__actions">
+      <div class="v5-composer__cluster">
+        <span class="v5-model">DeepSeek-V4-Pro</span>
+        <button class="v5-iconbtn" title="提及 @" aria-label="提及"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.4 6.6A4.5 4.5 0 1 0 14 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="2.2" stroke="currentColor" stroke-width="1.6"/></svg></button>
+        <button class="v5-iconbtn" title="添加附件" aria-label="添加附件"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+      <div class="v5-composer__cluster">
+        <button class="v5-iconbtn" title="语音通话" aria-label="语音通话"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 4.5c0 6 4.5 10.5 10.5 10.5l-2-3-2.5.8a8 8 0 0 1-3.8-3.8L8 6.5 5 4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+        <button class="v5-iconbtn" title="语音输入" aria-label="语音输入"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="7.5" y="3" width="5" height="9" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 9a5 5 0 0 0 10 0M10 14v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <button class="v5-iconbtn v5-send" title="发送" aria-label="发送"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3.5 10 16 4l-4.5 12L9 11.5 3.5 10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- B. 文件上传状态机（派生：已选/上传中/解析中/失败/已发送） -->
+  <div class="demo-label">B · 文件卡状态机（派生 · 见 05-ai-patterns 状态机）：已选 / 上传中 / 解析中 / 失败 / 已发送(精简)</div>
+  <div class="gallery">
+    <!-- 已选 -->
+    <div class="v5-filecard" data-show-del>
+      <span class="v5-filecard__icon" data-type="doc"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l3 3v11H5V3Z" stroke="currentColor" stroke-width="1.3"/><path d="M7 9h6M7 12h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+      <span class="v5-filecard__meta"><span class="v5-filecard__name">教研会议纪要.docx</span><span class="v5-filecard__sub">已选择 · 1.2MB</span></span>
+      <span class="v5-filecard__del"><span>删除</span></span>
+    </div>
+    <!-- 上传中 -->
+    <div class="v5-filecard">
+      <span class="v5-filecard__icon" data-type="sheet"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l3 3v11H5V3Z" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 9l5 5M12.5 9l-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+      <span class="v5-filecard__meta"><span class="v5-filecard__name">提交明细.xlsx</span><span class="v5-filecard__sub">上传中 64%</span></span>
+      <span class="v5-filecard__progress"><i style="width:64%"></i></span>
+    </div>
+    <!-- 解析中 -->
+    <div class="v5-filecard">
+      <span class="v5-filecard__icon" data-type="other"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l3 3v11H5V3Z" stroke="currentColor" stroke-width="1.3"/></svg></span>
+      <span class="v5-filecard__meta"><span class="v5-filecard__name">课件.pdf</span><span class="v5-filecard__sub">解析中…</span></span>
+      <span class="v5-filecard__progress"><i style="width:100%"></i></span>
+    </div>
+    <!-- 失败 -->
+    <div class="v5-filecard" data-state="failed" data-show-del>
+      <span class="v5-filecard__icon" data-type="other"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l3 3v11H5V3Z" stroke="currentColor" stroke-width="1.3"/></svg></span>
+      <span class="v5-filecard__meta"><span class="v5-filecard__name">大文件.zip</span><span class="v5-filecard__sub">上传失败 · 重试</span></span>
+      <span class="v5-filecard__del"><span>重试</span></span>
+    </div>
+    <!-- 已发送（精简：右对齐用户气泡内） -->
+    <div class="v5-filecard" style="background:var(--v5-color-surface);border:1px solid var(--v5-color-border);height:auto;">
+      <span class="v5-filecard__icon" data-type="sheet"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h7l3 3v11H5V3Z" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 9l5 5M12.5 9l-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+      <span class="v5-filecard__meta"><span class="v5-filecard__name">提交明细.xlsx</span><span class="v5-filecard__sub">已发送 · 12MB</span></span>
+    </div>
+  </div>
+</body>
+</html>

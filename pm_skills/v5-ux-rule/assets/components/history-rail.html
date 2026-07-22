@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 History Rail</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { min-width: 1440px; height: 100%; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .v5-history-rail-preview { min-width: 1440px; height: 100%; background: #f7f8fa; }
+
+  .v5-main { position: relative; }
+  .v5-history-rail { width: 32px; height: 168px; position: absolute; right: 0; top: 50%; z-index: 12; transform: translateY(-50%); outline: none; }
+  .v5-history-rail:focus-visible { outline: 2px solid #165dff; outline-offset: 4px; }
+  .v5-history-rail[hidden] { display: none; }
+  .v5-history-rail__ticks { width: 32px; height: 168px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
+  .v5-history-rail__ticks i { width: 24px; height: 3px; flex: none; border-radius: 2px; background: #e5e6eb; }
+  .v5-history-rail__ticks i.md { width: 26px; }
+  .v5-history-rail__ticks i.lg { width: 28px; }
+  .v5-history-rail__ticks i.current { width: 32px; background: #1d2129; }
+  .v5-history-rail__panel { width: 300px; height: 244px; position: absolute; right: 0; top: 50%; padding: 8px; border: 1px solid #e5e6eb; border-radius: 16px; background: #fff; box-shadow: 0 6px 40px rgba(0, 0, 0, .08); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-50%); transition: opacity .12s ease; }
+  .v5-history-rail__list { width: 100%; height: 100%; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d8dbe0 transparent; }
+  .v5-history-rail__list::-webkit-scrollbar { width: 4px; }
+  .v5-history-rail__list::-webkit-scrollbar-thumb { border-radius: 2px; background: #d8dbe0; }
+  .v5-history-rail__item { width: 100%; height: 38px; padding: 0 12px; border-radius: 12px; display: flex; align-items: center; overflow: hidden; color: #4e5969; font-size: 14px; line-height: 22px; font-weight: 400; letter-spacing: 0; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; }
+  .v5-history-rail__item:hover, .v5-history-rail__item:focus-visible, .v5-history-rail__item.is-current { background: #f7f8fa; color: #1d2129; }
+  .v5-history-rail:hover .v5-history-rail__panel, .v5-history-rail:focus-within .v5-history-rail__panel { opacity: 1; visibility: visible; pointer-events: auto; }
+  .v5-history-rail:hover .v5-history-rail__ticks, .v5-history-rail:focus-within .v5-history-rail__ticks { opacity: 0; }
+  .v5-history-rail.is-dismissed .v5-history-rail__panel { opacity: 0; visibility: hidden; pointer-events: none; }
+  .v5-history-rail.is-dismissed .v5-history-rail__ticks { opacity: 1; }
+</style>
+</head>
+<body>
+  <main class="v5-main v5-history-rail-preview">
+    <aside class="v5-history-rail" data-v5-history-rail tabindex="0" aria-label="历史对话">
+      <div class="v5-history-rail__ticks" aria-hidden="true">
+        <i class="current"></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+      </div>
+      <nav class="v5-history-rail__panel" aria-label="历史对话列表">
+        <div class="v5-history-rail__list">
+          <a class="v5-history-rail__item is-current" href="?conversation=01" aria-current="page" title="当前对话">当前对话</a>
+          <a class="v5-history-rail__item" href="?conversation=02" title="历史对话 02">历史对话 02</a>
+          <a class="v5-history-rail__item" href="?conversation=03" title="历史对话 03">历史对话 03</a>
+          <a class="v5-history-rail__item" href="?conversation=04" title="历史对话 04">历史对话 04</a>
+          <a class="v5-history-rail__item" href="?conversation=05" title="历史对话 05">历史对话 05</a>
+          <a class="v5-history-rail__item" href="?conversation=06" title="历史对话 06">历史对话 06</a>
+          <a class="v5-history-rail__item" href="?conversation=07" title="历史对话 07">历史对话 07</a>
+          <a class="v5-history-rail__item" href="?conversation=08" title="历史对话 08">历史对话 08</a>
+          <a class="v5-history-rail__item" href="?conversation=09" title="历史对话 09">历史对话 09</a>
+          <a class="v5-history-rail__item" href="?conversation=10" title="历史对话 10">历史对话 10</a>
+          <a class="v5-history-rail__item" href="?conversation=11" title="历史对话 11">历史对话 11</a>
+          <a class="v5-history-rail__item" href="?conversation=12" title="历史对话 12">历史对话 12</a>
+          <a class="v5-history-rail__item" href="?conversation=13" title="历史对话 13">历史对话 13</a>
+          <a class="v5-history-rail__item" href="?conversation=14" title="历史对话 14">历史对话 14</a>
+          <a class="v5-history-rail__item" href="?conversation=15" title="历史对话 15">历史对话 15</a>
+          <a class="v5-history-rail__item" href="?conversation=16" title="历史对话 16">历史对话 16</a>
+        </div>
+      </nav>
+    </aside>
+  </main>
+<script>
+(function () {
+  var modalSelector = '[aria-modal="true"], .v5-overlay, .v5-modal-mask';
+  var requestedConversation = new URLSearchParams(window.location.search).get('conversation');
+  var activeConversation = /^(?:0[1-9]|1[0-6])$/.test(requestedConversation || '') ? requestedConversation : '01';
+
+  function isVisibleModal(element) {
+    if (element.hidden || element.getAttribute('aria-hidden') === 'true') return false;
+    var style = window.getComputedStyle(element);
+    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return false;
+    return element.getClientRects().length > 0;
+  }
+
+  document.querySelectorAll('[data-v5-history-rail]').forEach(function (rail) {
+    var items = Array.prototype.slice.call(rail.querySelectorAll('.v5-history-rail__item'));
+    var ticks = Array.prototype.slice.call(rail.querySelectorAll('.v5-history-rail__ticks i'));
+    var modalBlocked = null;
+
+    items.forEach(function (item, index) {
+      var conversation = String(index + 1).padStart(2, '0');
+      var isCurrent = conversation === activeConversation;
+      item.classList.toggle('is-current', isCurrent);
+      if (isCurrent) item.setAttribute('aria-current', 'page');
+      else item.removeAttribute('aria-current');
+      if (ticks[index]) ticks[index].classList.toggle('current', isCurrent);
+    });
+
+    function syncModalState() {
+      var blocked = Array.prototype.some.call(document.querySelectorAll(modalSelector), isVisibleModal);
+      if (blocked === modalBlocked) return;
+      modalBlocked = blocked;
+      rail.hidden = blocked;
+      if (blocked) {
+        rail.setAttribute('aria-hidden', 'true');
+        rail.setAttribute('tabindex', '-1');
+        items.forEach(function (item) { item.setAttribute('tabindex', '-1'); });
+        return;
+      }
+      rail.removeAttribute('aria-hidden');
+      rail.setAttribute('tabindex', '0');
+      items.forEach(function (item) { item.removeAttribute('tabindex'); });
+    }
+
+    rail.addEventListener('pointerenter', function () {
+      rail.classList.remove('is-dismissed');
+    });
+    rail.addEventListener('focusout', function (event) {
+      if (!rail.contains(event.relatedTarget)) rail.classList.remove('is-dismissed');
+    });
+    rail.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      rail.classList.add('is-dismissed');
+      rail.focus({ preventScroll: true });
+    });
+
+    var observer = new MutationObserver(syncModalState);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['aria-hidden', 'aria-modal', 'class', 'hidden', 'style'],
+      childList: true,
+      subtree: true
+    });
+    syncModalState();
+  });
+}());
+</script>
+</body>
+</html>

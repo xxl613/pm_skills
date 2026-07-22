@@ -23,7 +23,7 @@ description: >-
 | Figma 访问 | 已配置 Figma MCP / 插件，能调用 `get_design_context`、`get_screenshot`、`get_metadata` |
 | 目标栈 | 默认 **静态 HTML + CSS**；若仓库为 React/Vue/Vite，则复刻为对应组件，本 skill 的流程不变 |
 | 设计依据 | 优先以 **DESIGN.md / 设计 Token**（若项目有）约束颜色、圆角、字号；无则完全以 Figma 导出为准 |
-| 截图工具 | **推荐 `agent-browser`**（零安装、基于 CDP，`npx agent-browser screenshot`）；或 Playwright / Puppeteer |
+| 截图工具 | **默认使用 Chrome 插件只读截图或独立无头 Chrome**；需要当前登录态时再使用用户 Chrome 会话；Playwright / Puppeteer 作为备选 |
 
 ## 工作流（三阶段 + 迭代环）
 
@@ -59,14 +59,17 @@ description: >-
    - 保存为：`artifacts/figma-{nodeId}-{n}.png`（`n` 为迭代轮次）。
 
 2. **HTML 侧**
-   - 使用无头浏览器截图（**推荐 `agent-browser`**，Playwright 需额外安装浏览器引擎，容易在 CI/远程环境失败）：
+   - 使用 Chrome 插件只读截图或独立无头 Chrome 截图。默认优先无头 Chrome，避免抢夺用户当前 Chrome 焦点；只有必须复用用户登录态、扩展态或当前标签页状态时，才使用用户 Chrome 会话。
 
    ```bash
-   # agent-browser（推荐，零额外安装）
-   npx agent-browser open <url>
-   npx agent-browser wait --load networkidle
-   npx agent-browser set viewport <画板宽> <画板高>
-   npx agent-browser screenshot artifacts/html-{nodeId}-{n}.png
+   # 无头 Chrome（默认，无焦点）
+   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+     --headless=new \
+     --disable-gpu \
+     --hide-scrollbars \
+     --window-size=<画板宽>,<画板高> \
+     --screenshot=artifacts/html-{nodeId}-{n}.png \
+     "<url>"
 
    # Playwright（备选，需先 npx playwright install chromium）
    npx playwright screenshot --viewport-size=1440,900 --wait-for-timeout=3000 <url> artifacts/html-{nodeId}-{n}.png
@@ -74,9 +77,10 @@ description: >-
 
    - **视口宽度** = 画板宽度（如 1440），**deviceScaleFactor** 建议固定为 `1` 或 `2`，整轮流程保持不变。
    - 等待字体与图片加载完成（`networkidle` 或固定 `waitForTimeout` + 关键选择器出现）。
+   - 如使用 Chrome 插件连接用户 Chrome，只做打开 URL、设置视口、等待加载、截图、读取 DOM / computed style 等只读检查；除非验证交互必需，不点击、不输入、不切换用户正在使用的标签页。
 
 3. **差异分析**
-   - **像素 diff**（可选）：使用 `pixelmatch` / `resemblejs` 或 `agent-browser diff screenshot --baseline` 生成 diff 图，并输出**差异比例**。
+   - **像素 diff**（可选）：使用 `pixelmatch` / `resemblejs` 等工具生成 diff 图，并输出**差异比例**。
    - **人工复核**：列出差异清单（区域 + 现象 + 可能原因），例如：
      - 顶栏高度少 2px；
      - 输入框圆角与设计不一致；
@@ -208,7 +212,7 @@ done
 | **CSS mask / 白色透明 logo 回流 Figma 失真** | 为关键资产生成捕获友好 SVG/PNG，并在 HTML 中以真实 `<img>` / SVG 呈现 |
 | 远程图未加载 | 资产已本地化后不存在此问题；截图前仍等待 `img` onLoad |
 | Figma 资产过期 | **以本地化流程规避**：交付物中不得依赖 MCP 临时 URL |
-| 截图工具安装失败 | Playwright 需 `npx playwright install chromium`，可能在沙箱环境受限；**`agent-browser` 自动探测本机 Chrome，推荐优先使用** |
+| 截图工具安装失败 | 默认优先使用本机 Chrome 的 `--headless=new` 截图；如果 Chrome 插件或无头 Chrome 不可用，再退回 Playwright / Puppeteer，并在结论中说明 |
 
 ---
 
@@ -222,6 +226,7 @@ done
 - [ ] **所有可见 icon / 插画 / 徽标均已使用真实资产或等价实现，不存在交付型占位**
 - [ ] **资产清单文件已创建**（Vite/Webpack 项目：`index.ts` 集中导入导出）
 - [ ] HTML 截图与 Figma 截图**同尺寸策略**
+- [ ] HTML 截图优先通过 Chrome 插件只读能力或无头 Chrome 完成，且没有不必要地抢夺用户当前 Chrome 焦点
 - [ ] 已产出差异说明（或「通过」）
 - [ ] 当前轮次 ≤ 5
 
@@ -238,9 +243,10 @@ done
 
 ## 版本与维护
 
+- **v1.4** — 截图对比默认使用 Chrome 插件只读截图或独立无头 Chrome，避免非必要抢夺用户当前 Chrome 焦点。
 - **v1.3** — 新增「可迁移资产规则」：关键 logo / icon / mask 资产必须生成捕获友好版本，避免 HTML 回流 Figma 时出现空白、纯色块或失真。
 - **v1.2** — 明确默认验收口径为 **1:1 视觉复刻**；新增「真实性规则」与「禁止交付型占位」约束；要求未做双端截图对比前不得宣称完成。
-- **v1.1** — 新增「资产管理规范」章节：格式校验、Vite 最佳实践、资产清单模式；补充 `agent-browser` 为推荐截图工具。
+- **v1.1** — 新增「资产管理规范」章节：格式校验、Vite 最佳实践、资产清单模式；补充浏览器截图工具要求。
 - **v1.0** — 初始版本：三阶段工作流 + 5 轮迭代环。
 - 本 skill 描述**流程与验收方式**，不绑定具体 CLI 命令；实施时可将工具写入项目 `package.json` 脚本以便一键跑对比。
 - 若团队改用其他对比工具，只需替换「阶段 2」中的工具名，工作流三阶段保持不变。

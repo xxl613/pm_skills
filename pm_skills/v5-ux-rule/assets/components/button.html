@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- 按钮 button · 忠于 Figma「后台配置页」3910 系实测。
+     两种主行动（按场景选）：近黑主按钮(弹窗/卡片/行内) + 品牌蓝 CTA 胶囊(页面级主行动)。
+     次/文字/危险见下。hover/disabled 为派生态（注释标注）。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 按钮 button</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; flex-direction: column; gap: var(--v5-space-5); }
+  .demo-label { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .row { display: flex; gap: var(--v5-space-4); align-items: center; flex-wrap: wrap; }
+
+  .v5-btn { height: 36px; padding: 0 var(--v5-space-4); border-radius: var(--v5-radius-md); border: 1px solid transparent;
+    font-size: var(--v5-font-size-caption); font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .v5-btn--lg { height: 40px; padding: 0 var(--v5-space-5); }
+  .v5-btn--sm { height: 28px; padding: 0 var(--v5-space-3); font-size: 12px; }
+
+  .v5-btn--primary { background: var(--v5-color-text); color: #fff; }                 /* 近黑主按钮 */
+  .v5-btn--primary:hover { background: #383f4a; }                                     /* 派生：提亮一档 */
+  .v5-btn--primary:disabled { background: var(--v5-color-border); color: var(--v5-color-text-disabled); cursor: not-allowed; } /* 派生 */
+  .v5-btn--secondary { background: var(--v5-color-surface); border-color: var(--v5-color-border); color: var(--v5-color-text-tertiary); } /* 规范默认次按钮 */
+  .v5-btn--secondary:hover { background: var(--v5-color-bg); }                         /* 派生 */
+  .v5-btn--secondary-fill { background: var(--v5-color-fill); color: var(--v5-color-text); } /* 次·填充变体 */
+  .v5-btn--text { background: transparent; color: var(--v5-color-text-tertiary); }
+  .v5-btn--text:hover { background: var(--v5-color-bg); }                              /* 派生 */
+  .v5-btn--danger { background: var(--v5-color-error); color: #fff; }
+  .v5-btn--danger-text { background: transparent; color: var(--v5-color-error); }
+  .v5-btn--danger-text:hover { background: var(--v5-color-error-bg); }
+  .v5-btn--cta { background: var(--v5-color-brand); color: #fff; border-radius: var(--v5-radius-pill); height: 38px; padding: 0 var(--v5-space-5); } /* 品牌蓝页面级 CTA */
+  .v5-btn--cta:hover { background: #0e3bd6; }                                          /* 派生：品牌蓝加深 */
+</style>
+</head>
+<body>
+  <div class="demo-label">两种主行动（按场景）：近黑主按钮（弹窗/卡片/行内确认）｜ 品牌蓝 CTA 胶囊（页面级主行动）</div>
+  <div class="row">
+    <button class="v5-btn v5-btn--primary">确定</button>
+    <button class="v5-btn v5-btn--primary" disabled>确定（禁用）</button>
+    <button class="v5-btn v5-btn--cta">＋ 创建课程</button>
+  </div>
+
+  <div class="demo-label">次按钮 / 填充次按钮 / 文字按钮</div>
+  <div class="row">
+    <button class="v5-btn v5-btn--secondary">取消</button>
+    <button class="v5-btn v5-btn--secondary-fill">取消</button>
+    <button class="v5-btn v5-btn--text">查看详情</button>
+  </div>
+
+  <div class="demo-label">危险按钮 / 危险文字按钮</div>
+  <div class="row">
+    <button class="v5-btn v5-btn--danger">删除作业</button>
+    <button class="v5-btn v5-btn--danger-text">删除</button>
+  </div>
+
+  <div class="demo-label">尺寸档：lg 40 / md 36（默认） / sm 28</div>
+  <div class="row">
+    <button class="v5-btn v5-btn--primary v5-btn--lg">大按钮</button>
+    <button class="v5-btn v5-btn--primary">中按钮</button>
+    <button class="v5-btn v5-btn--primary v5-btn--sm">小按钮</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!doctype html>
+<!-- 对话流·AI 结果卡与列表项组件（派生 = Figma 无设计，按 V5 令牌 + 05-ai-patterns.md 规则固化）。
+     命名与 components/card.html 的 .v5-card（弹窗/表单场景）故意区分：这里是 .v5-rcard（对话结果卡），
+     不要混用/复用 .v5-card 的类名，两套外壳分别服务弹窗和对话流。
+     直接 copy 本文件里的 CSS + 结构，别凭 05-ai-patterns.md 的文字描述重新拼类名/取值。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 对话结果卡 / 列表项 chat-result-card</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; flex-direction: column; gap: var(--v5-space-6); align-items: flex-start; }
+  .demo-label { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+
+  /* ===== 消息头：[头像][职能化名称] | [时间] | [⚡状态标签]，各段同用 caption 字号，竖线分隔 ===== */
+  .v5-msg-ai { display: flex; gap: var(--v5-space-3); }
+  .v5-msg-ai__avatar { width: 36px; height: 36px; flex: none; border-radius: 50%;
+    background: color-mix(in srgb, var(--v5-color-brand) 14%, white); border: 1px solid var(--v5-color-border);
+    display: grid; place-items: center; color: var(--v5-color-brand); font-size: 14px; }
+  .v5-msg-ai__body { display: flex; flex-direction: column; gap: var(--v5-space-3); min-width: 0; flex: 1; }
+  .v5-msg-ai__head { display: flex; align-items: baseline; gap: var(--v5-space-2); }
+  .v5-msg-ai__name { font-size: var(--v5-font-size-caption); font-weight: 600; }
+  .v5-msg-ai__divider { width: 1px; align-self: stretch; background: var(--v5-color-border); }
+  .v5-msg-ai__time { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .v5-msg-ai__status { display: inline-flex; align-items: center; gap: 4px; font-size: var(--v5-font-size-caption); color: var(--v5-color-text-tertiary); }
+  .v5-msg-ai__text { font-size: var(--v5-font-size-body); line-height: var(--v5-line-height-body); }
+  .v5-msg-ai__text b { color: var(--v5-color-text); font-weight: 600; }
+
+  /* ===== 交接「拍了拍」mention 条（Figma 2117:2130 实测）：派发方消息末尾的子元素，不是独立居中 pill。
+     整行无外层胶囊容器；chip 高30 圆角4 灰底(--bg) semibold；派发方灰字、接收方绿字（--success，非品牌蓝）。
+     与 examples/chat-flow-full.html 的 .v5-pat 同一规格，类名保留 .v5-poke 兼容既有页面。 ===== */
+  .v5-poke { align-self: flex-start; display: inline-flex; align-items: center; flex-wrap: wrap; gap: 12px;
+    font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .v5-poke__from, .v5-poke__to { display: inline-flex; align-items: center; height: 30px; padding: 0 8px;
+    background: var(--v5-color-bg); border-radius: var(--v5-radius-sm); font-weight: 600; }
+  .v5-poke__from { color: var(--v5-color-text-secondary); }
+  .v5-poke__to { color: var(--v5-color-success); }
+
+  /* ===== 结果卡 .v5-rcard：一卡一对象，max-width 600 不撑满对话列 =====
+     外壳底色走「四色生命周期系统」（见 07-card-anatomy.md），默认与三个语义态**都用渐变**（顶部略深的色调向下/向右过渡到白），
+     不是纯色平涂——渐变方向统一 135deg，色带只在顶部区域可见、下半卡基本回到白，保证卡内文字对比度：
+       默认灰/白 = 列表卡/选择卡/待创建预填卡/结束卡（灰→白渐变）
+       --pending 黄 = 创建后待开始/待确认    --success 绿 = 创建成功/已发布    --alert 红 = 警告提醒
+     颜色只编码生命周期状态、必须配类别标签/状态chip文字；禁止按内容情绪随意换色。 */
+  .v5-rcard { background: linear-gradient(135deg, var(--v5-color-fill) 0%, var(--v5-color-surface) 65%);
+    border: 1px solid var(--v5-color-border); border-radius: var(--v5-radius-lg); overflow: hidden; max-width: 600px; align-self: flex-start; }
+  .v5-rcard--pending { background: linear-gradient(135deg, color-mix(in srgb, var(--v5-color-warning) 16%, white) 0%, var(--v5-color-surface) 65%);
+    border-color: color-mix(in srgb, var(--v5-color-warning) 30%, white); }
+  .v5-rcard--success { background: linear-gradient(135deg, color-mix(in srgb, var(--v5-color-success) 16%, white) 0%, var(--v5-color-surface) 65%);
+    border-color: color-mix(in srgb, var(--v5-color-success) 30%, white); }
+  .v5-rcard--alert   { background: linear-gradient(135deg, color-mix(in srgb, var(--v5-color-error) 14%, white) 0%, var(--v5-color-surface) 65%);
+    border-color: color-mix(in srgb, var(--v5-color-error) 25%, white); }
+  .v5-rcard__hd { padding: var(--v5-space-3) var(--v5-space-4); border-bottom: 1px solid var(--v5-color-border);
+    display: flex; align-items: center; justify-content: space-between; gap: var(--v5-space-3); }
+  /* 卡片字号阶梯（规范定值，元素级像素）：大标题 18/26 · 描述 14/20 · 内容标题 16/24 · 内容正文 14/24 */
+  .v5-rcard__t { font-size: 18px; line-height: 26px; font-weight: 600; }
+  .v5-rcard__desc { font-size: 14px; line-height: 20px; color: var(--v5-color-text-secondary); }
+  .v5-rcard__tag { font-size: 12px; color: var(--v5-color-text-tertiary); background: var(--v5-color-fill);
+    border-radius: var(--v5-radius-sm); padding: 1px 8px; white-space: nowrap; }
+  .v5-rcard__bd { padding: var(--v5-space-4); display: flex; flex-direction: column; gap: var(--v5-space-3);
+    font-size: var(--v5-font-size-caption); line-height: var(--v5-line-height-caption); }
+  .v5-rcard__foot { padding: var(--v5-space-3) var(--v5-space-4); border-top: 1px solid var(--v5-color-border);
+    font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .v5-row { display: flex; justify-content: space-between; gap: var(--v5-space-4); }
+  .v5-row__k { color: var(--v5-color-text-secondary); flex: none; min-width: 72px; }
+  .v5-row__v { color: var(--v5-color-text); text-align: right; }
+  /* 长段落用 block 变体：key 独立一行加粗，value 左对齐换行，别硬塞进 key/value 单行 */
+  .v5-row--block { flex-direction: column; gap: 6px; }
+  .v5-row--block .v5-row__k { font-weight: 600; color: var(--v5-color-text); }
+  .v5-row--block .v5-row__v { text-align: left; color: var(--v5-color-text-secondary); }
+
+  /* ===== 短要点用纯文字列表 .v5-plainlist + .v5-li（≤3 条、无需分标签属性时用这个，不进卡片） ===== */
+  .v5-plainlist { display: flex; flex-direction: column; gap: var(--v5-space-2); max-width: 600px;
+    font-size: var(--v5-font-size-caption); line-height: var(--v5-line-height-caption); }
+  .v5-li { display: flex; gap: 8px; align-items: flex-start; }
+  .v5-li__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--v5-color-text-disabled); margin-top: 7px; flex: none; }
+
+  /* ===== 多属性列表项 .v5-reco：条数不固定的可浏览列表（赛事/资源/推荐等），不塞进卡片、不写成一行文本堆砌 ===== */
+  .v5-recolist { display: flex; flex-direction: column; gap: var(--v5-space-2); max-width: 600px; }
+  .v5-reco { border: 1px solid var(--v5-color-border); border-radius: var(--v5-radius-md); padding: var(--v5-space-3);
+    display: flex; flex-direction: column; gap: 6px; background: var(--v5-color-surface); /* 必须 surface(白)，不是 bg(浅灰底)，否则看起来"透明无底" */ }
+  .v5-reco__top { display: flex; align-items: center; justify-content: space-between; gap: var(--v5-space-3); }
+  .v5-reco__n { font-size: var(--v5-font-size-body); font-weight: 600; }
+  .v5-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .v5-tag { font-size: 12px; padding: 2px 8px; border-radius: var(--v5-radius-sm); background: var(--v5-color-fill); color: var(--v5-color-text-tertiary); }
+  /* 弱提示徽章（如"适配度 92%"）：极浅底，只用于非强调的辅助信息 */
+  .v5-fit { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--v5-color-success);
+    background: var(--v5-color-success-bg); border-radius: var(--v5-radius-pill); padding: 2px 10px; white-space: nowrap; }
+  /* 强调徽章（如"学校重点"/优先级标记）：实心底+白字，别复用 .v5-fit 的类名和取值 */
+  .v5-badge-priority { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: #fff;
+    background: var(--v5-color-success); border-radius: var(--v5-radius-pill); padding: 2px 10px; white-space: nowrap; }
+
+  /* ===== 回答完成操作栏 .v5-msg-actions（Figma 2117:2170–2256 实测）：一轮对话的最终产物之后出现一次 =====
+     固定顺序：完成状态 pill（灰底，文案按任务动态）→ 播放文字 pill（白底）→ 复制/举报/点赞/点踩（38 圆钮；点踩=点赞旋转180°）。
+     图标用 icons/action-*.svg 真实素材；与 examples/chat-flow-full.html 同一规格。 */
+  .v5-msg-actions { display: flex; align-items: center; flex-wrap: wrap; }
+  .v5-msg-actions__pill { display: inline-flex; align-items: center; gap: 4px; height: 38px; padding: 0 12px;
+    border: none; border-radius: 19px; cursor: pointer;
+    font-size: var(--v5-font-size-caption); color: var(--v5-color-text-tertiary); }
+  .v5-msg-actions__pill--done { background: var(--v5-color-bg); margin-right: 16px; }
+  .v5-msg-actions__pill--voice { background: var(--v5-color-surface); margin-right: 8px; }
+  .v5-msg-actions__icon { width: 38px; height: 38px; display: grid; place-items: center; border: none;
+    background: var(--v5-color-surface); border-radius: 19px; color: var(--v5-color-text-tertiary);
+    cursor: pointer; margin-right: 8px; }
+  .v5-msg-actions__icon:hover { background: var(--v5-color-bg); }
+  .v5-msg-actions__icon--flip svg, .v5-msg-actions__icon--flip img { transform: rotate(180deg); }
+
+  /* ===== 追问建议 .v5-followup（Figma 2117:2179–2215 实测）：可选，操作栏之下；每条是完整问题句；整组可关闭 ===== */
+  .v5-followup { display: flex; flex-direction: column; gap: 8px; max-width: 744px; }
+  .v5-followup__item { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border);
+    border-radius: 19px; font-size: 12px; line-height: 20px; color: var(--v5-color-text-secondary);
+    cursor: pointer; text-align: left; width: 100%; }
+  .v5-followup__item:hover { background: var(--v5-color-fill); }
+  .v5-followup__ico { width: 16px; height: 16px; flex: none; color: var(--v5-color-text-tertiary); display: grid; place-items: center; }
+  .v5-followup__close { align-self: flex-end; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; color: var(--v5-color-text-secondary); cursor: pointer; background: none; border: none; }
+
+  /* ===== 卡片统一解剖（见 references/07-card-anatomy.md）=====
+     槽位顺序固定：类别标签 → 标题+meta → 内容块/选项 → 底部操作行。全部可选，但出现时按此顺序。 */
+  /* 类别标签：左上角，标明卡片来源/类型（AI生成/专家协作/问题/提醒/自动任务）。默认灰；语义变体只给真实类型 */
+  .v5-rcard__label { align-self: flex-start; display: inline-flex; align-items: center; font-size: 12px; line-height: 18px;
+    padding: 2px 8px; border-radius: var(--v5-radius-sm); background: var(--v5-color-fill); color: var(--v5-color-text-tertiary); }
+  .v5-rcard__label--expert { background: color-mix(in srgb, var(--v5-color-warning) 14%, white); color: var(--v5-color-warning); }
+  .v5-rcard__label--alert { background: color-mix(in srgb, var(--v5-color-error) 12%, white); color: var(--v5-color-error); }
+  .v5-rcard__label--ok { background: color-mix(in srgb, var(--v5-color-success) 12%, white); color: var(--v5-color-success); }
+  .v5-rcard__toprow { display: flex; align-items: center; justify-content: space-between; gap: var(--v5-space-3); }
+  .v5-rcard__meta { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+
+  /* 左色条内容块：色条编码"同卡内不同对象/环节/层级"，必须配文字含义，不做纯装饰
+     三种结构变体（见 07-card-anatomy.md）：默认带色条；--plain 无装饰（无色条）；--active 高亮选中块 */
+  .v5-block { border: 1px solid var(--v5-color-border); border-left: 3px solid var(--v5-color-brand);
+    border-radius: var(--v5-radius-sm); background: var(--v5-color-surface); padding: var(--v5-space-3) var(--v5-space-4);
+    display: flex; flex-direction: column; gap: 2px; }
+  .v5-block--success { border-left-color: var(--v5-color-success); }
+  .v5-block--warning { border-left-color: var(--v5-color-warning); }
+  .v5-block--info    { border-left-color: var(--v5-color-info); }
+  .v5-block--plain   { border-left: 1px solid var(--v5-color-border); }
+  .v5-block--active  { border-color: color-mix(in srgb, var(--v5-color-success) 45%, white); background: var(--v5-color-success-bg); }
+  .v5-block__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--v5-space-3); }
+  /* 内容标题 16/24 · 内容正文 14/24（卡片字号阶梯规范定值） */
+  .v5-block__n { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .v5-block__m { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-tertiary); white-space: nowrap; }
+  .v5-block__d { font-size: 14px; line-height: 24px; color: var(--v5-color-text-secondary); }
+
+  /* 问题卡选项行：全宽、白底描边；选中 = 品牌蓝描边+品牌蓝字；自由输入项 = placeholder 样式 */
+  .v5-opt { display: flex; align-items: center; gap: 10px; border: 1px solid var(--v5-color-border); border-radius: var(--v5-radius-md);
+    padding: 10px 14px; font-size: var(--v5-font-size-caption); background: var(--v5-color-surface); cursor: pointer;
+    font-family: inherit; text-align: left; width: 100%; color: var(--v5-color-text); }
+  .v5-opt--sel { border-color: var(--v5-color-brand); color: var(--v5-color-brand); font-weight: 600; }
+  .v5-opt--input { color: var(--v5-color-text-disabled); cursor: text; }
+
+  /* 卡片底部操作行：meta 靠左，按钮组靠右；卡内主操作 = 近黑胶囊（同 card.html/.v5-pill 弹窗规则），品牌蓝留给页面级 CTA */
+  .v5-rcard__acts { display: flex; align-items: center; gap: var(--v5-space-3); }
+  .v5-rcard__acts .v5-rcard__meta { margin-right: auto; }
+  .v5-rcard__acts--end { justify-content: flex-end; }
+  .v5-pill { height: 34px; padding: 0 var(--v5-space-4); border-radius: var(--v5-radius-pill); border: 1px solid transparent;
+    font-size: var(--v5-font-size-caption); cursor: pointer; font-family: inherit; }
+  .v5-pill--primary { background: var(--v5-color-text); color: #fff; }
+  .v5-pill--secondary { background: var(--v5-color-surface); border-color: var(--v5-color-border); color: var(--v5-color-text-tertiary); }
+
+  /* 状态 chip：行右/卡右上，语义色浅底；已结束用中性灰不用语义色
+     与四色卡底的映射：--todo 黄（待开始/待确认/待采纳）· --doing/--ok 绿（进行中/已发布/已完成）· --done 灰（已结束） */
+  .v5-status { font-size: 12px; padding: 2px 10px; border-radius: var(--v5-radius-pill); white-space: nowrap; flex: none; }
+  .v5-status--todo  { color: var(--v5-color-warning); background: color-mix(in srgb, var(--v5-color-warning) 14%, white); }
+  .v5-status--doing { color: var(--v5-color-success); background: color-mix(in srgb, var(--v5-color-success) 14%, white); }
+  .v5-status--ok    { color: var(--v5-color-success); background: color-mix(in srgb, var(--v5-color-success) 14%, white); }
+  .v5-status--done  { color: var(--v5-color-text-tertiary); background: var(--v5-color-fill); }
+
+  /* 日期块：列表项行首的日期标识（配 .v5-reco 列表项用） */
+  .v5-reco__row { display: flex; align-items: center; gap: var(--v5-space-3); }
+  .v5-reco__date { width: 44px; flex: none; border-radius: var(--v5-radius-sm); background: var(--v5-color-fill);
+    text-align: center; padding: 4px 0; font-size: 11px; color: var(--v5-color-text-secondary); }
+  .v5-reco__date b { display: block; font-size: 16px; color: var(--v5-color-text); }
+  .v5-reco__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+</style>
+</head>
+<body>
+
+  <div class="demo-label">消息头 + 过程状态标签（挂在头部，不单独起一条消息）</div>
+  <div class="v5-msg-ai">
+    <div class="v5-msg-ai__avatar">研</div>
+    <div class="v5-msg-ai__body">
+      <div class="v5-msg-ai__head">
+        <span class="v5-msg-ai__name">科研学术助手</span><span class="v5-msg-ai__divider"></span>
+        <span class="v5-msg-ai__time">15:20</span><span class="v5-msg-ai__divider"></span>
+        <span class="v5-msg-ai__status">⚡ 文献五维摘要生成 进行中…</span>
+      </div>
+      <div class="v5-msg-ai__text">正在为你解析这篇文献…</div>
+    </div>
+  </div>
+
+  <div class="demo-label">交接「拍了拍」mention 条（派发方消息末尾的子元素）</div>
+  <div class="v5-msg-ai">
+    <div class="v5-msg-ai__avatar">交</div>
+    <div class="v5-msg-ai__body">
+      <div class="v5-msg-ai__head"><span class="v5-msg-ai__name">交小研</span><span class="v5-msg-ai__divider"></span><span class="v5-msg-ai__time">09:40</span></div>
+      <div class="v5-msg-ai__text">现在交给竞赛助手来跟进。</div>
+      <div class="v5-poke"><span class="v5-poke__from">@交小研</span> 拍了拍 <span class="v5-poke__to">@竞赛助手</span> 说，开整吧，流程走起</div>
+    </div>
+  </div>
+
+  <div class="demo-label">结果卡 .v5-rcard（一卡一对象，key/value 单行）</div>
+  <div class="v5-rcard">
+    <div class="v5-rcard__hd"><span class="v5-rcard__t">信息来源与更新机制</span></div>
+    <div class="v5-rcard__bd">
+      <div class="v5-row"><span class="v5-row__k">更新频率</span><span class="v5-row__v">每日同步一次</span></div>
+      <div class="v5-row"><span class="v5-row__k">时效说明</span><span class="v5-row__v">状态变化 24 小时内更新</span></div>
+    </div>
+    <div class="v5-rcard__foot">来源：官方赛事发布渠道 · 更新于今天 08:00</div>
+  </div>
+
+  <div class="demo-label">结果卡 .v5-rcard + .v5-row--block（长段落，key 独立一行）</div>
+  <div class="v5-rcard">
+    <div class="v5-rcard__hd"><span class="v5-rcard__t">文献五维摘要</span></div>
+    <div class="v5-rcard__bd">
+      <div class="v5-row v5-row--block"><span class="v5-row__k">研究背景</span><span class="v5-row__v">城市交通拥堵日益加剧，传统单一信号配时方案难以应对早晚高峰的动态波动……</span></div>
+      <div class="v5-row v5-row--block"><span class="v5-row__k">核心结论</span><span class="v5-row__v">图神经网络与强化学习结合的方案在路网级调度场景中表现最优……</span></div>
+    </div>
+  </div>
+
+  <div class="demo-label">短要点纯文字列表 .v5-plainlist（≤3 条，不进卡片）</div>
+  <div class="v5-plainlist">
+    <div class="v5-li"><span class="v5-li__dot"></span><div><b>GNN 图神经网络</b> · 用于建模路网拓扑结构的深度学习方法</div></div>
+    <div class="v5-li"><span class="v5-li__dot"></span><div><b>DRL 深度强化学习</b> · 通过奖励信号学习信号配时策略</div></div>
+  </div>
+
+  <div class="demo-label">多属性列表项 .v5-reco（条数不固定的可浏览列表，如赛事/资源/推荐；不进卡片、不写成一行文本堆砌）</div>
+  <div class="v5-recolist">
+    <div class="v5-reco">
+      <div class="v5-reco__top"><span class="v5-reco__n">中国国际"互联网+"大学生创新创业大赛</span><span class="v5-badge-priority">学校重点</span></div>
+      <div class="v5-tags"><span class="v5-tag">国家级</span><span class="v5-tag">作品提交 6 月截止</span></div>
+    </div>
+    <div class="v5-reco">
+      <div class="v5-reco__top"><span class="v5-reco__n">中国研究生数学建模竞赛</span><span class="v5-fit">适配度 92%</span></div>
+      <div class="v5-tags"><span class="v5-tag">国家级</span><span class="v5-tag">报名 9 月初</span></div>
+    </div>
+  </div>
+
+  <div class="demo-label">回答完成操作栏 .v5-msg-actions + 追问建议 .v5-followup（该轮最终产物之后出现一次）</div>
+  <div style="display:flex; flex-direction:column; gap:var(--v5-space-3); width:600px;">
+    <div class="v5-msg-actions">
+      <button class="v5-msg-actions__pill"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 10.2l2 2 4-4.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>已完成当前任务</button>
+      <button class="v5-msg-actions__pill"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 7v6h4l5 4V3L7 7H3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>播放文字</button>
+      <button class="v5-msg-actions__icon" aria-label="复制"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <button class="v5-msg-actions__icon" aria-label="举报/反馈"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2 18 17H2L10 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8v3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="10" cy="14" r="0.9" fill="currentColor"/></svg></button>
+      <button class="v5-msg-actions__icon" aria-label="点赞"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M7 9v8H4V9h3Zm0 0 3-6a2 2 0 0 1 2 2v3h3.2a1.6 1.6 0 0 1 1.55 2L15.5 15a2 2 0 0 1-1.9 1.4H7" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
+      <button class="v5-msg-actions__icon" aria-label="点踩"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M13 11v8h3v-8h-3Zm0 0-3 6a2 2 0 0 1-2-2v-3H4.8a1.6 1.6 0 0 1-1.55-2L4.5 5a2 2 0 0 1 1.9-1.4H13" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="v5-followup">
+      <button class="v5-followup__item"><span class="v5-followup__ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 5h14v9H8l-4 3V5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>计算机网络的发展历程是怎样的？</button>
+      <button class="v5-followup__item"><span class="v5-followup__ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 5h14v9H8l-4 3V5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>计算机网络的应用领域有哪些？</button>
+      <button class="v5-followup__item"><span class="v5-followup__ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 5h14v9H8l-4 3V5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>如何保障计算机网络的安全？</button>
+      <button class="v5-followup__close"><svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>关闭追问建议</button>
+    </div>
+  </div>
+
+  <div class="demo-label">任务/方案卡（类别标签 → 标题+meta → 左色条内容块 → 底部操作行；卡内主操作近黑）</div>
+  <div class="v5-rcard" style="width:520px">
+    <div class="v5-rcard__bd">
+      <span class="v5-rcard__label">AI生成</span>
+      <div class="v5-rcard__t">计算机网络TCP协议差异化教学方案</div>
+      <div class="v5-rcard__meta">共45人 · 3个层级</div>
+      <div class="v5-block v5-block--success">
+        <div class="v5-block__top"><span class="v5-block__n">A层-巩固提升</span><span class="v5-block__m">12人</span></div>
+        <div class="v5-block__d">掌握TCP三次握手/四次挥手核心流程，能分析常见网络问题</div>
+      </div>
+      <div class="v5-block v5-block--info">
+        <div class="v5-block__top"><span class="v5-block__n">B层-巩固提升</span><span class="v5-block__m">12人</span></div>
+        <div class="v5-block__d">项目驱动式学习，独立研究+小组展示</div>
+      </div>
+      <div class="v5-block v5-block--warning">
+        <div class="v5-block__top"><span class="v5-block__n">C层-巩固提升</span><span class="v5-block__m">12人</span></div>
+        <div class="v5-block__d">项目驱动式学习，独立研究+小组展示</div>
+      </div>
+      <div class="v5-rcard__acts v5-rcard__acts--end">
+        <button class="v5-pill v5-pill--secondary">导出教案</button>
+        <button class="v5-pill v5-pill--secondary">调整分层</button>
+        <button class="v5-pill v5-pill--primary">应用到课件</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-label">专家协作卡（label 语义变体 + 步骤块右侧 meta + 底部 meta 靠左/按钮靠右）</div>
+  <div class="v5-rcard" style="width:520px">
+    <div class="v5-rcard__bd">
+      <span class="v5-rcard__label v5-rcard__label--expert">专家协作</span>
+      <div class="v5-msg-ai__text">这个任务比较复杂，我请了4位专项助手来帮忙，大约2分钟搞定！</div>
+      <div class="v5-block"><div class="v5-block__top"><span class="v5-block__n">学情分析</span><span class="v5-block__m">10s</span></div><div class="v5-block__d">查看班级知识掌握情况，进行课程的学情分析与总结</div></div>
+      <div class="v5-block v5-block--success"><div class="v5-block__top"><span class="v5-block__n">备课设计</span><span class="v5-block__m">25s</span></div><div class="v5-block__d">生成90分钟教学流程</div></div>
+      <div class="v5-rcard__acts">
+        <span class="v5-rcard__meta">预计耗时：70s</span>
+        <button class="v5-pill v5-pill--secondary">暂不需要</button>
+        <button class="v5-pill v5-pill--secondary">调整计划</button>
+        <button class="v5-pill v5-pill--primary">确认开始</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-label">问题卡（选项行全宽；选中=品牌蓝描边+字；自由输入=placeholder 样式；跳过/完成右对齐）</div>
+  <div class="v5-rcard" style="width:520px">
+    <div class="v5-rcard__bd">
+      <span class="v5-rcard__label">问题</span>
+      <div class="v5-rcard__t">这次宣传文稿的内容来源是什么？</div>
+      <button class="v5-opt">A　自由创作</button>
+      <button class="v5-opt v5-opt--sel">B　提供素材</button>
+      <button class="v5-opt">C　网络调研</button>
+      <div class="v5-opt v5-opt--input">D　请输入答案</div>
+      <div class="v5-rcard__acts v5-rcard__acts--end">
+        <button class="v5-pill v5-pill--secondary">跳过</button>
+        <button class="v5-pill v5-pill--primary">完成</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-label">提醒卡 = 红色状态卡（--alert 红浅底 + alert 类别标签 + 标题 + 正文；无操作行时正文即结尾）</div>
+  <div class="v5-rcard v5-rcard--alert" style="width:400px">
+    <div class="v5-rcard__bd">
+      <span class="v5-rcard__label v5-rcard__label--alert">提醒</span>
+      <div class="v5-rcard__t">大学物理 学情提醒</div>
+      <div class="v5-block__d"><b>李铁军老师提醒你</b>：你当前课程学习进度仅20%，还有2个资源未学习；出勤率12%，缺勤2次；未完成作业2份。请尽快完成学习资源、补交作业，及时跟进课程进度，避免影响最终成绩。</div>
+    </div>
+  </div>
+
+  <div class="demo-label">四色生命周期系统：黄 = 创建后待开始/待确认（--pending，右上状态 chip 同步）</div>
+  <div style="display:flex; gap:var(--v5-space-4); flex-wrap:wrap; align-items:flex-start;">
+    <div class="v5-rcard v5-rcard--pending" style="width:340px">
+      <div class="v5-rcard__bd">
+        <div class="v5-rcard__toprow"><span class="v5-rcard__label">会议</span><span class="v5-status v5-status--todo">待开始</span></div>
+        <div class="v5-rcard__t">2月25日教研会议</div>
+        <div class="v5-rcard__desc">时间：2026-04-09 21:00 – 21:00<br>会议号：277 632 245</div>
+        <div class="v5-rcard__meta">创建人：王大壮</div>
+      </div>
+    </div>
+    <div class="v5-rcard v5-rcard--pending" style="width:340px">
+      <div class="v5-rcard__bd">
+        <div class="v5-rcard__toprow"><span class="v5-rcard__label v5-rcard__label--expert">专家协作</span><span class="v5-status v5-status--todo">待确认</span></div>
+        <div class="v5-rcard__t">计算机网络</div>
+        <div class="v5-rcard__desc">明天《计算机网络》课程已准备完毕，已根据学情数据重点安排了滑动窗口和拥塞控制的复习环节</div>
+        <div class="v5-block"><div class="v5-block__top"><span class="v5-block__n">教学设计</span><span class="v5-block__m">90min</span></div><div class="v5-block__d">含TCP复习+UDP新知</div></div>
+        <div class="v5-rcard__acts v5-rcard__acts--end">
+          <button class="v5-pill v5-pill--secondary">重新生成</button>
+          <button class="v5-pill v5-pill--secondary">调整作业</button>
+          <button class="v5-pill v5-pill--primary">确认并发布</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-label">四色生命周期系统：绿 = 创建成功/已发布（--success）；灰（默认白）= 列表/选择/预填/结束卡，结束配灰 chip</div>
+  <div style="display:flex; gap:var(--v5-space-4); flex-wrap:wrap; align-items:flex-start;">
+    <div class="v5-rcard v5-rcard--success" style="width:340px">
+      <div class="v5-rcard__bd">
+        <div class="v5-rcard__toprow"><span class="v5-rcard__label v5-rcard__label--ok">选题作业</span><span class="v5-status v5-status--ok">已发布</span></div>
+        <div class="v5-rcard__t">第二章课后巩固练习</div>
+        <div class="v5-rcard__desc">作业已描述作业描述作业描述进行作业描述</div>
+        <div class="v5-rcard__meta">截止时间：2026-04-09 21:00 · 班级：新能源1班</div>
+      </div>
+    </div>
+    <div class="v5-rcard" style="width:340px">
+      <div class="v5-rcard__bd">
+        <div class="v5-rcard__toprow"><span class="v5-rcard__label">选题作业</span><span class="v5-status v5-status--done">已结束</span></div>
+        <div class="v5-rcard__t">第二章课后巩固练习</div>
+        <div class="v5-rcard__meta">截止时间：2026-04-09 21:00 · 班级：新能源1班</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-label">无装饰结构变体（内容块不带左色条 --plain；高亮选中块用 --active）</div>
+  <div class="v5-rcard" style="width:400px">
+    <div class="v5-rcard__bd">
+      <span class="v5-rcard__label">标签类型</span>
+      <div class="v5-rcard__t">大标题大标题大标题文字大小18px行高26px</div>
+      <div class="v5-rcard__desc">描述性文字，大小14px行高20px</div>
+      <div class="v5-block v5-block--active"><div class="v5-block__n">内容标题内容标题大小16px行高24px</div><div class="v5-block__d">内容正文内容正文大小14px行高24px</div></div>
+      <div class="v5-block v5-block--plain"><div class="v5-block__n">内容标题内容标题大小16px行高24px</div><div class="v5-block__d">内容正文内容正文大小14px行高24px</div></div>
+      <div class="v5-rcard__acts v5-rcard__acts--end">
+        <button class="v5-pill v5-pill--secondary">按钮</button>
+        <button class="v5-pill v5-pill--primary">按钮按钮</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-label">日期行列表项 + 状态 chip（.v5-reco 家族；条数多时遵循"列表不进卡"规则）</div>
+  <div class="v5-recolist">
+    <div class="v5-reco"><div class="v5-reco__row">
+      <div class="v5-reco__date">2月<b>25</b></div>
+      <div class="v5-reco__main"><span class="v5-reco__n">2月25日教研会议</span><span class="v5-block__d">2026-04-09 21:00 – 21:00</span></div>
+      <span class="v5-status v5-status--todo">待开始</span>
+    </div></div>
+    <div class="v5-reco"><div class="v5-reco__row">
+      <div class="v5-reco__date">2月<b>25</b></div>
+      <div class="v5-reco__main"><span class="v5-reco__n">2月25日教研会议</span><span class="v5-block__d">2026-04-09 21:00 – 21:00</span></div>
+      <span class="v5-status v5-status--doing">进行中</span>
+    </div></div>
+    <div class="v5-reco"><div class="v5-reco__row">
+      <div class="v5-reco__date">2月<b>25</b></div>
+      <div class="v5-reco__main"><span class="v5-reco__n">2月25日教研会议</span><span class="v5-block__d">2026-04-09 21:00 – 21:00</span></div>
+      <span class="v5-status v5-status--done">已结束</span>
+    </div></div>
+    <div class="v5-reco"><div class="v5-reco__row">
+      <div class="v5-reco__date">2月<b>25</b></div>
+      <div class="v5-reco__main"><span class="v5-reco__n">2月25日教研会议</span><span class="v5-block__d">2026-04-09 21:00 – 21:00</span></div>
+      <button class="v5-pill v5-pill--secondary">查看回放</button>
+    </div></div>
+  </div>
+
+</body>
+</html>

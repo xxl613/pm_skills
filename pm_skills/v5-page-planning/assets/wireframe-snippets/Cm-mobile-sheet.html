@@ -1,0 +1,28 @@
+<!doctype html><meta charset="utf-8">
+<title>线框 · C-m 移动底部弹层</title>
+<style>
+  *{box-sizing:border-box;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
+  body{margin:0;display:flex;justify-content:center;background:#eee;color:#444}
+  .screen{width:375px;min-height:812px;background:#fafafa;display:flex;flex-direction:column;border:1px solid #ccc;position:relative}
+  .wf{border:1.5px dashed #b8b8b8;border-radius:8px;margin:6px;padding:8px;
+      background:#fff;font-size:12px;line-height:1.5}
+  .lbl{font-weight:600;color:#666}.hint{color:#999}.ids{margin-top:4px;color:#1d4ed8;font-size:11px}
+  .base{flex:1;opacity:.45}
+  .sheet{position:absolute;left:0;right:0;bottom:0;height:60%;background:#fff;
+    border:1.5px dashed #9aa;border-radius:16px 16px 0 0;display:flex;flex-direction:column}
+</style>
+<!-- C-m 移动底部弹层（H5 375×812）＝ 桌面 C 抽屉的移动对应物。壳层 shell-mobile/sheet.html
+     · 基座 = B-m 对话流（遮罩下置灰）；弹层三段式：标题+关闭 / 内容 / 底部操作+安全区34。
+     · 变体：--half 半屏内容弹层（默认）｜ --action 动作面板（按钮列表+取消）。 -->
+<div class="screen">
+  <div class="base">
+    <div class="wf" style="height:40px"><div class="lbl">基座：状态栏+顶栏（遮罩下）</div></div>
+    <div class="wf" style="min-height:80px"><div class="lbl">基座：对话流（遮罩下置灰）</div></div>
+  </div>
+  <div class="sheet">
+    <div class="wf" style="height:44px"><div class="lbl">弹层标题 + 关闭</div></div>
+    <div class="wf" style="flex:1"><div class="lbl">弹层内容</div>
+      <div class="hint">详情 / 表单 / 列表选择（--action 变体 = 按钮列表+取消）</div><div class="ids">参数ID?</div></div>
+    <div class="wf" style="height:74px"><div class="lbl">底部操作 + 安全区 34</div><div class="hint">页面级 CTA 通栏</div></div>
+  </div>
+</div>

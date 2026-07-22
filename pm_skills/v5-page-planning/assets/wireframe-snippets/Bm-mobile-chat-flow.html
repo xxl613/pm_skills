@@ -1,0 +1,32 @@
+<!doctype html><meta charset="utf-8">
+<title>线框 · B-m 移动对话流</title>
+<style>
+  *{box-sizing:border-box;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
+  body{margin:0;display:flex;justify-content:center;background:#eee;color:#444}
+  .screen{width:375px;min-height:812px;background:#fafafa;display:flex;flex-direction:column;border:1px solid #ccc}
+  .wf{border:1.5px dashed #b8b8b8;border-radius:8px;margin:6px;padding:8px;
+      background:#fff;font-size:12px;line-height:1.5}
+  .lbl{font-weight:600;color:#666}.hint{color:#999}.ids{margin-top:4px;color:#1d4ed8;font-size:11px}
+  .conv{flex:1;overflow:auto;display:flex;flex-direction:column}
+  .bubble-u{align-self:flex-end;width:70%;background:#f2f3f5}
+</style>
+<!-- B-m 移动对话流（H5 375×812）：状态栏44 → 顶栏44（返回+标题+更多）→ 消息流 → 输入台+安全区34。
+     壳层 shell-mobile/chat-flow.html · 二级页无 TabBar。
+     · ★ 功能展示 / 演示类页面：每条消息写【完整对话文字】——用户问句原文、助手分轮回答、
+       结果卡真实标题/字段/数值，按 用户请求 → 判断/派发 → 生成 → 产物 → 完成句 → 后续建议 逐轮铺开。
+       禁止用「返回结果卡 ×N」占位顶替对话内容。 -->
+<div class="screen">
+  <div class="wf" style="height:40px"><div class="lbl">状态栏 44（模拟）+ 顶栏 44</div><div class="hint">返回 ‹ · 会话标题 · 更多</div></div>
+  <div class="conv">
+    <div class="wf" style="min-height:56px"><div class="lbl">AI 开场（左，头像+名称+气泡）</div>
+      <div class="hint">写开场白原文，例：「老师，我最近压力太大，情绪很不稳定。」</div><div class="ids">参数ID?</div></div>
+    <div class="wf bubble-u" style="min-height:40px"><div class="lbl">用户消息（右对齐）</div>
+      <div class="hint">写用户回复原文</div></div>
+    <div class="wf" style="min-height:160px"><div class="lbl">助手结果（card，宽随列自适应）</div>
+      <div class="hint">回答正文 + 结果卡真实文案（标题/字段/数值）</div><div class="ids">参数ID?</div></div>
+    <div class="wf" style="min-height:48px"><div class="lbl">完成句 + 后续建议</div>
+      <div class="hint">先产物后完成句 · 给出下一步入口</div></div>
+  </div>
+  <div class="wf" style="height:64px;border-style:solid;border-color:#9aa"><div class="lbl">输入台 + 安全区 34</div>
+    <div class="hint">胶囊输入 · 语音 · ＋ · 钉在底部</div></div>
+</div>

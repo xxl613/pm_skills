@@ -1,0 +1,78 @@
+/* ============================================================
+   大明白 V5 — Design Tokens
+   面向大学教师的 AI 教学 SaaS · 气质：专业 / 克制 / 清晰
+   全部为 Figma「全自动课程助教 V5」实测值（标「派生」者为规格补充）。
+   命名按用途，不按外观。定制页面禁止裸值，一律 var(--v5-*)。
+   ============================================================ */
+
+:root {
+  /* ---------- 字体族 ---------- */
+  --v5-font-family: "PingFang SC", -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  /* ---------- 颜色 · 品牌 / 语义 ---------- */
+  --v5-color-brand: #1546f2;       /* 品牌蓝（仅强调/主CTA；主体克制为灰阶）*/
+  --v5-color-info: #1546f2;        /* 信息语义 */
+  --v5-color-success: #00c261;     /* 成功语义 */
+  --v5-color-warning: #ffa200;     /* 警告语义 */
+  --v5-color-error: #ff2626;       /* 错误/危险语义 */
+  /* 语义浅底（状态卡/Toast/危险按钮 hover 等浅色填充）*/
+  --v5-color-success-bg: #edfaf4;
+  --v5-color-warning-bg: #fffaf2;
+  --v5-color-error-bg: #fff1f0;
+  --v5-color-info-bg: #f2f7ff;
+
+  /* ---------- 颜色 · 中性 ---------- */
+  --v5-color-bg: #f7f8fa;          /* 应用背景 / 浅灰底（卡片默认底、表头、hover）*/
+  --v5-color-surface: #ffffff;     /* 白色表面：卡内内容块 / 弹层 / 输入框 */
+  --v5-color-border: #e5e6eb;      /* 描边 / 分隔线 / 表格边框 */
+  --v5-color-text: #1d2129;        /* 正文主文本；也是近黑主按钮底色 */
+  --v5-color-text-secondary: #86909c; /* 辅助 / 描述文字 */
+  --v5-color-text-tertiary: #4e5969;  /* 三级灰：次/文字按钮字色、下拉默认值 */
+  --v5-color-text-disabled: #c9cdd4;  /* 占位符 / 禁用 */
+  --v5-color-fill: #f2f3f5;           /* 浅填充：次按钮填充变体底 / 控件 hover */
+
+  /* ---------- 字号 + 行高 ---------- */
+  --v5-font-size-title: 24px;      --v5-line-height-title: 36px;   /* 区块标题 Semibold */
+  --v5-font-size-body: 16px;       --v5-line-height-body: 28px;    /* 对话正文 / 气泡 / 卡片正文 */
+  --v5-font-size-caption: 14px;    --v5-line-height-caption: 26px; /* 表格 / 说明 / label / 辅助 */
+
+  /* ---------- 间距刻度（4 / 8 基数）---------- */
+  --v5-space-1: 4px;
+  --v5-space-2: 8px;
+  --v5-space-3: 12px;
+  --v5-space-4: 16px;
+  --v5-space-5: 24px;
+  --v5-space-6: 32px;
+
+  /* ---------- 圆角档位 ---------- */
+  --v5-radius-sm: 4px;
+  --v5-radius-md: 8px;
+  --v5-radius-lg: 16px;
+  --v5-radius-pill: 999px;         /* 全胶囊：单行控件 / 品牌CTA / 筛选条（= 高/2）*/
+
+  /* ---------- 阴影档位 ---------- */
+  --v5-shadow-card: 0px 2px 8px 0px rgba(0, 0, 0, 0.04);     /* 卡片抬升态才用；V5 卡片默认扁平无投影 */
+  --v5-shadow-overlay: 0px 6px 40px 0px rgba(0, 0, 0, 0.08); /* 浮层：弹窗 / 下拉 / Toast / 悬浮菜单 */
+
+  /* ---------- 栅格 / 容器宽度 / 布局尺寸（桌面 1440 基准） ---------- */
+  --v5-nav-width: 80px;            /* 左侧导航栏宽（三壳层一致）*/
+  --v5-topbar-height: 60px;        /* 对话流顶栏高 */
+  --v5-content-max: 840px;         /* 对话流内容列宽（原型 B）*/
+  --v5-portal-col: 920px;          /* 门户内容列宽（原型 A）*/
+  --v5-drawer-width-third: 500px;  /* 1/3 屏抽屉（原型 C，Figma 实测）*/
+  --v5-drawer-width-half: 720px;   /* 半屏抽屉（原型 C，派生 = 1440/2）*/
+
+  /* ---------- 移动端布局尺寸（H5 · iPhone 15 Pro 基准 375×812）----------
+     B-m/C-m 结构实测自 Figma「全自动课程助教 V5」（file 4t35fBc4I64igQH6qZpIGL，
+     画布 6050:5423）。颜色/字体/间距/圆角与桌面共用上方令牌；
+     仅正文行高与页标题为移动收紧值。*/
+  --v5m-viewport: 375px;           /* 移动壳层画板宽 */
+  --v5m-screen-min: 812px;         /* 移动壳层画板最小高 */
+  --v5m-statusbar-height: 59px;    /* 模拟系统状态栏（原型演示态；真实宿主可移除） */
+  --v5m-topbar-height: 44px;       /* 移动顶栏（返回/标题/更多） */
+  --v5m-tabbar-height: 49px;       /* 底部 TabBar（不含安全区） */
+  --v5m-safe-bottom: 34px;         /* Home Indicator 安全区 */
+  --v5m-page-pad: 16px;            /* 页面左右内距 */
+  --v5m-font-size-title: 17px;     --v5m-line-height-title: 24px; /* 移动顶栏/页标题 Semibold */
+  --v5m-line-height-body: 24px;    /* 移动正文行高（16px 字号收紧） */
+}

@@ -1,0 +1,68 @@
+<!doctype html>
+<!-- 卡片 card · 忠于 Figma「卡片-UI」3667:4893（选择题 3669:5296）。
+     扁平：底 --v5-color-bg + 1px 描边 + 圆角16，无投影；卡内白块 surface。
+     一个外壳+槽位；语义变体(info/success/warning/error) 只换 描边色+浅底色。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 卡片 card</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; flex-direction: column; gap: var(--v5-space-5); align-items: flex-start; }
+  .demo-label { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+
+  .v5-card { width: 460px; background: var(--v5-color-bg); border: 1px solid var(--v5-color-border);
+    border-radius: var(--v5-radius-lg); padding: var(--v5-space-5); display: flex; flex-direction: column; gap: var(--v5-space-4); }
+  .v5-card--raised { box-shadow: var(--v5-shadow-card); }
+  .v5-card--info    { border-color: var(--v5-color-info);    background: var(--v5-color-info-bg); }
+  .v5-card--success { border-color: var(--v5-color-success); background: var(--v5-color-success-bg); }
+  .v5-card--warning { border-color: var(--v5-color-warning); background: var(--v5-color-warning-bg); }
+  .v5-card--error   { border-color: var(--v5-color-error);   background: var(--v5-color-error-bg); }
+
+  .v5-card__label { align-self: flex-start; font-size: 12px; line-height: 18px; color: var(--v5-color-text-tertiary);
+    background: var(--v5-color-border); border-radius: var(--v5-radius-sm); padding: 4px 10px; }
+  .v5-card__title { font-size: 18px; line-height: 26px; font-weight: 600; }
+  .v5-card__block { background: var(--v5-color-surface); border: 1px solid var(--v5-color-border);
+    border-radius: 12px; padding: var(--v5-space-4); font-size: var(--v5-font-size-body); line-height: var(--v5-line-height-body); }
+  .v5-card__block--sel { border-color: var(--v5-color-brand); color: var(--v5-color-brand); }
+  .v5-card__foot { display: flex; justify-content: flex-end; gap: var(--v5-space-3); }
+
+  .v5-pill { height: 38px; padding: 0 var(--v5-space-4); border-radius: var(--v5-radius-pill); border: 1px solid transparent;
+    font-size: var(--v5-font-size-caption); cursor: pointer; }
+  .v5-pill--primary { background: var(--v5-color-text); color: #fff; }
+  .v5-pill--secondary { background: var(--v5-color-surface); border-color: var(--v5-color-border); color: var(--v5-color-text-tertiary); }
+</style>
+</head>
+<body>
+  <div class="demo-label">带操作卡（标签 + 标题 + 白底内容块[含选中态] + 右对齐胶囊操作）</div>
+  <div class="v5-card">
+    <span class="v5-card__label">单选题</span>
+    <div class="v5-card__title">下列哪一项属于数据结构的逻辑结构？</div>
+    <div class="v5-card__block">A. 顺序存储</div>
+    <div class="v5-card__block v5-card__block--sel">B. 线性结构</div>
+    <div class="v5-card__block">C. 链式存储</div>
+    <div class="v5-card__foot">
+      <button class="v5-pill v5-pill--secondary">跳过</button>
+      <button class="v5-pill v5-pill--primary">完成</button>
+    </div>
+  </div>
+
+  <div class="demo-label">纯文本卡 / 语义状态卡（成功 · 警告）—— 同一外壳，只换边框+浅底</div>
+  <div style="display:flex; gap:var(--v5-space-4); flex-wrap:wrap;">
+    <div class="v5-card" style="width:300px;">
+      <div class="v5-card__title">2 月 25 日教研会议</div>
+      <div style="font-size:var(--v5-font-size-caption); color:var(--v5-color-text-secondary);">2026-04-09 21:00 · 计算机学院</div>
+    </div>
+    <div class="v5-card v5-card--success" style="width:300px;">
+      <div class="v5-card__title">已完成当前任务</div>
+      <div style="font-size:var(--v5-font-size-caption); color:var(--v5-color-text-secondary);">练习题已生成并发布，提交率统计中。</div>
+    </div>
+    <div class="v5-card v5-card--warning" style="width:300px;">
+      <div class="v5-card__title">需要确认</div>
+      <div style="font-size:var(--v5-font-size-caption); color:var(--v5-color-text-secondary);">有 3 名学生未提交，是否发送提醒？</div>
+    </div>
+  </div>
+</body>
+</html>

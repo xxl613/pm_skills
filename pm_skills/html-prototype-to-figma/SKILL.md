@@ -30,6 +30,7 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
    - Navigate directly to the target route/state instead of capturing a page-list wrapper.
    - Close PRD overlays, drawers, debug panels, and review controls unless they are part of the actual product UI.
    - If helper UI cannot be hidden through normal state, create a temporary capture-only route or CSS override, then remove or clearly isolate it after capture.
+   - For source-page checks, default to Chrome plugin read-only inspection or independent headless Chrome screenshots. Avoid click/input/tab-switch operations in the user's active Chrome unless the target state truly depends on the current Chrome session.
 
 4. Choose frame dimensions.
    - Capture at explicit viewports. Default desktop is `1440px` wide unless the prototype or user gives another design width.
@@ -45,10 +46,12 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
      - CSS `mask-image` / `-webkit-mask-image`;
      - key logos or icons rendered only through `background-image`;
      - white or transparent PNGs that require CSS color/background composition;
+     - external SVG icons or logos whose visible color depends on CSS custom properties, `currentColor`, CSS `filter`, `mask`, or stylesheet-side recoloring rather than explicit `fill` / `stroke`;
      - remote images, temporary MCP asset URLs, icon fonts, emoji, or pseudo-elements used as product icons;
      - inline SVGs or CSS-generated shapes that stand in for real brand assets.
    - Treat brand logos, school emblems, avatars, product icons, feature icons, illustrations, and textures as key assets. They must be local, independently visible, and usable by Figma as normal images/SVG/vector content.
    - If a key asset is currently shown only through CSS mask, alpha mask, or browser composition, create or use a capture-friendly visible version before capture, such as a fixed-color SVG/PNG or an already-composited local image.
+   - For key `<img src="*.svg">` assets, inspect the SVG before capture. If the SVG uses `fill="var(...)"`, `stroke="var(...)"`, external `currentColor`, or becomes visible only after CSS `filter` / `mask` recoloring, convert it to an explicit-color local SVG / PNG or inline SVG before capture.
    - Do not proceed with capture when key assets are only visible because the browser combines a white mask with CSS background color. Figma may import that as an empty node, a white-on-white image, a solid color block, or a missing fill.
    - If the HTML prototype is the approved source, keep the source behavior intact unless the asset expression itself is not portable. A capture-friendly real image/SVG for the same visual asset is an acceptable source improvement; layout compensation for Figma import defects is not.
    - Record any asset conversion decisions, for example `brand logo mask -> brand logo red SVG`, in the final report or project change note.
@@ -103,8 +106,9 @@ Use this together with `figma:figma-use` before every `use_figma` call. For firs
    - Convert obvious groups into readable layer names, but avoid speculative componentization unless requested.
 
 10. Verify fidelity before declaring done. This is a hard delivery gate.
-   - Capture a browser screenshot of the source page at the same viewport.
+   - Capture a browser screenshot of the source page at the same viewport using Chrome plugin read-only screenshot or independent headless Chrome. Prefer headless Chrome when a focus-free check is enough.
    - Capture a Figma screenshot of the generated frame.
+   - Do not steal user focus for routine visual checks. Only use the user's active Chrome session for login-bound, extension-bound, or interaction-bound states, and keep the operation as read-only as possible.
    - Do not use metadata alone as proof of correctness. Metadata can show that nodes exist while they are clipped, hidden, behind another layer, transparent, or placed in the wrong parent frame.
    - Compare structure, spacing, cropping, text wrapping, image loading, aspect ratios, hidden scroll content, and adjacent interaction-state frames.
    - Compare font family, font weight, font size, and line height for representative headings, body text, buttons, and card text.
@@ -132,6 +136,7 @@ If uncertain, ask: "Would a real end user see this in the product?" If no, exclu
 - Keep image aspect ratios. Never stretch screenshots, icons, avatars, or product images to fill a mismatched box.
 - Check broken images after capture. Missing or blank image nodes are failures, not acceptable placeholders.
 - Check key visual assets after capture: brand logo, school emblem, product icon, feature icons, avatar, illustration, and texture. If any asset becomes blank, white-on-white, a solid rectangle, wrong color, or a different cropped shape, treat it as a failed asset portability check, not a minor visual difference.
+- A text button whose icon imports as an empty `Image` node, invisible white graphic, or missing child still counts as a failed key asset even when the button text and layout look acceptable. Browser-visible is not enough; verify the generated Figma screenshot for Agent / Skill buttons, toolbar icons, and send/input controls.
 - CSS mask and alpha-mask assets are high risk. If they appear in the source, verify that the captured Figma layer is a visible image/SVG/vector with correct color and alpha. If not, replace the source asset expression with a capture-friendly real asset and recapture, or repair the generated Figma node directly only when the user explicitly wants to preserve the source unchanged.
 - Preserve scroll height. If the source page or any internal region is taller than the viewport, draw the full content in a taller frame or adjacent continuation frame; do not leave important content invisible just because the browser viewport hides it.
 - Compare every scroll root's `scrollHeight/clientHeight` at the selected viewport. A region can look acceptable in a screenshot while still having `scrollHeight > clientHeight`; the Figma output must represent the full `scrollHeight` without distorting the child content.
@@ -181,6 +186,7 @@ Common failure patterns:
 - Responsive layout was captured at the wrong viewport or device scale factor.
 - An image becomes an empty frame or a stretched fill after conversion.
 - A logo or icon that relied on `mask-image` becomes invisible, white-on-white, or turns into a plain rectangle.
+- An external SVG button icon uses CSS-variable fill such as `fill="var(--..., white)"` and relies on CSS `filter` for its final color. The browser can render it correctly, but Figma may create an empty or invisible `Image` node. Fix by using explicit-color inline SVG, explicit-color local SVG, or PNG before capture, then verify the Figma screenshot.
 - A key asset is technically present in Figma metadata but has missing image fill, invisible fill, wrong opacity, or lost mask/color composition.
 - A bottom-fixed input bar or modal has a drop shadow whose `absoluteRenderBounds` extends outside the root frame. If the source browser clips the shadow at the viewport edge, clip the root viewport/shell frame; do not move the component upward just to hide the overflow.
 - A bottom-fixed input bar overlaps a result card, table, list, or form inside the root frame. Root-boundary checks pass, but business content is still hidden. Treat this as a failed scroll/visibility conversion.
@@ -259,6 +265,7 @@ Complete this checklist for every delivered Figma conversion:
 - [ ] Target Figma file behavior is confirmed: new file or specified existing file.
 - [ ] Target route/state and viewport are recorded.
 - [ ] Asset portability gate was completed before capture: no key logo/icon/avatar/illustration relies only on CSS mask, remote image, white transparent PNG, icon font, emoji, or browser-only composition.
+- [ ] Key `<img src="*.svg">` button/logo/avatar assets were checked for CSS-variable fill/stroke, external `currentColor`, CSS `filter`, and mask-based recoloring; high-risk assets were converted or explicitly listed.
 - [ ] Any high-risk asset was converted to or paired with a capture-friendly local SVG/PNG before capture, or the residual limitation is explicitly listed.
 - [ ] Font fidelity gate was completed: representative browser computed fonts were recorded for headings, body text, buttons, tags, and card text.
 - [ ] Figma available fonts were checked with `figma.listAvailableFontsAsync()` before any font normalization or text rewrite.
@@ -271,6 +278,7 @@ Complete this checklist for every delivered Figma conversion:
 - [ ] Prototype-only PRD/review/navigation helpers are excluded.
 - [ ] Business-root selector used for capture is recorded, for example `.figma-page` or `main[data-capture-root]`.
 - [ ] Browser source screenshot exists or was visually inspected at the exact viewport.
+- [ ] Browser source screenshot/check used Chrome plugin read-only mode or headless Chrome when possible, without unnecessary focus-stealing actions.
 - [ ] Figma frame screenshot was checked after generation.
 - [ ] Browser and Figma screenshots were compared at the same viewport, or the conversion is explicitly reported as partial.
 - [ ] Metadata was not used as the only proof of correctness.

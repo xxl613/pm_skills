@@ -1,0 +1,21 @@
+<!doctype html><meta charset="utf-8">
+<title>线框 · A-m 移动门户</title>
+<style>
+  *{box-sizing:border-box;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
+  body{margin:0;display:flex;justify-content:center;background:#eee;color:#444}
+  .screen{width:375px;min-height:812px;background:#fafafa;display:flex;flex-direction:column;border:1px solid #ccc}
+  .wf{border:1.5px dashed #b8b8b8;border-radius:8px;margin:6px;padding:8px;
+      background:#fff;font-size:12px;line-height:1.5}
+  .lbl{font-weight:600;color:#666}.hint{color:#999}.ids{margin-top:4px;color:#1d4ed8;font-size:11px}
+  .body{flex:1;overflow:auto}
+</style>
+<!-- A-m 移动门户（H5 375×812）：状态栏44 → 顶栏44 → 滚动内容 → TabBar49+安全区34。壳层 shell-mobile/portal.html
+     · 一级切换全靠 TabBar（3–5 项）；无左侧导航。 -->
+<div class="screen">
+  <div class="wf" style="height:40px"><div class="lbl">状态栏 44（模拟）+ 顶栏 44</div><div class="hint">logo · 产品名 · 右操作</div></div>
+  <div class="body">
+    <div class="wf" style="height:72px"><div class="lbl">快捷入口行</div><div class="hint">2–4 个图标入口</div><div class="ids">参数ID?</div></div>
+    <div class="wf" style="min-height:220px"><div class="lbl">区块标题 + 入口卡组</div><div class="hint">业务对象列表（缩略 + 标题 + meta）</div><div class="ids">参数ID?</div></div>
+  </div>
+  <div class="wf" style="height:70px;border-style:solid;border-color:#9aa"><div class="lbl">TabBar 49 + 安全区 34</div><div class="hint">3–5 项 · 当前激活 X</div></div>
+</div>

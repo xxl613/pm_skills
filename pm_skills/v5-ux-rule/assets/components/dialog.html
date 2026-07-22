@@ -1,0 +1,82 @@
+<!doctype html>
+<!-- 弹窗 dialog · 忠于 Figma「V5弹窗-UI」2:3（小确认 283:660 / 大模态 2:257）。
+     固化：视口居中+遮罩 rgba(0,0,0,.45)；宽度档 sm144/md480(派生)/lg832；圆角12；阴影 overlay；z-index1000；
+     次按钮(取消)在左、主按钮(确定,近黑)在右，整组右对齐。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 弹窗 dialog</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; flex-direction: column; gap: var(--v5-space-6); }
+  .demo-label { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .row { display: flex; gap: var(--v5-space-6); align-items: flex-start; flex-wrap: wrap; }
+
+  .v5-dialog { background: var(--v5-color-surface); border: 1px solid var(--v5-color-border);
+    border-radius: 12px; box-shadow: var(--v5-shadow-overlay); display: flex; flex-direction: column; overflow: hidden; }
+  .v5-dialog--sm { width: 144px; }
+  .v5-dialog--md { width: 480px; }
+  .v5-dialog--lg { width: 832px; }
+  .v5-dialog__head { display: flex; align-items: center; justify-content: space-between;
+    padding: var(--v5-space-4) var(--v5-space-5); border-bottom: 1px solid var(--v5-color-border); }
+  .v5-dialog--sm .v5-dialog__head { padding: var(--v5-space-3) var(--v5-space-4); border-bottom: none; }
+  .v5-dialog__title { font-size: var(--v5-font-size-body); line-height: 26px; font-weight: 600; }
+  .v5-dialog--sm .v5-dialog__title { font-size: var(--v5-font-size-caption); }
+  .v5-dialog__close { color: var(--v5-color-text-secondary); cursor: pointer; }
+  .v5-dialog__body { padding: var(--v5-space-5); font-size: var(--v5-font-size-body); line-height: var(--v5-line-height-body); color: var(--v5-color-text); }
+  .v5-dialog--sm .v5-dialog__body { padding: 0 var(--v5-space-4) var(--v5-space-3); font-size: var(--v5-font-size-caption); line-height: var(--v5-line-height-caption); }
+  .v5-dialog__foot { display: flex; justify-content: flex-end; gap: var(--v5-space-4);
+    padding: var(--v5-space-4) var(--v5-space-5); border-top: 1px solid var(--v5-color-border); }
+  .v5-dialog--sm .v5-dialog__foot { padding: var(--v5-space-2) var(--v5-space-4) var(--v5-space-4); gap: var(--v5-space-2); border-top: none; }
+
+  .v5-btn { height: 36px; padding: 0 var(--v5-space-4); border-radius: var(--v5-radius-md); border: 1px solid transparent;
+    font-size: var(--v5-font-size-caption); cursor: pointer; }
+  .v5-dialog--sm .v5-btn { height: 28px; padding: 0 var(--v5-space-3); font-size: 12px; }
+  .v5-btn--secondary { background: var(--v5-color-fill); color: var(--v5-color-text); }
+  .v5-btn--primary { background: var(--v5-color-text); color: #fff; }   /* 近黑主按钮 */
+
+  /* 遮罩居中示例 */
+  .v5-overlay { position: relative; height: 360px; border-radius: var(--v5-radius-lg); overflow: hidden;
+    background: rgba(0,0,0,.45); display: grid; place-items: center; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <div class="demo-label">宽度档位（sm 144 / md 480 / lg 832）· 圆角 12 · 阴影 overlay · 次左主右</div>
+  <div class="row">
+    <!-- sm 小确认 -->
+    <div class="v5-dialog v5-dialog--sm">
+      <div class="v5-dialog__head"><span class="v5-dialog__title">本次登录不再提示</span></div>
+      <div class="v5-dialog__foot">
+        <button class="v5-btn v5-btn--secondary">取消</button>
+        <button class="v5-btn v5-btn--primary">确定</button>
+      </div>
+    </div>
+    <!-- md -->
+    <div class="v5-dialog v5-dialog--md">
+      <div class="v5-dialog__head"><span class="v5-dialog__title">标题占位</span>
+        <span class="v5-dialog__close"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></div>
+      <div class="v5-dialog__body">正文占位：这里放确认说明、影响范围或表单。点明对象与下一步动作。</div>
+      <div class="v5-dialog__foot">
+        <button class="v5-btn v5-btn--secondary">取消</button>
+        <button class="v5-btn v5-btn--primary">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-label">lg 832 大内容模态（视口居中 + 遮罩示例）</div>
+  <div class="v5-overlay">
+    <div class="v5-dialog v5-dialog--lg">
+      <div class="v5-dialog__head"><span class="v5-dialog__title">备课前情回顾</span>
+        <span class="v5-dialog__close"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></div>
+      <div class="v5-dialog__body">正文占位：大模态承载报告/图表/长内容。结合上一轮完成情况统计，本次作业整体参与度表现良好，提交率达 92%，整体完成度较高。</div>
+      <div class="v5-dialog__foot">
+        <button class="v5-btn v5-btn--secondary">取消</button>
+        <button class="v5-btn v5-btn--primary">了解更多</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

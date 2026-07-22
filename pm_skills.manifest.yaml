@@ -22,3 +22,11 @@ skills:
   - name: html-prototype-style
     source: /Users/xiaolongxiong/PycharmProjects/ai_group/.agents/skills/html-prototype-style
     target: pm_skills/html-prototype-style
+
+  - name: v5-page-planning
+    source: /Users/xiaolongxiong/.codex/skills/v5-page-planning
+    target: pm_skills/v5-page-planning
+
+  - name: v5-ux-rule
+    source: /Users/xiaolongxiong/.codex/skills/v5-ux-rule
+    target: pm_skills/v5-ux-rule

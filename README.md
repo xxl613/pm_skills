@@ -14,6 +14,8 @@
 | `figma-to-html-replica` | 将 Figma 画板高保真复刻为 HTML/CSS 或项目栈页面，并通过截图对比迭代缩小视觉差异。 | `pm_skills/figma-to-html-replica/` |
 | `prd-writing-style` | 教师中心 PRD、功能说明、需求池和研发对齐文档的写作与改写风格。 | `pm_skills/prd-writing-style/` |
 | `html-prototype-style` | HTML/React 原型页面绘制和修改的质量约束，适用于框架页面、卡片、弹窗、抽屉流程和状态机制。 | `pm_skills/html-prototype-style/` |
+| `v5-page-planning` | 将带 ID 的结构化需求参数清单拆成可追溯的页面地图、参数覆盖矩阵和逐页规划文档。 | `pm_skills/v5-page-planning/` |
+| `v5-ux-rule` | 大明白 V5 定制原型的桌面端与移动端通用 UX 规范、壳层、组件和项目建档资产。 | `pm_skills/v5-ux-rule/` |
 
 ## 仓库结构
 
@@ -25,6 +27,8 @@ pm_skills/
   figma-to-html-replica/
   prd-writing-style/
   html-prototype-style/
+  v5-page-planning/
+  v5-ux-rule/
 pm_skills.manifest.yaml
 tools/
   sync_pm_skills.sh

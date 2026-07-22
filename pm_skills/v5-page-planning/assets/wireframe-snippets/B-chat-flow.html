@@ -1,0 +1,39 @@
+<!doctype html><meta charset="utf-8">
+<title>线框 · B 对话流</title>
+<style>
+  *{box-sizing:border-box;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
+  body{margin:0;display:flex;height:100vh;background:#fafafa;color:#444}
+  .wf{border:1.5px dashed #b8b8b8;border-radius:8px;margin:6px;padding:8px;
+      background:#fff;font-size:12px;line-height:1.5}
+  .lbl{font-weight:600;color:#666}.hint{color:#999}.ids{margin-top:4px;color:#1d4ed8;font-size:11px}
+  .nav{width:80px}
+  .chat{flex:1;display:flex;flex-direction:column;min-width:0}
+  .conv{flex:1;display:flex;flex-direction:column;align-items:center;overflow:auto}
+  .conv .wf{width:840px}
+  .dock{display:flex;justify-content:center;border-top:1px solid #eee}
+  .dock .wf{width:840px;border-style:solid;border-color:#9aa}   /* 对话框：钉在底部、实线突出 */
+  .bubble-u{align-self:flex-end;background:#f2f3f5}             /* 用户气泡右对齐 */
+</style>
+<!-- B 对话流：左导航 80 ｜ 顶栏 60 + 居中对话列 840 + 底部停靠对话框。壳层 chat-flow.html
+     · 左导航与 A 首页/门户逐字一致：工作台/交小研/助手/日历/知识库 + 当前激活项，勿各写一套。
+     · ★ 功能展示 / 演示类页面：下面每条消息都要写【完整对话文字】——
+       用户问句原文、助手分轮回答、结果卡内真实标题/字段/数值示例，
+       按 用户请求 → (主Agent 判断/派发) → 场景Agent 生成 → 产物 → 完成句 → 后续建议 逐轮铺开。
+       禁止用「返回结果卡 ×N」「能力清单」这类占位顶替对话内容。 -->
+<div class="wf nav"><div class="lbl">左导航 80</div><div class="hint">工作台/交小研/助手/日历/知识库 · 当前激活 X（与首页一致）</div></div>
+<div class="chat">
+  <div class="wf" style="height:48px"><div class="lbl">顶栏 60</div><div class="hint">标题 · 会话操作</div></div>
+  <div class="conv">
+    <div class="wf bubble-u" style="min-height:40px"><div class="lbl">用户消息（右对齐）</div>
+      <div class="hint">写用户问句原文，例：「帮我看看我的培养计划进度和接下来要做什么」</div></div>
+    <div class="wf" style="height:44px"><div class="lbl">助手过程态 pill</div>
+      <div class="hint">已接收 / 思考 / 调用能力 · 不暴露内部流程</div></div>
+    <div class="wf" style="min-height:200px"><div class="lbl">助手结果（card）</div>
+      <div class="hint">写助手回答正文 + 结果卡真实文案（标题 / 字段 / 数值），例：「学分 32/45 · 开题待完成 · 6 月 30 日截止」</div>
+      <div class="ids">参数ID?</div></div>
+    <div class="wf" style="min-height:56px"><div class="lbl">完成句 + 后续建议</div>
+      <div class="hint">先产物后完成句 · 给出下一步入口</div></div>
+  </div>
+  <div class="dock"><div class="wf" style="height:96px"><div class="lbl">对话框（底部输入台 840）</div>
+    <div class="hint">input-composer · @ 提及 / + 附件 / 发送 · 钉在底部</div></div></div>
+</div>

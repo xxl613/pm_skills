@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- 派生组件：Figma 无此设计，按 V5 令牌与既有组件风格规格补充。
+     轻提示 toast · 浮层白底+overlay阴影+圆角md，左侧语义图标/色条，单行文案，四语义态；默认顶部居中。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 轻提示 toast</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; flex-direction: column; gap: var(--v5-space-4); align-items: center; }
+  .demo-label { align-self: flex-start; font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .v5-toast { min-width: 320px; max-width: 480px; background: var(--v5-color-surface); border: 1px solid var(--v5-color-border);
+    box-shadow: var(--v5-shadow-overlay); border-radius: var(--v5-radius-md); padding: var(--v5-space-3) var(--v5-space-4);
+    display: flex; align-items: center; gap: var(--v5-space-3); font-size: var(--v5-font-size-caption); }
+  .v5-toast__ico { width: 20px; height: 20px; flex: none; display: grid; place-items: center; }
+  .v5-toast--success .v5-toast__ico { color: var(--v5-color-success); }
+  .v5-toast--warning .v5-toast__ico { color: var(--v5-color-warning); }
+  .v5-toast--error   .v5-toast__ico { color: var(--v5-color-error); }
+  .v5-toast--info    .v5-toast__ico { color: var(--v5-color-info); }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <div class="demo-label">四语义态（默认出现位置：顶部居中，距顶 32）</div>
+  <div class="v5-toast v5-toast--success">
+    <span class="v5-toast__ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <span>练习题已发布，已通知班级</span>
+  </div>
+  <div class="v5-toast v5-toast--warning">
+    <span class="v5-toast__ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2.5L18 16H2L10 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 8v3.5M10 13.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <span>有 3 名学生未提交，建议发送提醒</span>
+  </div>
+  <div class="v5-toast v5-toast--error">
+    <span class="v5-toast__ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v5M10 13.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <span>上传失败，请检查网络后重试</span>
+  </div>
+  <div class="v5-toast v5-toast--info">
+    <span class="v5-toast__ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 9v5M10 6.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <span>系统将于今晚 23:00 维护更新</span>
+  </div>
+</body>
+</html>

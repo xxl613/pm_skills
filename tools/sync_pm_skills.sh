@@ -21,7 +21,9 @@ sync_skill() {
   mkdir -p "$(dirname "$ROOT_DIR/$target_dir")"
   rsync -a --delete \
     --exclude '.DS_Store' \
-    --exclude 'README.md' \
+    --exclude '__pycache__' \
+    --exclude '*.pyc' \
+    --exclude '/README.md' \
     "$source_dir/" \
     "$ROOT_DIR/$target_dir/"
 
@@ -51,3 +53,11 @@ sync_skill "prd-writing-style" \
 sync_skill "html-prototype-style" \
   "/Users/xiaolongxiong/PycharmProjects/ai_group/.agents/skills/html-prototype-style" \
   "pm_skills/html-prototype-style"
+
+sync_skill "v5-page-planning" \
+  "/Users/xiaolongxiong/.codex/skills/v5-page-planning" \
+  "pm_skills/v5-page-planning"
+
+sync_skill "v5-ux-rule" \
+  "/Users/xiaolongxiong/.codex/skills/v5-ux-rule" \
+  "pm_skills/v5-ux-rule"

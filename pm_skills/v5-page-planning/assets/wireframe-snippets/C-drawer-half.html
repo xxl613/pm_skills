@@ -1,0 +1,27 @@
+<!doctype html><meta charset="utf-8">
+<title>线框 · C 抽屉 半屏 720</title>
+<style>
+  *{box-sizing:border-box;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
+  body{margin:0;display:flex;height:100vh;background:#fafafa;color:#444}
+  .wf{border:1.5px dashed #b8b8b8;border-radius:8px;margin:6px;padding:8px;
+      background:#fff;font-size:12px;line-height:1.5}
+  .lbl{font-weight:600;color:#666}.hint{color:#999}
+  .nav{width:80px}.main{flex:1;display:flex;flex-direction:column}
+  .conv{flex:1;display:flex;flex-direction:column;align-items:center;overflow:auto}
+  .conv .wf{width:420px}
+  .drawer{flex:0 0 720px;display:flex;flex-direction:column;border-left:2px solid #ddd}
+</style>
+<!-- C 抽屉：B + 右抽屉 720。壳层 drawer-half.html。重内容/复杂表单用 -->
+<div class="wf nav"><div class="lbl">左导航 80</div></div>
+<div class="main">
+  <div class="wf" style="height:48px"><div class="lbl">顶栏 60</div></div>
+  <div class="conv">
+    <div class="wf" style="min-height:200px"><div class="lbl">对话内容区（收窄）</div><div class="hint">参数ID?</div></div>
+    <div class="wf" style="height:80px"><div class="lbl">输入台</div></div>
+  </div>
+</div>
+<div class="drawer">
+  <div class="wf"><div class="lbl">抽屉标题 + 关闭</div></div>
+  <div class="wf" style="flex:1"><div class="lbl">抽屉内容</div><div class="hint">详情 / 复杂表单（form, table） · 参数ID?</div></div>
+  <div class="wf"><div class="lbl">抽屉底部操作</div><div class="hint">button：次（左）+ 主（右）</div></div>
+</div>
