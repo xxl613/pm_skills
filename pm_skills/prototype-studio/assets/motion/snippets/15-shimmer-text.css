@@ -1,0 +1,7 @@
+:root {
+  --shimmer-dur: 2000ms;
+  --shimmer-base: #7c7c7c;
+  --shimmer-highlight: #0d0d0d;
+  --shimmer-band: 400%;
+  --shimmer-ease: linear;
+}

@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>全部记录 · 合成测试</title><link rel="stylesheet" href="style.css"><script defer src="store.js"></script><script defer src="app.js"></script></head>
+<body data-page="records">
+<header class="site"><div class="fixture-label">技能自测 · 合成数据，不代表真实业务</div><h1 id="page-title">全部记录</h1><p class="intro">同一组记录，在所有页面保持一致。</p><nav aria-label="产品导航"><a href="index.html" aria-current="page">全部记录</a><a href="summary.html">记录统计</a><a href="summary.html?view=active#records">仅未完成</a></nav></header>
+<main class="main"><section class="stats" aria-label="记录统计"><div class="stat"><p>全部记录</p><strong data-stat="total">0</strong></div><div class="stat"><p>未完成</p><strong data-stat="open">0</strong></div><div class="stat"><p>已完成</p><strong data-stat="done">0</strong></div></section>
+<section class="surface" id="records"><h2 id="list-title">全部记录 <span id="visible-count">0</span></h2><form id="create-form"><label for="new-title">记录标题<input id="new-title" name="title" required maxlength="80" placeholder="输入一条测试记录"></label><button class="primary" type="submit">添加记录</button></form><p id="feedback" role="status" aria-live="polite"></p><ul id="record-list"></ul></section>
+<div class="page-bottom"><p class="caption">统计由当前记录计算；修改后可到统计页核对。</p><button id="reset" type="button">重置合成测试数据</button></div></main>
+<dialog id="edit-dialog" aria-labelledby="edit-heading"><form id="edit-form"><h2 id="edit-heading">编辑记录</h2><label for="edit-title">记录标题<input id="edit-title" required maxlength="80"></label><p id="edit-error" role="alert"></p><div class="dialog-actions"><button id="edit-cancel" type="button">取消</button><button type="submit" class="primary">保存修改</button></div></form></dialog>
+<dialog id="delete-dialog" aria-labelledby="delete-heading"><h2 id="delete-heading">删除记录</h2><p>删除“<strong id="delete-title"></strong>”后，所有页面的记录与统计会同步更新。</p><div class="dialog-actions"><button id="delete-cancel" type="button">取消</button><button id="delete-confirm" type="button" class="danger">删除记录</button></div></dialog>
+<!-- prototype-studio:review:start -->
+<link rel="stylesheet" href="_review/review-shell.css">
+<script defer src="_review/review-data.js"></script>
+<script defer src="_review/review-shell.js"></script>
+<!-- prototype-studio:review:end -->
+</body></html>

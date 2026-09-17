@@ -1,0 +1,15 @@
+/* Hover-spring transition only — bring your own avatar/chip
+   styling (size, shape, border, stacking, background). */
+.t-avatar {
+  transform-origin: center;
+  /* translateY before scale so scale doesn't amplify the lift offset. */
+  transform:
+    translateY(var(--shift, 0px))
+    scale(var(--scale-active, 1));
+  transition: transform var(--avatar-dur) var(--avatar-ease-in);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-avatar { transition: none !important; transform: none !important; }
+}

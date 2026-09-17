@@ -1,0 +1,212 @@
+<!doctype html>
+<!-- 输入台组件 · 提取自对话流底部 dock（Figma 2117:2369 实测：840×136、圆角24、浮层影、40px 圆形描边图标钮）。
+     这里抽成独立可复用组件，含 默认 / 输入中 / 带附件 三态。附件 chip = 「对话中传文件」的派生样式（Figma 无此态）。
+     ⚠ 硬规则：输入台是对话流标准件，画页面时整块 copy examples/chat-flow-full.html 的 .v5-composer
+       （含真实图标 icons/composer-*.svg），除占位文案外禁止任何样式改动。本文件只作三态参考。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 输入台 input-composer</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  body {
+    margin: 0;
+    background: var(--v5-color-bg);
+    font-family: var(--v5-font-family);
+    color: var(--v5-color-text);
+    padding: var(--v5-space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--v5-space-6);
+    align-items: center;
+  }
+  .demo-label {
+    width: var(--v5-content-max);
+    font-size: var(--v5-font-size-caption);
+    color: var(--v5-color-text-secondary);
+    margin-bottom: calc(-1 * var(--v5-space-4));
+  }
+
+  /* ---------- 输入台外壳（Figma 2117:2369 实测：圆角24 + 浮层影） ---------- */
+  .v5-composer {
+    width: var(--v5-content-max);          /* 840，与对话列同宽居中 */
+    box-sizing: border-box;
+    background: var(--v5-color-surface);
+    border: 1px solid var(--v5-color-border);
+    border-radius: 24px;
+    box-shadow: var(--v5-shadow-overlay);
+    padding: var(--v5-space-4) var(--v5-space-4) var(--v5-space-3); /* 16/16/12 */
+    display: flex;
+    flex-direction: column;
+    gap: var(--v5-space-3);
+  }
+
+  /* 占位/正文输入区 */
+  .v5-composer__field {
+    min-height: 44px;
+    font-size: var(--v5-font-size-body);
+    line-height: var(--v5-line-height-body);
+    color: var(--v5-color-text);
+    padding: var(--v5-space-1) var(--v5-space-1) 0;
+    outline: none;
+  }
+  .v5-composer__field[data-empty]::before {
+    content: attr(data-empty);
+    color: var(--v5-color-text-disabled);  /* 占位文案灰 */
+  }
+
+  /* 已选附件区（对话中传文件 · 派生样式） */
+  .v5-composer__attachments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--v5-space-2);
+  }
+  .v5-file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--v5-space-2);
+    max-width: 280px;
+    padding: var(--v5-space-2) var(--v5-space-3);
+    background: var(--v5-color-bg);
+    border: 1px solid var(--v5-color-border);
+    border-radius: var(--v5-radius-md);
+  }
+  .v5-file-chip__icon {
+    width: 28px; height: 28px;            /* 元素级像素 */
+    flex: none;
+    display: grid; place-items: center;
+    border-radius: var(--v5-radius-sm);
+    background: var(--v5-color-fill);
+    color: var(--v5-color-text-tertiary);
+  }
+  .v5-file-chip__meta { min-width: 0; display: flex; flex-direction: column; }
+  .v5-file-chip__name {
+    font-size: var(--v5-font-size-caption);
+    color: var(--v5-color-text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .v5-file-chip__sub {
+    font-size: 12px;                       /* 说明文字档 */
+    line-height: 18px;
+    color: var(--v5-color-text-secondary);
+  }
+  .v5-file-chip__close {
+    flex: none; width: 18px; height: 18px;
+    display: grid; place-items: center;
+    color: var(--v5-color-text-secondary);
+    cursor: pointer;
+  }
+
+  /* 操作行 */
+  .v5-composer__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .v5-composer__cluster { display: flex; align-items: center; gap: var(--v5-space-2); }
+
+  /* 图标钮（Figma 2117:2372–2396 实测）：40px 圆形 · 白底 · 0.5 描边 */
+  .v5-iconbtn {
+    width: 40px; height: 40px;
+    flex: none;
+    display: grid; place-items: center;
+    border-radius: 20px;
+    color: var(--v5-color-text-secondary);
+    background: var(--v5-color-surface);
+    border: 0.5px solid var(--v5-color-border); cursor: pointer;
+  }
+  .v5-iconbtn:hover { background: var(--v5-color-fill); }
+
+  /* 发送按钮（Figma 实测）：40px 圆形 · #f7f8fa 灰底 · 品牌蓝纸飞机 */
+  .v5-composer__send {
+    width: 40px; height: 40px; flex: none;
+    display: grid; place-items: center;
+    border: none; cursor: pointer;
+    border-radius: 20px;
+    color: var(--v5-color-brand);
+    background: var(--v5-color-bg);
+  }
+  .v5-composer__send[disabled] {
+    color: var(--v5-color-text-disabled);
+    cursor: not-allowed;
+  }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <!-- 态 1：默认（空，发送禁用） -->
+  <div class="demo-label">默认态（占位文案，发送禁用）</div>
+  <div class="v5-composer" role="group" aria-label="输入台">
+    <div class="v5-composer__field" data-empty="输入消息，或粘贴 / 拖入文件…"></div>
+    <div class="v5-composer__actions">
+      <div class="v5-composer__cluster">
+        <!-- SLOT: 左侧工具（+ 附件 / @ 提及） -->
+        <button class="v5-iconbtn" title="添加附件" aria-label="添加附件">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <button class="v5-iconbtn" title="提及 @" aria-label="提及">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.4 6.6A4.5 4.5 0 1 0 14 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="2.2" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+      </div>
+      <div class="v5-composer__cluster">
+        <!-- SLOT: 右侧操作（语音 / 麦克 / 发送） -->
+        <button class="v5-iconbtn" title="语音通话" aria-label="语音通话">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 4.5c0 6 4.5 10.5 10.5 10.5l-2-3-2.5.8a8 8 0 0 1-3.8-3.8L8 6.5 5 4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="v5-iconbtn" title="语音输入" aria-label="语音输入">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="7.5" y="3" width="5" height="9" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 9a5 5 0 0 0 10 0M10 14v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button class="v5-composer__send" title="发送" aria-label="发送" disabled>
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3.5 10 16 4l-4.5 12L9 11.5 3.5 10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 态 2：输入中（有文字，发送可用） -->
+  <div class="demo-label">输入中（发送可用）</div>
+  <div class="v5-composer" role="group" aria-label="输入台">
+    <div class="v5-composer__field">帮我统计本次作业的提交率，并生成一张趋势图。</div>
+    <div class="v5-composer__actions">
+      <div class="v5-composer__cluster">
+        <button class="v5-iconbtn" title="添加附件" aria-label="添加附件"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <button class="v5-iconbtn" title="提及 @" aria-label="提及"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.4 6.6A4.5 4.5 0 1 0 14 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="2.2" stroke="currentColor" stroke-width="1.6"/></svg></button>
+      </div>
+      <div class="v5-composer__cluster">
+        <button class="v5-iconbtn" title="语音通话" aria-label="语音通话"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 4.5c0 6 4.5 10.5 10.5 10.5l-2-3-2.5.8a8 8 0 0 1-3.8-3.8L8 6.5 5 4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+        <button class="v5-iconbtn" title="语音输入" aria-label="语音输入"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="7.5" y="3" width="5" height="9" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 9a5 5 0 0 0 10 0M10 14v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <button class="v5-composer__send" title="发送" aria-label="发送"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3.5 10 16 4l-4.5 12L9 11.5 3.5 10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 态 3：带附件（对话中传文件 · 派生样式，附件 chip 显示在输入区上方） -->
+  <div class="demo-label">带附件（对话中传文件 · 派生：文件 chip 含名称/大小/移除）</div>
+  <div class="v5-composer" role="group" aria-label="输入台">
+    <div class="v5-composer__attachments">
+      <!-- SLOT: 已选文件列表 -->
+      <div class="v5-file-chip">
+        <span class="v5-file-chip__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9 1.5H4.5A1.5 1.5 0 0 0 3 3v10a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 13 13V5.5L9 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
+        <span class="v5-file-chip__meta">
+          <span class="v5-file-chip__name">第三章·结构作业提交明细.xlsx</span>
+          <span class="v5-file-chip__sub">218 KB</span>
+        </span>
+        <span class="v5-file-chip__close" title="移除" aria-label="移除"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+      </div>
+    </div>
+    <div class="v5-composer__field">这是上一轮的提交明细，帮我对比本轮。</div>
+    <div class="v5-composer__actions">
+      <div class="v5-composer__cluster">
+        <button class="v5-iconbtn" title="添加附件" aria-label="添加附件"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <button class="v5-iconbtn" title="提及 @" aria-label="提及"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.4 6.6A4.5 4.5 0 1 0 14 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="2.2" stroke="currentColor" stroke-width="1.6"/></svg></button>
+      </div>
+      <div class="v5-composer__cluster">
+        <button class="v5-iconbtn" title="语音通话" aria-label="语音通话"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 4.5c0 6 4.5 10.5 10.5 10.5l-2-3-2.5.8a8 8 0 0 1-3.8-3.8L8 6.5 5 4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+        <button class="v5-iconbtn" title="语音输入" aria-label="语音输入"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="7.5" y="3" width="5" height="9" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 9a5 5 0 0 0 10 0M10 14v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <button class="v5-composer__send" title="发送" aria-label="发送"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3.5 10 16 4l-4.5 12L9 11.5 3.5 10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

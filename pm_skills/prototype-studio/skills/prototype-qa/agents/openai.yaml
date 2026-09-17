@@ -1,0 +1,4 @@
+interface:
+  display_name: "原型验收"
+  short_description: "检查页面与 PRD 覆盖、数据来源、跨页交互、视觉及交付证据"
+  default_prompt: "请使用 $prototype-qa 验收此原型，列出检查证据、待确认项和未验证范围。"

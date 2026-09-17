@@ -1,0 +1,41 @@
+<!doctype html>
+<!-- 派生组件：Figma 无此设计，按 V5 令牌与既有组件风格规格补充。
+     分页 pagination · 页码~32：默认白底描边+text；当前页近黑底白字；hover fill；上下页禁用 disabled 色。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 分页 pagination</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; flex-direction: column; gap: var(--v5-space-5); }
+  .demo-label { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .v5-pager { display: flex; align-items: center; gap: var(--v5-space-2); font-size: var(--v5-font-size-caption); }
+  .v5-pg { min-width: 32px; height: 32px; padding: 0 var(--v5-space-2); border: 1px solid var(--v5-color-border);
+    background: var(--v5-color-surface); color: var(--v5-color-text); border-radius: var(--v5-radius-md);
+    display: grid; place-items: center; cursor: pointer; font: inherit; }
+  .v5-pg:hover { background: var(--v5-color-fill); }
+  .v5-pg--current { background: var(--v5-color-text); border-color: var(--v5-color-text); color: #fff; }
+  .v5-pg--current:hover { background: #383f4a; border-color: #383f4a; }                /* 派生 */
+  .v5-pg:disabled { color: var(--v5-color-text-disabled); cursor: not-allowed; background: var(--v5-color-surface); }
+  .v5-pg--ellipsis { border: none; background: transparent; color: var(--v5-color-text-secondary); cursor: default; }
+  .v5-total { color: var(--v5-color-text-secondary); margin-right: var(--v5-space-3); }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <div class="demo-label">分页（上一页禁用 · 当前页近黑 · 省略号 · 共 N 条）</div>
+  <div class="v5-pager">
+    <span class="v5-total">共 128 条</span>
+    <button class="v5-pg" disabled><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="v5-pg v5-pg--current">1</button>
+    <button class="v5-pg">2</button>
+    <button class="v5-pg">3</button>
+    <button class="v5-pg">4</button>
+    <span class="v5-pg v5-pg--ellipsis">…</span>
+    <button class="v5-pg">13</button>
+    <button class="v5-pg"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+</body>
+</html>

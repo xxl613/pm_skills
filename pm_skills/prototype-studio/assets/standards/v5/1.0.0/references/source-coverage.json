@@ -1,0 +1,72 @@
+{
+  "legacy_reference_files": [
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/00-page-archetypes.md",
+      "sha256": "1f1a135c906ec89f0faff4d572ad871f4925f734b585bfdcd2f8e3216bfc0c5c",
+      "read_lines": "1-104",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/01-tokens.md",
+      "sha256": "87acd5c771f7ae5fee549aef51950b95a57548abfd4c06e300b0b675c5d1b004",
+      "read_lines": "1-95",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/02-page-shell.md",
+      "sha256": "89dc89f6331e207016ac1260e8c3d1b9a77ba36f08a70365e6acde50c5fc9e75",
+      "read_lines": "1-64",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/03-components.md",
+      "sha256": "f5a686c20aa8bf012f7c522ca91f42b2d9b1cc44bec5321c200a6bdb9ac7533d",
+      "read_lines": "1-84",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/04-interaction-copy.md",
+      "sha256": "177e07134d0199a08d5b7c916ac5d65f506e308d78ce6a805aa98f599cde65ab",
+      "read_lines": "1-56",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/05-ai-patterns.md",
+      "sha256": "f0393b3b31cd4018391b62fa77e61b4edfa3f60c98179045252de539246cc80b",
+      "read_lines": "1-142",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/06-figma-extract.md",
+      "sha256": "faa411ec0b0d006eb68e519268df2ef8d766668d1551d2bd8f97abd5d7bfa11c",
+      "read_lines": "1-44",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/07-card-anatomy.md",
+      "sha256": "e8ce2d6c4fef762cec50952392528b64208c9f1cccc329d37afbca0d11fdab22",
+      "read_lines": "1-97",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/08-platform-routing.md",
+      "sha256": "a5fdd41331aec4ad20b687cc93eee5e677e2897b103b0a91cbc3f5adff5c655c",
+      "read_lines": "1-59",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/09-mobile-ui.md",
+      "sha256": "3661230293a08bec2f2c084892ca57cbd966a254ec9961f7838487bce18adac8",
+      "read_lines": "1-65",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    },
+    {
+      "file": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/99-review-checklist.md",
+      "sha256": "c8cc999271591fd1bc2e127baefc57e3b1ab7e6556ae3b1f7559a1cc6170d2bf",
+      "read_lines": "1-72",
+      "status": "read completely; active rules normalized with conflicts documented in verification.md"
+    }
+  ],
+  "total_lines": 882,
+  "runtime_dependency_on_legacy": false
+}

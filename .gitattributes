@@ -1,0 +1,2 @@
+# Preserve the synchronized plugin bytes, including standard-package checksums.
+pm_skills/prototype-studio/** -text

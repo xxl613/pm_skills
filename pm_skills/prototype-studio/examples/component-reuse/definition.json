@@ -1,0 +1,13 @@
+{
+  "id": "resource-note",
+  "version": "1.0.0",
+  "title": "资料说明标准件",
+  "platforms": ["web"],
+  "scope": "A user-selected content region; isolated example only",
+  "locked": ["card hierarchy", "expand/collapse action and aria-expanded", "scoped component styles"],
+  "slots": [],
+  "states": ["collapsed", "expanded"],
+  "examples": ["index.html"],
+  "source": {"type": "bundled-example", "path": "examples/component-reuse/source", "note": "Created for validating registration and reuse; not an adopted business component"},
+  "license": {"status": "not-specified", "note": "No external artwork or borrowed runtime dependency"}
+}

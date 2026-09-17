@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "decisions": [
+    {"id":"MOCK-001","kind":"mock-rule","status":"pending","question":"本次仅作为技能自测的合成规则：3 条任务，2 未完成、1 已完成；所有 CRUD 及统计共用这组记录。此记录不表示真实业务数据或用户已确认模拟业务方案。","affectedPages":["records","summary","active"]}
+  ]
+}

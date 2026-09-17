@@ -1,0 +1,154 @@
+<!doctype html>
+<!-- 成品样例页 · 门户（A 版式 · V5 小管家首页「默认刚进来」）
+     忠于 Figma「全自动课程助教 V5」frame 823:1390 逐像素实测。
+     覆盖：居中大标题（DingTalk JinBuTi 48 + 双星饰）→ 两行副标题 → 统一首页群像 → 920 大输入台（模型芯片 + @/+ +
+           4 个专员 chip + 通话/语音/应用市场/发送）→ 3 张待办建议卡。
+     主区背景为白（区别于对话流页的 #f7f8fa）；无顶栏。
+     真实素材：../icons/*.svg ../media/*.png（home-agent-cast、agent-portrait-a/b/c/d、model-logo），
+     copy 本页必须连同素材目录一起。
+     ⚠ 派生说明：标题字体 DingTalk JinBuTi 未随包分发，无字体时回退 PingFang SC Semibold。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 门户成品样例 home-portal-full</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100vh; display: flex; overflow: hidden;
+    font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-surface); }
+  img { display: block; }
+
+  /* ============ 左侧导航（同 chat-flow-full） ============ */
+  .v5-nav { width: var(--v5-nav-width); flex: none; height: 100%; background: var(--v5-color-surface);
+    border-right: 1px solid var(--v5-color-border); display: flex; flex-direction: column; align-items: center;
+    padding: 12px 0 20px; }
+  .v5-nav__logo { width: 40px; height: 40px; margin-bottom: 40px; }
+  .v5-nav__logo img { width: 100%; height: 100%; }
+  .v5-nav__items { flex: 1; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+  .v5-nav__item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; }
+  .v5-nav__ico { width: 36px; height: 36px; border-radius: 8px; background: var(--v5-color-bg); display: grid; place-items: center; }
+  .v5-nav__ico img { width: 24px; height: 24px; }
+  .v5-nav__cap { font-size: 12px; line-height: 20px; color: var(--v5-color-text-tertiary); }
+  .v5-nav__item--active .v5-nav__ico { background: var(--v5-color-border); }
+  .v5-nav__item--active .v5-nav__cap { font-weight: 600; color: var(--v5-color-text); }
+  .v5-nav__avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; }
+  .v5-nav__avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ============ 门户主区（白底 · 无顶栏 · 居中列） ============ */
+  .v5-portal { flex: 1; min-width: 0; height: 100%; overflow-y: auto;
+    display: flex; flex-direction: column; align-items: center; padding: 64px 0 32px; }
+
+  /* 大标题：DingTalk JinBuTi 48 + 双星饰（Figma 823:1531） */
+  .v5-hero-title { position: relative; height: 58px; display: flex; align-items: center; gap: 20px;
+    font-family: "DingTalk JinBuTi", var(--v5-font-family); font-size: 48px; line-height: 58px;
+    font-weight: 600; color: var(--v5-color-text); }
+  .v5-hero-title .spark-lg { position: absolute; left: 67px; top: 2px; width: 14px; height: 14px; }
+  .v5-hero-title .spark-sm { position: absolute; left: -4px; top: 39px; width: 10px; height: 10px; }
+
+  /* 副标题：两行居中（Figma 823:1454） */
+  .v5-hero-sub { margin-top: 12px; width: 502px; text-align: center;
+    font-size: 16px; line-height: 28px; color: var(--v5-color-text-secondary); }
+
+  /* 所有首页统一使用此完整群像，不拆分、不重拼。 */
+  .v5-home-cast { width: 568px; height: auto; margin-top: 18px; object-fit: contain; }
+
+  /* ============ 门户输入台 920×170（Figma 823:1461） ============ */
+  .v5-composer { position: relative; width: var(--v5-portal-col); height: 170px; margin-top: 20px; flex: none;
+    background: var(--v5-color-surface); border: 1px solid var(--v5-color-border); border-radius: 24px;
+    box-shadow: var(--v5-shadow-overlay); padding: 15px 16px; }
+  .v5-composer__field { font-size: 16px; line-height: 26px; color: var(--v5-color-text-disabled); }
+  .v5-composer__actions { position: absolute; left: 12px; right: 12px; bottom: 12px;
+    display: flex; align-items: center; }
+  .v5-composer__btn { width: 40px; height: 40px; flex: none; display: grid; place-items: center; cursor: pointer;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border); border-radius: 20px; padding: 0; }
+  .v5-composer__btn img { width: 20px; height: 20px; }
+  .v5-composer__btn + .v5-composer__btn { margin-left: 12px; }
+  .v5-composer__model { border-radius: 20px; }
+  .v5-composer__model img { width: 28px; height: 28px; border-radius: 50%; }
+  .v5-composer__divider { width: 1px; height: 22px; background: var(--v5-color-border); margin: 0 12px; }
+  .v5-composer__spacer { flex: 1; }
+  .v5-composer__btn--send { background: var(--v5-color-bg); border: none; }
+  /* 专员 chip：白底 0.5 描边 圆角12 · 头像20圆 + 名称14（Figma 823:1496） */
+  .v5-expert { display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px 0 10px;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border); border-radius: 12px;
+    cursor: pointer; margin-left: 12px; font-family: inherit; text-decoration: none;
+    font-size: 14px; line-height: 22px; color: var(--v5-color-text); }
+  .v5-expert i { width: 20px; height: 20px; position: relative; border-radius: 50%; overflow: hidden; flex: none; background: #cfa993; }
+  .v5-expert i img { width: auto; height: 48px; max-width: none; position: absolute; left: 50%; top: 0; transform: translateX(-50%); }
+
+  /* ============ 待办建议卡 ×3（Figma 823:1538）：#f7f8fa 圆角16 ============ */
+  .v5-portal-cards { display: flex; gap: 19px; margin-top: 24px; }
+  .v5-pcard { width: 294px; height: 124px; background: var(--v5-color-bg); border-radius: 16px;
+    padding: 16px; cursor: pointer; }
+  .v5-pcard__hd { display: flex; align-items: center; gap: 8px; }
+  .v5-pcard__t { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .v5-pcard__d { margin-top: 8px; font-size: 14px; line-height: 28px; color: var(--v5-color-text-secondary); }
+</style>
+</head>
+<body>
+  <!-- ===== 左侧导航 ===== -->
+  <nav class="v5-nav">
+    <div class="v5-nav__logo"><img src="../media/logo-v5.png" alt="logo" /></div>
+    <div class="v5-nav__items">
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-calendar.svg" alt="" /></span><span class="v5-nav__cap">日历</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-course.svg" alt="" /></span><span class="v5-nav__cap">课程</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-ai-research.svg" alt="" /></span><span class="v5-nav__cap">AI教研</span></a>
+      <a class="v5-nav__item v5-nav__item--active"><span class="v5-nav__ico"><img src="../icons/nav-v5-assistant.svg" alt="" /></span><span class="v5-nav__cap">V5小管家</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-ai-tutor.svg" alt="" /></span><span class="v5-nav__cap">AI助教</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-knowledge.svg" alt="" /></span><span class="v5-nav__cap">知识发现</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-resource-lib.svg" alt="" /></span><span class="v5-nav__cap">资源库</span></a>
+    </div>
+    <div class="v5-nav__avatar"><img src="../media/user-avatar.png" alt="用户头像" /></div>
+  </nav>
+
+  <!-- ===== 门户主区 ===== -->
+  <main class="v5-portal">
+    <div class="v5-hero-title">
+      <span>V5</span><span>小管家</span>
+      <img class="spark-lg" src="../icons/sparkle-lg.svg" alt="" />
+      <img class="spark-sm" src="../icons/sparkle-sm.svg" alt="" />
+    </div>
+    <div class="v5-hero-sub">这是你的教学事务统一入口。你可以直接告诉我想处理的作业、会议、课程资料和学生反馈</div>
+
+    <img class="v5-home-cast" src="../media/home-agent-cast.png" alt="V5 智能助手团队" />
+
+    <!-- 门户输入台 -->
+    <div class="v5-composer">
+      <div class="v5-composer__field">您可以在这里说出您想要做的事哦，也可以输入@，指定具体的专员帮忙</div>
+      <div class="v5-composer__actions">
+        <button class="v5-composer__btn v5-composer__model" aria-label="模型"><img src="../media/model-logo.png" alt="" /></button>
+        <button class="v5-composer__btn" aria-label="添加"><img src="../icons/composer-plus.svg" alt="" /></button>
+        <button class="v5-composer__btn" aria-label="提及"><img src="../icons/composer-at.svg" alt="" /></button>
+        <span class="v5-composer__divider"></span>
+        <a class="v5-expert" href="chat-flow-full.html"><i><img src="../media/agent-portrait-a.png" alt="" /></i>教学活动</a>
+        <a class="v5-expert" href="chat-flow-full.html"><i><img src="../media/agent-portrait-b.png" alt="" /></i>学科管理</a>
+        <a class="v5-expert" href="chat-flow-full.html"><i><img src="../media/agent-portrait-c.png" alt="" /></i>会议日程</a>
+        <a class="v5-expert" href="chat-flow-full.html"><i><img src="../media/agent-portrait-d.png" alt="" /></i>备课管理</a>
+        <span class="v5-composer__spacer"></span>
+        <button class="v5-composer__btn" aria-label="语音通话"><img src="../icons/composer-phone.svg" alt="" /></button>
+        <button class="v5-composer__btn" aria-label="语音输入"><img src="../icons/composer-mic.svg" alt="" /></button>
+        <button class="v5-composer__btn" aria-label="应用市场"><img src="../icons/app-grid.svg" alt="" /></button>
+        <span class="v5-composer__divider"></span>
+        <button class="v5-composer__btn v5-composer__btn--send" aria-label="发送"><img src="../icons/composer-send.svg" alt="" /></button>
+      </div>
+    </div>
+
+    <!-- 待办建议卡 ×3 -->
+    <div class="v5-portal-cards">
+      <div class="v5-pcard">
+        <div class="v5-pcard__hd"><span class="v5-pcard__t">上周五布置的《第三章练习》</span></div>
+        <div class="v5-pcard__d">继续查看这份作业的学生完成情况，或补充后续处理动作。</div>
+      </div>
+      <div class="v5-pcard">
+        <div class="v5-pcard__hd"><span class="v5-pcard__t">今天《高等数学》的学生反馈</span></div>
+        <div class="v5-pcard__d">从最近一节课开始追问，更容易衔接当前教学节奏。</div>
+      </div>
+      <div class="v5-pcard">
+        <div class="v5-pcard__hd"><span class="v5-pcard__t">昨天创建的教研会议安排</span></div>
+        <div class="v5-pcard__d">如果还没确认参会人和时间，可以直接在这里接着处理。</div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

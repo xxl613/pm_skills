@@ -1,0 +1,34 @@
+{
+  "ok": true,
+  "browser": "152.0.7977.76",
+  "checks": [
+    "http: index.html expand/collapse, aria state, host CSS isolation",
+    "http: second.html expand/collapse, aria state, host CSS isolation",
+    "file: index.html expand/collapse, aria state, host CSS isolation",
+    "file: second.html expand/collapse, aria state, host CSS isolation",
+    "V5 history: query=04, unique row/tick, hover open, Escape dismiss with focus retained, no 1440px host spill",
+    "V5 history: modal hides rail and removes 16 links from tab order; close restores them",
+    "V5 history: invalid query falls back to 01",
+    "V5 examples/chat-flow-execution.html: rendered without failed image resources",
+    "V5 examples/chat-flow-full.html: rendered without failed image resources",
+    "V5 examples/chat-flow-plan-edit.html: rendered without failed image resources",
+    "V5 examples/home-portal-full.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-agent-skill.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-chat.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-composer.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-feedback.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-file.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-followup.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-history.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-portal.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-sheet-add.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-task.html: rendered without failed image resources",
+    "V5 examples-mobile/mobile-thinking.html: rendered without failed image resources"
+  ],
+  "errors": [],
+  "limits": [
+    "No comparison with freshly exported Figma nodes.",
+    "Legacy full-page samples contain unconnected controls; only history interactions and reusable note interactions were exercised.",
+    "Image loading checks do not certify business-data consistency in legacy illustrative text."
+  ]
+}

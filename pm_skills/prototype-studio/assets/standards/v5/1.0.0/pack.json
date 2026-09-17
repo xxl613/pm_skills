@@ -1,0 +1,1409 @@
+{
+  "format_version": 1,
+  "id": "v5",
+  "version": "1.0.0",
+  "title": "V5 对话与界面标准包",
+  "platforms": [
+    "desktop-1440",
+    "mobile-375"
+  ],
+  "scope": "Only user-selected pages or regions. Desktop chat, mobile chat and branded home are separate selections; use of one does not impose the others.",
+  "locked": [
+    "Selected component HTML structure, classes, CSS geometry and interaction semantics",
+    "Real icons, illustrations and their identity mapping",
+    "Desktop and mobile component families remain separate",
+    "Versioned snapshot files remain immutable; customize in project-owned copies or explicit data slots"
+  ],
+  "slots": [
+    {
+      "name": "business-content",
+      "allowed": "Confirmed business names, labels, objects and records; any new data source or lifecycle requires specification update"
+    },
+    {
+      "name": "agent-identity",
+      "allowed": "Reuse confirmed project mapping first. New identity selects a bundled media or avatar asset once."
+    },
+    {
+      "name": "host-scope",
+      "allowed": "Embed selected region or deliberately integrate markup into host. Host layout outside scope is unconstrained."
+    }
+  ],
+  "states": [
+    "desktop completed conversation",
+    "desktop execution and plan edit",
+    "desktop history hover/focus/current-query/Escape/modal-blocked",
+    "mobile idle/input/task/thinking/selection/feedback/file/followup/history/sheet"
+  ],
+  "examples": [
+    {
+      "path": "assets/examples/chat-flow-full.html",
+      "kind": "desktop-visual-sample",
+      "runtime_note": "history behavior present; other visible controls require project wiring"
+    },
+    {
+      "path": "assets/examples/chat-flow-execution.html",
+      "kind": "desktop-execution-visual-sample"
+    },
+    {
+      "path": "assets/examples/chat-flow-plan-edit.html",
+      "kind": "desktop-plan-edit-visual-sample"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-chat.html",
+      "kind": "mobile-visual-sample",
+      "runtime_note": "sample renderer is not a complete interactive product"
+    },
+    {
+      "path": "assets/standalone/history-rail.html",
+      "kind": "interactive-local-component"
+    }
+  ],
+  "source": {
+    "type": "local-legacy-skill",
+    "path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule",
+    "skill_sha256": "da3de9072d4a37e4e9701295fd2011b3f9ab7fa61ee9ad0b5e90d1853619cb44",
+    "upstream_design": [
+      {
+        "file": "4t35fBc4I64igQH6qZpIGL",
+        "nodes": [
+          "2117:1928",
+          "2907:2110",
+          "2907:3279",
+          "6050:5423"
+        ],
+        "status": "declared by legacy source; not freshly fetched"
+      },
+      {
+        "file": "ljg4eVP3elzzx5b2Q8FYdI",
+        "nodes": [
+          "56301:10134"
+        ],
+        "status": "legacy mobile portal source only"
+      }
+    ]
+  },
+  "license": {
+    "status": "unknown",
+    "note": "No asset redistribution license was found in the local legacy skill; do not invent an open-source license or claim ownership."
+  },
+  "visual_baselines": {
+    "directory": "assets/figma-reference",
+    "origin": "legacy component-render screenshots, not original Figma exports",
+    "mobile_limit": "shell-mobile baselines reflect an older portal/mobile shell source; not proof of parity with current mobile B/C nodes"
+  },
+  "boundaries": {
+    "not_included": [
+      "legacy skill entrypoint",
+      "legacy project onboarding",
+      "legacy page navigation injection",
+      "legacy project profile",
+      "macOS Finder metadata (.DS_Store)"
+    ],
+    "sample_data": "All bundled legacy names, counts, dates and 16 history entries are fixture content, not verified project facts or database constants.",
+    "legacy_shells": "Source snapshots retained for geometry and assets. Read current package specifications before reuse; explicitly corrected rules take precedence over stale source examples. Static controls require project wiring."
+  },
+  "files": [
+    {
+      "path": "assets/avatars/_catalog.html",
+      "sha256": "0275995267494878bfadb00ad5223bbcd7e922cbf3f1288853b8535e720fb288",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/_catalog.html",
+      "source_sha256": "0275995267494878bfadb00ad5223bbcd7e922cbf3f1288853b8535e720fb288",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/daerwen.png",
+      "sha256": "4b8d48e7788eeb9e52577c35ac17e5a271511ce38a7b6d6817146a196d18cb9c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/daerwen.png",
+      "source_sha256": "4b8d48e7788eeb9e52577c35ac17e5a271511ce38a7b6d6817146a196d18cb9c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/dafenqi.png",
+      "sha256": "cb633dfed7f70a95fa3a301dd2068d84c7aff3fac90974b03fbf87521b97f38e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/dafenqi.png",
+      "source_sha256": "cb633dfed7f70a95fa3a301dd2068d84c7aff3fac90974b03fbf87521b97f38e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/dikaer.png",
+      "sha256": "3c038641531b58af7b47f7cba2850450287978eea7f98332db3b53fe2178e426",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/dikaer.png",
+      "source_sha256": "3c038641531b58af7b47f7cba2850450287978eea7f98332db3b53fe2178e426",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/dufu.png",
+      "sha256": "77635e89acba025c9c6e220cfc370daa9b8da10d7f598595b058ee72eecd5085",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/dufu.png",
+      "source_sha256": "77635e89acba025c9c6e220cfc370daa9b8da10d7f598595b058ee72eecd5085",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/fangao.png",
+      "sha256": "8b8aaa6a7a14b53bc75cc6fdb7e499c10463751f6b791e43b53721133e82b188",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/fangao.png",
+      "source_sha256": "8b8aaa6a7a14b53bc75cc6fdb7e499c10463751f6b791e43b53721133e82b188",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/fuluoyide.png",
+      "sha256": "0777239e84621427f83b3a9757d4466c22d92bc538d10943488ce273bb8c9886",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/fuluoyide.png",
+      "source_sha256": "0777239e84621427f83b3a9757d4466c22d92bc538d10943488ce273bb8c9886",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/kongzi.png",
+      "sha256": "f5d8a710f8237ae5051d5ffa530c4038552e52fa9594c99fa97ff2ce66e47347",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/kongzi.png",
+      "source_sha256": "f5d8a710f8237ae5051d5ffa530c4038552e52fa9594c99fa97ff2ce66e47347",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/libai.png",
+      "sha256": "7a28e16450040fcca76f887c0bf485c96b6e0053f78b4c676ac9806f63110880",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/libai.png",
+      "source_sha256": "7a28e16450040fcca76f887c0bf485c96b6e0053f78b4c676ac9806f63110880",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/liqingzhao.png",
+      "sha256": "33eb79d0ecca0ae51e024a5d54a7b52d50d679383ab760d1a8161607fe8c7ab0",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/liqingzhao.png",
+      "source_sha256": "33eb79d0ecca0ae51e024a5d54a7b52d50d679383ab760d1a8161607fe8c7ab0",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nan-1.png",
+      "sha256": "40048f6d9add1ae2965e6af187455d9d0a687a307373609c440a821edfbb0008",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nan-1.png",
+      "source_sha256": "40048f6d9add1ae2965e6af187455d9d0a687a307373609c440a821edfbb0008",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nan-2.png",
+      "sha256": "928147f59dfac0f9d3e0a12c4105cb31442187589d14c99f576947c55321a11d",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nan-2.png",
+      "source_sha256": "928147f59dfac0f9d3e0a12c4105cb31442187589d14c99f576947c55321a11d",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nan-3.png",
+      "sha256": "a7adde8bab29f48e86b49f5ef294ea9f6d6e3dcd99372d9140b4df4696782be3",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nan-3.png",
+      "source_sha256": "a7adde8bab29f48e86b49f5ef294ea9f6d6e3dcd99372d9140b4df4696782be3",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nan-4.png",
+      "sha256": "0f14bb7e4d5464c140963fc362bc26603faa6afc827e36eedcea8bf64a3dc5dd",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nan-4.png",
+      "source_sha256": "0f14bb7e4d5464c140963fc362bc26603faa6afc827e36eedcea8bf64a3dc5dd",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nan-5.png",
+      "sha256": "6345c1ac028bb137e4ff608bfd7772b681a93f963822747c5043b5ebc760368b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nan-5.png",
+      "source_sha256": "6345c1ac028bb137e4ff608bfd7772b681a93f963822747c5043b5ebc760368b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nan-6.png",
+      "sha256": "5305a2d9cbc40ebb113e24cd9ac86789df044751cb2799be693317cd487ea60f",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nan-6.png",
+      "source_sha256": "5305a2d9cbc40ebb113e24cd9ac86789df044751cb2799be693317cd487ea60f",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-1.png",
+      "sha256": "9318b77515821d14c6fba17f59b7b1e26800aecbc8ff4db23c1d0f7142fd2799",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-1.png",
+      "source_sha256": "9318b77515821d14c6fba17f59b7b1e26800aecbc8ff4db23c1d0f7142fd2799",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-10.png",
+      "sha256": "97a41fe563e7a752292f57a01cf55a41bc427244e033bb504862d2ed428d364c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-10.png",
+      "source_sha256": "97a41fe563e7a752292f57a01cf55a41bc427244e033bb504862d2ed428d364c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-11.png",
+      "sha256": "52b4088d224d1e7aef6636c147cf2f0b6534571f04067ac349c335cf109ef4da",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-11.png",
+      "source_sha256": "52b4088d224d1e7aef6636c147cf2f0b6534571f04067ac349c335cf109ef4da",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-12.png",
+      "sha256": "d7c2acfdfaeec456722f614429bca6cd6373e7536c641b254c01a140ef9daf8c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-12.png",
+      "source_sha256": "d7c2acfdfaeec456722f614429bca6cd6373e7536c641b254c01a140ef9daf8c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-13.png",
+      "sha256": "53cc0b61101b15acbc3c6c53742c28596c56221fa6bb699152de3c5c93eb87eb",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-13.png",
+      "source_sha256": "53cc0b61101b15acbc3c6c53742c28596c56221fa6bb699152de3c5c93eb87eb",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-14.png",
+      "sha256": "0367d9acf5bfbc9eb7e6f3d252cf6cd1cff070858aba91f105b860312eb5ee23",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-14.png",
+      "source_sha256": "0367d9acf5bfbc9eb7e6f3d252cf6cd1cff070858aba91f105b860312eb5ee23",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-15.png",
+      "sha256": "0ad10aa5130656731f7e2659a581a75d60b9766c044cdb56df1991ab18c37845",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-15.png",
+      "source_sha256": "0ad10aa5130656731f7e2659a581a75d60b9766c044cdb56df1991ab18c37845",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-2.png",
+      "sha256": "63a60956c32327180da788b18b9b05bce577c6e9d29df4991125f4ff834e028b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-2.png",
+      "source_sha256": "63a60956c32327180da788b18b9b05bce577c6e9d29df4991125f4ff834e028b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-3.png",
+      "sha256": "9ea66260b657fbc745830d58bdd910d1dfe84d5ddd04d6fe1817af5703be3453",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-3.png",
+      "source_sha256": "9ea66260b657fbc745830d58bdd910d1dfe84d5ddd04d6fe1817af5703be3453",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-4.png",
+      "sha256": "726c055f9e3267460f010f01a0cd48655692ac2c14e6a5f67bf231c25eb23396",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-4.png",
+      "source_sha256": "726c055f9e3267460f010f01a0cd48655692ac2c14e6a5f67bf231c25eb23396",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-5.png",
+      "sha256": "41944b47454ce7ef56f11f45b4cf3105f653ccaac3bd0c1769306bd8a1b0bcb4",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-5.png",
+      "source_sha256": "41944b47454ce7ef56f11f45b4cf3105f653ccaac3bd0c1769306bd8a1b0bcb4",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-6.png",
+      "sha256": "66069f4fee0a9a98471dca2e2b84e323862565721f124d15988eb2045a0997a3",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-6.png",
+      "source_sha256": "66069f4fee0a9a98471dca2e2b84e323862565721f124d15988eb2045a0997a3",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-7.png",
+      "sha256": "353e4eebc6e3c5635e8e12bc3003e1673ced37b85eb0c9f8d71b31729802e620",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-7.png",
+      "source_sha256": "353e4eebc6e3c5635e8e12bc3003e1673ced37b85eb0c9f8d71b31729802e620",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-8.png",
+      "sha256": "a930fd2f2f00e535c7adcb2285db4949e7c1d126252ca2016a3dc8cdc35a3713",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-8.png",
+      "source_sha256": "a930fd2f2f00e535c7adcb2285db4949e7c1d126252ca2016a3dc8cdc35a3713",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/nv-9.png",
+      "sha256": "506ac252e9f4016a310b596b1ceb0e5e8f8912bacfb7fe2b5c48db77a26d4add",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/nv-9.png",
+      "source_sha256": "506ac252e9f4016a310b596b1ceb0e5e8f8912bacfb7fe2b5c48db77a26d4add",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/weida.png",
+      "sha256": "603cf6c6b97686cfb2f85cb177c0819e4e194847ae6fed3d7e6bebeb93aaa135",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/weida.png",
+      "source_sha256": "603cf6c6b97686cfb2f85cb177c0819e4e194847ae6fed3d7e6bebeb93aaa135",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/zhu-1.png",
+      "sha256": "1b2681f404298d387ba0e2ceaaf90211063dc08b2ddf03a455a1cc5ff1ea8c7a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/zhu-1.png",
+      "source_sha256": "1b2681f404298d387ba0e2ceaaf90211063dc08b2ddf03a455a1cc5ff1ea8c7a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/zhu-2.png",
+      "sha256": "b87ab0ed5eb54fe11f65b43f0045667ab25b66e8da2634543c91bce5328b8c2b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/zhu-2.png",
+      "source_sha256": "b87ab0ed5eb54fe11f65b43f0045667ab25b66e8da2634543c91bce5328b8c2b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/zhu-3.png",
+      "sha256": "29cbd57d883a2b083aceadae852ba3013098d48901c034f36951f845a44f89cd",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/zhu-3.png",
+      "source_sha256": "29cbd57d883a2b083aceadae852ba3013098d48901c034f36951f845a44f89cd",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/avatars/zhu-4.png",
+      "sha256": "6628ae03617b56e3d3d1fb67caf7100ec0c80a6582c3fe88d10a686cc8488460",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/avatars/zhu-4.png",
+      "source_sha256": "6628ae03617b56e3d3d1fb67caf7100ec0c80a6582c3fe88d10a686cc8488460",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/button.html",
+      "sha256": "5fb19db9867b63194e577927edc536155c9b75d68d184bf4ae94da2ea2687fa7",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/button.html",
+      "source_sha256": "5fb19db9867b63194e577927edc536155c9b75d68d184bf4ae94da2ea2687fa7",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/card.html",
+      "sha256": "1c96e04bcb1e2539267ea7169661344a73d40b9140f3773d1621d39c2ade75bd",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/card.html",
+      "source_sha256": "1c96e04bcb1e2539267ea7169661344a73d40b9140f3773d1621d39c2ade75bd",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/chat-result-card.html",
+      "sha256": "ab3ddcc0d4ff9c7eb9ca7f161f5999687474b0fc8faae65f2f2f81e8de74691d",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/chat-result-card.html",
+      "source_sha256": "ab3ddcc0d4ff9c7eb9ca7f161f5999687474b0fc8faae65f2f2f81e8de74691d",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/dialog.html",
+      "sha256": "87f375f995c3fa27063796f77a06e10e0ac0399e2f0d6318f6457d6968de6811",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/dialog.html",
+      "source_sha256": "87f375f995c3fa27063796f77a06e10e0ac0399e2f0d6318f6457d6968de6811",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/empty-state.html",
+      "sha256": "fef22be132d9ff653ea82fb2940cdfc8e3415c2ca2ebcca7aa60601046be9257",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/empty-state.html",
+      "source_sha256": "fef22be132d9ff653ea82fb2940cdfc8e3415c2ca2ebcca7aa60601046be9257",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/file-upload.html",
+      "sha256": "4b77d7721b743dc3f5a243913d14bece8b6498eabef857de0738444f78bd2a4b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/file-upload.html",
+      "source_sha256": "4b77d7721b743dc3f5a243913d14bece8b6498eabef857de0738444f78bd2a4b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/form.html",
+      "sha256": "7b8cc4c39f4649ac65e52be39858b2ba106a5ce10255ffa553e5d387818aa0ef",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/form.html",
+      "source_sha256": "7b8cc4c39f4649ac65e52be39858b2ba106a5ce10255ffa553e5d387818aa0ef",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/history-rail.html",
+      "sha256": "f6ee8f11bf153ebb0ce1802e70ec267106774c71a119fdf9d4bd2892b9d36de2",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/history-rail.html",
+      "source_sha256": "f6ee8f11bf153ebb0ce1802e70ec267106774c71a119fdf9d4bd2892b9d36de2",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/input-composer.html",
+      "sha256": "36492434c05c5d4d8d15ca187fdf4fd7b9b095ab97c1726e4b583860a4aa0635",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/input-composer.html",
+      "source_sha256": "36492434c05c5d4d8d15ca187fdf4fd7b9b095ab97c1726e4b583860a4aa0635",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/pagination.html",
+      "sha256": "bf8897c5dd8980759ab395580f6ff8696447da53ecb6f772093b7dfe9363d25a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/pagination.html",
+      "source_sha256": "bf8897c5dd8980759ab395580f6ff8696447da53ecb6f772093b7dfe9363d25a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/table.html",
+      "sha256": "07863e40f72e0f90cdd47d085cf87f9d46f85a568dcc6f6c4f1ade31eadddd80",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/table.html",
+      "source_sha256": "07863e40f72e0f90cdd47d085cf87f9d46f85a568dcc6f6c4f1ade31eadddd80",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components/toast.html",
+      "sha256": "cb8d0e28ce8c4c43bbd60749390acc364d5de07da7b063d152a800c4d1c15e3c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/toast.html",
+      "source_sha256": "cb8d0e28ce8c4c43bbd60749390acc364d5de07da7b063d152a800c4d1c15e3c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/components-mobile/mobile-ui.css",
+      "sha256": "f7172a575c17d69bd6fc5d531ee80753ba2e0a0fc71ba4eb17f3e1e25352785e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components-mobile/mobile-ui.css",
+      "source_sha256": "f7172a575c17d69bd6fc5d531ee80753ba2e0a0fc71ba4eb17f3e1e25352785e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples/chat-flow-execution.html",
+      "sha256": "b2bdd9ef19794a2641932e6b7f806658f4886f4634e732bef1d30b37eb98c6f3",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples/chat-flow-execution.html",
+      "source_sha256": "b2bdd9ef19794a2641932e6b7f806658f4886f4634e732bef1d30b37eb98c6f3",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples/chat-flow-full.html",
+      "sha256": "d64a8822533c915e60dfcec9a58daced6230be4bb9d6e00a2f31fc505941872e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples/chat-flow-full.html",
+      "source_sha256": "d64a8822533c915e60dfcec9a58daced6230be4bb9d6e00a2f31fc505941872e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples/chat-flow-plan-edit.html",
+      "sha256": "9f428dad465bec6a311a981e4c5056399389fc891c102f7b42e47b910ec80bfe",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples/chat-flow-plan-edit.html",
+      "source_sha256": "9f428dad465bec6a311a981e4c5056399389fc891c102f7b42e47b910ec80bfe",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples/home-portal-full.html",
+      "sha256": "fdece3292a06e61d9dfab6947b620b8a2ff4163a9e7721d88e6058d30c82cfaa",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples/home-portal-full.html",
+      "source_sha256": "fdece3292a06e61d9dfab6947b620b8a2ff4163a9e7721d88e6058d30c82cfaa",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-agent-skill.html",
+      "sha256": "904edc72bd203e6604b0e33c50d927b55d363c084ae6ac785034540282fd4bc5",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-agent-skill.html",
+      "source_sha256": "904edc72bd203e6604b0e33c50d927b55d363c084ae6ac785034540282fd4bc5",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-chat.html",
+      "sha256": "f3079cd82f0382d3f8ffb83960d465bb373ad15429a4a68c67536707154043e7",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-chat.html",
+      "source_sha256": "f3079cd82f0382d3f8ffb83960d465bb373ad15429a4a68c67536707154043e7",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-composer.html",
+      "sha256": "e568fffa1c4043a9b9d25294d9af73a01eca8351e8b639b475c834c31dd09b88",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-composer.html",
+      "source_sha256": "e568fffa1c4043a9b9d25294d9af73a01eca8351e8b639b475c834c31dd09b88",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-demo.js",
+      "sha256": "949d5d51b0edcbcf27653f7885df08e606c0630a12fb1bb8458f5a6c61b4eac0",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-demo.js",
+      "source_sha256": "949d5d51b0edcbcf27653f7885df08e606c0630a12fb1bb8458f5a6c61b4eac0",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-feedback.html",
+      "sha256": "b03043f7d5a917c5130c766caf1f4b25db566f2d87e1771689fa1fc513170199",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-feedback.html",
+      "source_sha256": "b03043f7d5a917c5130c766caf1f4b25db566f2d87e1771689fa1fc513170199",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-file.html",
+      "sha256": "5a0a04b71f4b2e9ca55b19c80db017b72126591b92041a5d9b89eadb28755df6",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-file.html",
+      "source_sha256": "5a0a04b71f4b2e9ca55b19c80db017b72126591b92041a5d9b89eadb28755df6",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-followup.html",
+      "sha256": "a83351afeb41fd2d34184810f7c5fb857d2d465903727d8209fa8a5920296ec2",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-followup.html",
+      "source_sha256": "a83351afeb41fd2d34184810f7c5fb857d2d465903727d8209fa8a5920296ec2",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-history.html",
+      "sha256": "7a90ba3e231c1fbec929000f215db2cc9eb83518318dbe6caefa156754fb19cf",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-history.html",
+      "source_sha256": "7a90ba3e231c1fbec929000f215db2cc9eb83518318dbe6caefa156754fb19cf",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-portal.html",
+      "sha256": "a6c1abda43c469c65893da66d319df9414a49c491259e3dd69fe432cef04b085",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-portal.html",
+      "source_sha256": "a6c1abda43c469c65893da66d319df9414a49c491259e3dd69fe432cef04b085",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-sheet-add.html",
+      "sha256": "74a6ee7b6d598398249a7d0f1c9f6d3e3e46bd1de259a3b06a0eac486ee64e37",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-sheet-add.html",
+      "source_sha256": "74a6ee7b6d598398249a7d0f1c9f6d3e3e46bd1de259a3b06a0eac486ee64e37",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-task.html",
+      "sha256": "4be769e5472f11108c7bcebe71693ad893fb8c0630b84f2359396781aa1bdb49",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-task.html",
+      "source_sha256": "4be769e5472f11108c7bcebe71693ad893fb8c0630b84f2359396781aa1bdb49",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/examples-mobile/mobile-thinking.html",
+      "sha256": "aff26ce9e843d8509b318e612d65d7974c3544e6c89ef6fdf0972adbb21c2b1b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/examples-mobile/mobile-thinking.html",
+      "source_sha256": "aff26ce9e843d8509b318e612d65d7974c3544e6c89ef6fdf0972adbb21c2b1b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/README.md",
+      "sha256": "f9fc731efd9362283512ec91b66e2c4bfe588303b617bf093acf593a40c0f3a8",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/README.md",
+      "source_sha256": "f9fc731efd9362283512ec91b66e2c4bfe588303b617bf093acf593a40c0f3a8",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/button.png",
+      "sha256": "fa6ff7c4ed0c1de1d9a54d722fc7ff24929f948311be119d3e9dad32e3149749",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/button.png",
+      "source_sha256": "fa6ff7c4ed0c1de1d9a54d722fc7ff24929f948311be119d3e9dad32e3149749",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/card.png",
+      "sha256": "e49ab753c4169d4c59b47157983001510461833be8de9b52800bc1fd96ac6f52",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/card.png",
+      "source_sha256": "e49ab753c4169d4c59b47157983001510461833be8de9b52800bc1fd96ac6f52",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/dialog.png",
+      "sha256": "4645526ef4544fbd45aeb6e58f4210c0d97b07186aea871d1407e5b8b7d0aafc",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/dialog.png",
+      "source_sha256": "4645526ef4544fbd45aeb6e58f4210c0d97b07186aea871d1407e5b8b7d0aafc",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/empty-state.png",
+      "sha256": "a828d83b8514271c4519a7eaabca00ec092e019b750968114850075123df0d64",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/empty-state.png",
+      "source_sha256": "a828d83b8514271c4519a7eaabca00ec092e019b750968114850075123df0d64",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/file-upload.png",
+      "sha256": "d75603b4c6d6da4a85983ae120f082d43b1c84f38666fb3d38e0cbee52fbf469",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/file-upload.png",
+      "source_sha256": "d75603b4c6d6da4a85983ae120f082d43b1c84f38666fb3d38e0cbee52fbf469",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/form.png",
+      "sha256": "77282ef3ca2839c418e7d1368e44ca1f99951a6bfce2aa8ddce0c7fbb6b5feca",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/form.png",
+      "source_sha256": "77282ef3ca2839c418e7d1368e44ca1f99951a6bfce2aa8ddce0c7fbb6b5feca",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/input-composer.png",
+      "sha256": "cef5f933e60b82fc3586ca575a11599b7a2b4a051d2ec7500b55abd954073adc",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/input-composer.png",
+      "source_sha256": "cef5f933e60b82fc3586ca575a11599b7a2b4a051d2ec7500b55abd954073adc",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/pagination.png",
+      "sha256": "59266b46c7517381549627fc85b8e8ceb147159f03d1bbc591826a708802f0ca",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/pagination.png",
+      "source_sha256": "59266b46c7517381549627fc85b8e8ceb147159f03d1bbc591826a708802f0ca",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/shell-chat-flow.png",
+      "sha256": "c9e6457760b3a679e55249125bc837364d4c4cc264f33dfc9a1e26d49c81cb01",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/shell-chat-flow.png",
+      "source_sha256": "c9e6457760b3a679e55249125bc837364d4c4cc264f33dfc9a1e26d49c81cb01",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/shell-drawer-half.png",
+      "sha256": "c6d60209cd3a5dd4f866632a62d2ac3588fe86845249b719440cd13fc434c726",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/shell-drawer-half.png",
+      "source_sha256": "c6d60209cd3a5dd4f866632a62d2ac3588fe86845249b719440cd13fc434c726",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/shell-drawer.png",
+      "sha256": "fc8a890ce102a1aa74c53e9fbb9e10d0c6a45c42b41a056acca6b7988a28013b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/shell-drawer.png",
+      "source_sha256": "fc8a890ce102a1aa74c53e9fbb9e10d0c6a45c42b41a056acca6b7988a28013b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/shell-home-portal.png",
+      "sha256": "0e7770b136962f3672a1aa1eeaa3f05e3e418cfa4ebf7587a166802dc2dbf25f",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/shell-home-portal.png",
+      "source_sha256": "0e7770b136962f3672a1aa1eeaa3f05e3e418cfa4ebf7587a166802dc2dbf25f",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/shell-mobile-chat-flow.png",
+      "sha256": "a4b6f079e128fd516eb8f3ebf50d4d624bc2f9bd6a321fa9ba1f21160e8e7878",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/shell-mobile-chat-flow.png",
+      "source_sha256": "a4b6f079e128fd516eb8f3ebf50d4d624bc2f9bd6a321fa9ba1f21160e8e7878",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/shell-mobile-portal.png",
+      "sha256": "6e72d81c4478587e202a13c0717f3b23bab85508cd45d1a0e33c211c0de7816c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/shell-mobile-portal.png",
+      "source_sha256": "6e72d81c4478587e202a13c0717f3b23bab85508cd45d1a0e33c211c0de7816c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/shell-mobile-sheet.png",
+      "sha256": "214978d92843f4c2ccbdfec872e798f478e62e7f3e7ce7758743c4a1f00514f0",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/shell-mobile-sheet.png",
+      "source_sha256": "214978d92843f4c2ccbdfec872e798f478e62e7f3e7ce7758743c4a1f00514f0",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/table.png",
+      "sha256": "a602fd9854ff639f469efcb0406592c30678d42b6ff780969de2b2178bf7feef",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/table.png",
+      "source_sha256": "a602fd9854ff639f469efcb0406592c30678d42b6ff780969de2b2178bf7feef",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/figma-reference/toast.png",
+      "sha256": "c982b4fe0b688bc6be8fd193d62b26514312b0dccde8ee8f540a8be8039884d2",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/figma-reference/toast.png",
+      "source_sha256": "c982b4fe0b688bc6be8fd193d62b26514312b0dccde8ee8f540a8be8039884d2",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/action-check.svg",
+      "sha256": "601cb268cc04629661672add1d46d7e945c50600e1e83627009cc22ecb41595a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/action-check.svg",
+      "source_sha256": "601cb268cc04629661672add1d46d7e945c50600e1e83627009cc22ecb41595a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/action-copy.svg",
+      "sha256": "4b5f06df7e315421ad2abb21ab7612fe200a5ede11721d4f74c14005e8e1895c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/action-copy.svg",
+      "source_sha256": "4b5f06df7e315421ad2abb21ab7612fe200a5ede11721d4f74c14005e8e1895c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/action-dislike.svg",
+      "sha256": "8af97e7e892a96650ee2b4e94d6c19d48d963a38b91c583ea7c09ad24cf5888e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/action-dislike.svg",
+      "source_sha256": "8af97e7e892a96650ee2b4e94d6c19d48d963a38b91c583ea7c09ad24cf5888e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/action-like.svg",
+      "sha256": "69b18ddad06c24bc49d5025857758c7e805973849302a31ae2424e5bbccc6a0d",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/action-like.svg",
+      "source_sha256": "69b18ddad06c24bc49d5025857758c7e805973849302a31ae2424e5bbccc6a0d",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/action-report.svg",
+      "sha256": "a6518726555d5be3839676f7504a0f8dd27191f89da696c463ec2f155b49cf66",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/action-report.svg",
+      "source_sha256": "a6518726555d5be3839676f7504a0f8dd27191f89da696c463ec2f155b49cf66",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/action-voice-bars.svg",
+      "sha256": "58cf94133a60294d1161197e6f7e596b2c61a7cd3c0af5193b92035002a04b15",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/action-voice-bars.svg",
+      "source_sha256": "58cf94133a60294d1161197e6f7e596b2c61a7cd3c0af5193b92035002a04b15",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/app-grid.svg",
+      "sha256": "77772aaedf789e8fa7beead2d265a877f6e7cfb193a66de9d8bb45a5344fb674",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/app-grid.svg",
+      "source_sha256": "77772aaedf789e8fa7beead2d265a877f6e7cfb193a66de9d8bb45a5344fb674",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/chevron-up.svg",
+      "sha256": "0df2febecbf20990c1eda3431096f6f7cbbd6e79955864c688ffdeb6b2ffc093",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/chevron-up.svg",
+      "source_sha256": "0df2febecbf20990c1eda3431096f6f7cbbd6e79955864c688ffdeb6b2ffc093",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/close-x.svg",
+      "sha256": "e105aca9d3764af30db0a0bb74bd28f23fbf1be4db6f588bade5cb480be31b3e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/close-x.svg",
+      "source_sha256": "e105aca9d3764af30db0a0bb74bd28f23fbf1be4db6f588bade5cb480be31b3e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/composer-at.svg",
+      "sha256": "c5cb2096e736f451958b0ed38c0ce628fe021f9f6c267c204550b84ad7f0678c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/composer-at.svg",
+      "source_sha256": "c5cb2096e736f451958b0ed38c0ce628fe021f9f6c267c204550b84ad7f0678c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/composer-mic.svg",
+      "sha256": "05333326b436ef721cd6ec2d8b99fa2b0b59763efdcd2d34c8a4af9ba6a9c568",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/composer-mic.svg",
+      "source_sha256": "05333326b436ef721cd6ec2d8b99fa2b0b59763efdcd2d34c8a4af9ba6a9c568",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/composer-phone.svg",
+      "sha256": "01e093d1ae4c0bfc41aef08ceeab664c8be0e03fc2e805874a172a2201b2e636",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/composer-phone.svg",
+      "source_sha256": "01e093d1ae4c0bfc41aef08ceeab664c8be0e03fc2e805874a172a2201b2e636",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/composer-plus.svg",
+      "sha256": "96a4678e771960c1f51dab1b72c39a63b23c5edb7f8b9ed6db35c16578d55956",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/composer-plus.svg",
+      "source_sha256": "96a4678e771960c1f51dab1b72c39a63b23c5edb7f8b9ed6db35c16578d55956",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/composer-send.svg",
+      "sha256": "a7d83661a68dafdfd84816b3b7fe60d1dd344bba96dbd07e8f197665023bebe2",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/composer-send.svg",
+      "source_sha256": "a7d83661a68dafdfd84816b3b7fe60d1dd344bba96dbd07e8f197665023bebe2",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/delete-red.svg",
+      "sha256": "735882294c9446fe5f845a2fecfd9852422a594b872b7127764d8481341d7cfd",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/delete-red.svg",
+      "source_sha256": "735882294c9446fe5f845a2fecfd9852422a594b872b7127764d8481341d7cfd",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/edit-pencil.svg",
+      "sha256": "c1f53df13024cbf0d98c0d6667ec5b3d33eb0f1384162b2f4767de2154dac09b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/edit-pencil.svg",
+      "source_sha256": "c1f53df13024cbf0d98c0d6667ec5b3d33eb0f1384162b2f4767de2154dac09b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/file-upload.svg",
+      "sha256": "a3bfe7c078cf5fbab47707073a2246514ed2986bc7cfa8fd812b4aa6cf9b93cf",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/file-upload.svg",
+      "source_sha256": "a3bfe7c078cf5fbab47707073a2246514ed2986bc7cfa8fd812b4aa6cf9b93cf",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/followup-bubble.svg",
+      "sha256": "01e03c75b63da9cd1245ef24183a024f6e964e613a0ec215954dc915787cb7a0",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/followup-bubble.svg",
+      "source_sha256": "01e03c75b63da9cd1245ef24183a024f6e964e613a0ec215954dc915787cb7a0",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/msg-skill-bolt.svg",
+      "sha256": "1c8b7132371997d1caaf1d2923c0cacb473c9d6d9daeea82cfeb97b42cf2cdd8",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/msg-skill-bolt.svg",
+      "source_sha256": "1c8b7132371997d1caaf1d2923c0cacb473c9d6d9daeea82cfeb97b42cf2cdd8",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/msg-sparkle.svg",
+      "sha256": "549a468cb3431f634b3f3649b797e72fa64dbd0665d14ab19f2b4d1fb065da4f",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/msg-sparkle.svg",
+      "source_sha256": "549a468cb3431f634b3f3649b797e72fa64dbd0665d14ab19f2b4d1fb065da4f",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/nav-ai-research.svg",
+      "sha256": "b889fcf54f7c4d50f54eead3e8cc9414ba6697bbb97a618c8f6ff6b132cc67b3",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/nav-ai-research.svg",
+      "source_sha256": "b889fcf54f7c4d50f54eead3e8cc9414ba6697bbb97a618c8f6ff6b132cc67b3",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/nav-ai-tutor.svg",
+      "sha256": "01e03c75b63da9cd1245ef24183a024f6e964e613a0ec215954dc915787cb7a0",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/nav-ai-tutor.svg",
+      "source_sha256": "01e03c75b63da9cd1245ef24183a024f6e964e613a0ec215954dc915787cb7a0",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/nav-calendar.svg",
+      "sha256": "93f22464ecee559857bdc12102134798542244d77169039ae21d9388dcb5a744",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/nav-calendar.svg",
+      "source_sha256": "93f22464ecee559857bdc12102134798542244d77169039ae21d9388dcb5a744",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/nav-course.svg",
+      "sha256": "499410eb646a2177469d3f4436041e2e14ef73346d901a825bdc1454d1253e4d",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/nav-course.svg",
+      "source_sha256": "499410eb646a2177469d3f4436041e2e14ef73346d901a825bdc1454d1253e4d",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/nav-knowledge.svg",
+      "sha256": "a3bfe7c078cf5fbab47707073a2246514ed2986bc7cfa8fd812b4aa6cf9b93cf",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/nav-knowledge.svg",
+      "source_sha256": "a3bfe7c078cf5fbab47707073a2246514ed2986bc7cfa8fd812b4aa6cf9b93cf",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/nav-resource-lib.svg",
+      "sha256": "e547649e26116e8659229f656bfac30635a4e982e7aa6efa64b854c7814e4404",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/nav-resource-lib.svg",
+      "source_sha256": "e547649e26116e8659229f656bfac30635a4e982e7aa6efa64b854c7814e4404",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/nav-v5-assistant.svg",
+      "sha256": "e7f49f4d5f269cf39247c4ad0a8a7102645391d55a089619dbf8ed5cb566031a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/nav-v5-assistant.svg",
+      "source_sha256": "e7f49f4d5f269cf39247c4ad0a8a7102645391d55a089619dbf8ed5cb566031a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/parallel-agents.svg",
+      "sha256": "4324e195c98cd64c4e984b820640dc942db73ebd23ac85e8db46de4019195729",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/parallel-agents.svg",
+      "source_sha256": "4324e195c98cd64c4e984b820640dc942db73ebd23ac85e8db46de4019195729",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/pause-circle-lg.svg",
+      "sha256": "0e639d36f926b05e22f66aaef3e55b6521ec143233bc81764a4c4ab471e98115",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/pause-circle-lg.svg",
+      "source_sha256": "0e639d36f926b05e22f66aaef3e55b6521ec143233bc81764a4c4ab471e98115",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/pause-circle.svg",
+      "sha256": "020ea6ec2b436e374e860010cccee0a43cd1120c976198506837b8007b8da221",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/pause-circle.svg",
+      "source_sha256": "020ea6ec2b436e374e860010cccee0a43cd1120c976198506837b8007b8da221",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/pill-arc-expanded.svg",
+      "sha256": "9295d2ea129700eaf96fddad0269827979883026d33e055497043673bc51e343",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/pill-arc-expanded.svg",
+      "source_sha256": "9295d2ea129700eaf96fddad0269827979883026d33e055497043673bc51e343",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/pill-ring-collapsed-sm.svg",
+      "sha256": "dfbbfd97bd26d7067dae21a6a6c9ee972231423119e069f523c97b211f3fc460",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/pill-ring-collapsed-sm.svg",
+      "source_sha256": "dfbbfd97bd26d7067dae21a6a6c9ee972231423119e069f523c97b211f3fc460",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/pill-ring-collapsed.svg",
+      "sha256": "a8c99b1117cc614aab89fcd0eaedfe98f24d5d4abda08d4a37eb0ecea13a5c4a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/pill-ring-collapsed.svg",
+      "source_sha256": "a8c99b1117cc614aab89fcd0eaedfe98f24d5d4abda08d4a37eb0ecea13a5c4a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/play-circle.svg",
+      "sha256": "f57ddd164d96297238561fe38d9648f3c1f2127f2ac6711a5fb84fca759dd171",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/play-circle.svg",
+      "source_sha256": "f57ddd164d96297238561fe38d9648f3c1f2127f2ac6711a5fb84fca759dd171",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/rerun.svg",
+      "sha256": "174469f333d0bfaabb08189c6ef4b4ef9edd7551d3fbd3572b16358a93bb4a5d",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/rerun.svg",
+      "source_sha256": "174469f333d0bfaabb08189c6ef4b4ef9edd7551d3fbd3572b16358a93bb4a5d",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/resize-handle.svg",
+      "sha256": "999293f3d2bc0d5bc362e95161249dc85a19e03fa01f827d3dcb0f2ce398819a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/resize-handle.svg",
+      "source_sha256": "999293f3d2bc0d5bc362e95161249dc85a19e03fa01f827d3dcb0f2ce398819a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/send-plane.svg",
+      "sha256": "175decba19f135e82b384f2d18075af59edfaf10c68829748a1055bc8ad58e64",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/send-plane.svg",
+      "source_sha256": "175decba19f135e82b384f2d18075af59edfaf10c68829748a1055bc8ad58e64",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/sparkle-lg.svg",
+      "sha256": "9e10f7ecd90c9d0720157a1df09696b97ae636301b9b3063e8acd64d95523321",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/sparkle-lg.svg",
+      "source_sha256": "9e10f7ecd90c9d0720157a1df09696b97ae636301b9b3063e8acd64d95523321",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/sparkle-sm.svg",
+      "sha256": "c774a2b8787eb01c90d486c7084474ab0fd780d9ac62002e7e0af6b3cc9fb0c6",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/sparkle-sm.svg",
+      "source_sha256": "c774a2b8787eb01c90d486c7084474ab0fd780d9ac62002e7e0af6b3cc9fb0c6",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/status-check-green.svg",
+      "sha256": "22e0807655a922ff6fd9da4629a814e86a24ebd12395c884fc90e29203911d45",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/status-check-green.svg",
+      "source_sha256": "22e0807655a922ff6fd9da4629a814e86a24ebd12395c884fc90e29203911d45",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/status-spinner.svg",
+      "sha256": "65ac95f671a14cc17f74669985b9e082c126d9619fe93a3a63ca8f1f43ad668a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/status-spinner.svg",
+      "source_sha256": "65ac95f671a14cc17f74669985b9e082c126d9619fe93a3a63ca8f1f43ad668a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/status-waiting.svg",
+      "sha256": "7b9d77854601438f437e4e503a7b325d25e9c7d63b4a23eeb88e0fdbd085fc08",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/status-waiting.svg",
+      "source_sha256": "7b9d77854601438f437e4e503a7b325d25e9c7d63b4a23eeb88e0fdbd085fc08",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/stop-square.svg",
+      "sha256": "c797db9842ac1ca7aa5f6957c238c7cde0873f18d1d098c4a26ac47c5d04e8fd",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/stop-square.svg",
+      "source_sha256": "c797db9842ac1ca7aa5f6957c238c7cde0873f18d1d098c4a26ac47c5d04e8fd",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/swap-agent.svg",
+      "sha256": "c9a064f74bd9fb9000b77b4f18f9161c4306c6388fc4c993a78247f13bf144ad",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/swap-agent.svg",
+      "source_sha256": "c9a064f74bd9fb9000b77b4f18f9161c4306c6388fc4c993a78247f13bf144ad",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/time-clock.svg",
+      "sha256": "ac267d47a35daddb03434d37c2819abec9c2a36fa2f06266aa0885a63f0e5d0c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/time-clock.svg",
+      "source_sha256": "ac267d47a35daddb03434d37c2819abec9c2a36fa2f06266aa0885a63f0e5d0c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/topbar-clear-memory.svg",
+      "sha256": "669891174ec2a0e5e6bc29ffb165d5788553444f510dc7de8c7ce0789219fb6f",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/topbar-clear-memory.svg",
+      "source_sha256": "669891174ec2a0e5e6bc29ffb165d5788553444f510dc7de8c7ce0789219fb6f",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/topbar-collapse.svg",
+      "sha256": "130f574e4358c98c41a503cab532d630c29d0a294c45a0c1d6e4830af179ee10",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/topbar-collapse.svg",
+      "source_sha256": "130f574e4358c98c41a503cab532d630c29d0a294c45a0c1d6e4830af179ee10",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/topbar-history.svg",
+      "sha256": "cb97ed2f908448e2fc9811bdac8beaf203f06273f8055ba3b30d3c2e6dfccd92",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/topbar-history.svg",
+      "source_sha256": "cb97ed2f908448e2fc9811bdac8beaf203f06273f8055ba3b30d3c2e6dfccd92",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/topbar-more.svg",
+      "sha256": "d40696c8671fa4532bcd0bd58cd31dcdee31711afad7fc6e4a5fac1d660d2d9f",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/topbar-more.svg",
+      "source_sha256": "d40696c8671fa4532bcd0bd58cd31dcdee31711afad7fc6e4a5fac1d660d2d9f",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/topbar-speaker.svg",
+      "sha256": "aa1c2541ca9577a7f75888c7c4c483cad04dcc2285484c007a8c89279709bf39",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/topbar-speaker.svg",
+      "source_sha256": "aa1c2541ca9577a7f75888c7c4c483cad04dcc2285484c007a8c89279709bf39",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/icons/warning-sign.svg",
+      "sha256": "7158e5cf0fdd59be686e316fc1540b519365c7d9f6c60e60beb76c2435903bd6",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/icons/warning-sign.svg",
+      "source_sha256": "7158e5cf0fdd59be686e316fc1540b519365c7d9f6c60e60beb76c2435903bd6",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/agent-portrait-a.png",
+      "sha256": "62468e8bf3841552cf0bafe0b5ed73c44b4f15a0e61c33972cf255edca54626c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/agent-portrait-a.png",
+      "source_sha256": "62468e8bf3841552cf0bafe0b5ed73c44b4f15a0e61c33972cf255edca54626c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/agent-portrait-b.png",
+      "sha256": "0b8ed3fd1a0fb6198fbb495ad80b01a323065fb9433a23832e28446be2645d53",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/agent-portrait-b.png",
+      "source_sha256": "0b8ed3fd1a0fb6198fbb495ad80b01a323065fb9433a23832e28446be2645d53",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/agent-portrait-c.png",
+      "sha256": "19130329f556e692dd2d08b17973f1aefff1d10b6af596934f07c2aba5e2a3ce",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/agent-portrait-c.png",
+      "source_sha256": "19130329f556e692dd2d08b17973f1aefff1d10b6af596934f07c2aba5e2a3ce",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/agent-portrait-d.png",
+      "sha256": "fb95cf735e255bb79153e7ece4a1dfad568f80e6e03b4ee8a8b952403b1116b6",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/agent-portrait-d.png",
+      "source_sha256": "fb95cf735e255bb79153e7ece4a1dfad568f80e6e03b4ee8a8b952403b1116b6",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/agent-xiaoguanjia.png",
+      "sha256": "607dd8fb14199301050232b10b09a37f06f5a5acbfb976de81c62d22f9d25a81",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/agent-xiaoguanjia.png",
+      "source_sha256": "607dd8fb14199301050232b10b09a37f06f5a5acbfb976de81c62d22f9d25a81",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/expert-avatar.png",
+      "sha256": "f4142907d2f33c0268bcd298c3052064a36cd13eada0a2ec792c6b0eb353e99b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/expert-avatar.png",
+      "source_sha256": "f4142907d2f33c0268bcd298c3052064a36cd13eada0a2ec792c6b0eb353e99b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/home-agent-cast.png",
+      "sha256": "56ca3b7bc12ee3cbe5754b4398fb1b9c3853d3d2e49522048d9a0932b5db84e1",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/home-agent-cast.png",
+      "source_sha256": "56ca3b7bc12ee3cbe5754b4398fb1b9c3853d3d2e49522048d9a0932b5db84e1",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-desk-1.png",
+      "sha256": "ebc7221cbb7786ad139f564e1e1c747d8c1d2737abf5663d15c5434770ad789e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-desk-1.png",
+      "source_sha256": "ebc7221cbb7786ad139f564e1e1c747d8c1d2737abf5663d15c5434770ad789e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-desk-2.png",
+      "sha256": "749cc9cd9a4616368f348ee27587e7a61ad52c00f9ff11d681190cbd6ddd5577",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-desk-2.png",
+      "source_sha256": "749cc9cd9a4616368f348ee27587e7a61ad52c00f9ff11d681190cbd6ddd5577",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-desk-3.png",
+      "sha256": "f18340bbff9fea95fe6d56dbedf1439032a973536838d68734f1288330923c21",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-desk-3.png",
+      "source_sha256": "f18340bbff9fea95fe6d56dbedf1439032a973536838d68734f1288330923c21",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nan-1.png",
+      "sha256": "7369b3205f4a2a9979d63c5f25d01852091269085f264f441d2f3b70b20c0f73",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nan-1.png",
+      "source_sha256": "7369b3205f4a2a9979d63c5f25d01852091269085f264f441d2f3b70b20c0f73",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nan-2.png",
+      "sha256": "79e990960777186c51346d52692d99af4228c7a7d0698fdb57cb3648c07db0b5",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nan-2.png",
+      "source_sha256": "79e990960777186c51346d52692d99af4228c7a7d0698fdb57cb3648c07db0b5",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nan-3.png",
+      "sha256": "26adc782d37f4486e076ea99b8fba2c20deb383619e0f461496b5698420ab219",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nan-3.png",
+      "source_sha256": "26adc782d37f4486e076ea99b8fba2c20deb383619e0f461496b5698420ab219",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nv-1.png",
+      "sha256": "85a7901c91cb5ec741308c9c1bd8023df96469cc2d2436f8a024b45d00e7ad0e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nv-1.png",
+      "source_sha256": "85a7901c91cb5ec741308c9c1bd8023df96469cc2d2436f8a024b45d00e7ad0e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nv-2.png",
+      "sha256": "df75ff1517a3bd0daefcad849e6e08be8dacbe1ce38fca2fec7110f9e3f202a7",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nv-2.png",
+      "source_sha256": "df75ff1517a3bd0daefcad849e6e08be8dacbe1ce38fca2fec7110f9e3f202a7",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nv-3.png",
+      "sha256": "09c4f26cf67ecf45e2c0b9fdf05531f470d477de97b62f72b442343a81e7e559",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nv-3.png",
+      "source_sha256": "09c4f26cf67ecf45e2c0b9fdf05531f470d477de97b62f72b442343a81e7e559",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nv-4.png",
+      "sha256": "8ea107c810ec104557a77b3b9cbb5839c7a532ae722ecf6643ac906700b8fada",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nv-4.png",
+      "source_sha256": "8ea107c810ec104557a77b3b9cbb5839c7a532ae722ecf6643ac906700b8fada",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nv-5.png",
+      "sha256": "c510130fc28807fa30d725eaff015bec41be091ccc61a138373d002c540da788",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nv-5.png",
+      "source_sha256": "c510130fc28807fa30d725eaff015bec41be091ccc61a138373d002c540da788",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nv-6.png",
+      "sha256": "6fac31ccc098c480b7058e6c195ad176e937e3505c7d92f981679e419d11756e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nv-6.png",
+      "source_sha256": "6fac31ccc098c480b7058e6c195ad176e937e3505c7d92f981679e419d11756e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-nv-7.png",
+      "sha256": "b7d541a7a20e29cac0fccf85c4b73e04751dfa0c540e91cda1bd2f114169f8b2",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-nv-7.png",
+      "source_sha256": "b7d541a7a20e29cac0fccf85c4b73e04751dfa0c540e91cda1bd2f114169f8b2",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-zhu-1.png",
+      "sha256": "184bd1799b369ff0d95fad3f2eba1a5c9d6cc41e0a5566d0111dc7ddbb5389c8",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-zhu-1.png",
+      "source_sha256": "184bd1799b369ff0d95fad3f2eba1a5c9d6cc41e0a5566d0111dc7ddbb5389c8",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/illustration-office-zhu-2.png",
+      "sha256": "1e69a694f45bb4839c42472345543b940d6a904e8e645c55ff49599b48e1fc36",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/illustration-office-zhu-2.png",
+      "source_sha256": "1e69a694f45bb4839c42472345543b940d6a904e8e645c55ff49599b48e1fc36",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/logo-v5.png",
+      "sha256": "5bb64f7e873acc9cf78520779909f603f3d6a2cd94d01f439be8119fecfbf357",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/logo-v5.png",
+      "source_sha256": "5bb64f7e873acc9cf78520779909f603f3d6a2cd94d01f439be8119fecfbf357",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/mobile-agent-avatar.png",
+      "sha256": "7ffafff4f3aaa94d15338b81b688613b911ed4890f564fa5967633b7ab2e1b66",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/mobile-agent-avatar.png",
+      "source_sha256": "7ffafff4f3aaa94d15338b81b688613b911ed4890f564fa5967633b7ab2e1b66",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/mobile-portfolio.png",
+      "sha256": "a271358880f0a4978efc905b74eca36e4547d3d6798142fb2d42fdead3b61edf",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/mobile-portfolio.png",
+      "source_sha256": "a271358880f0a4978efc905b74eca36e4547d3d6798142fb2d42fdead3b61edf",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/model-logo.png",
+      "sha256": "65b8b09b665a5b620d04a3a25a26bc470661b31d2aab06e1b9bd774f0ee7a07b",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/model-logo.png",
+      "source_sha256": "65b8b09b665a5b620d04a3a25a26bc470661b31d2aab06e1b9bd774f0ee7a07b",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/portal-hero-1.png",
+      "sha256": "2b9c3e7938723c38788b964b6aab1bbce6e0df3b0f027a3ee2ac23917f89733a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/portal-hero-1.png",
+      "source_sha256": "2b9c3e7938723c38788b964b6aab1bbce6e0df3b0f027a3ee2ac23917f89733a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/portal-hero-2.png",
+      "sha256": "9c64005dc513137490fde2ac625ba5c40afda70b1252268462e601f6072269ec",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/portal-hero-2.png",
+      "source_sha256": "9c64005dc513137490fde2ac625ba5c40afda70b1252268462e601f6072269ec",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/portal-hero-3.png",
+      "sha256": "6b05d66b56c1fd0091c3d7895593aa144c0000f5180fcd387bfe8909a0fd0d55",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/portal-hero-3.png",
+      "source_sha256": "6b05d66b56c1fd0091c3d7895593aa144c0000f5180fcd387bfe8909a0fd0d55",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/portal-hero-4.png",
+      "sha256": "fda1c2244240c7528b2a7404d9d6ae9845bae93b9b438d6b31266b13a85f2df9",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/portal-hero-4.png",
+      "source_sha256": "fda1c2244240c7528b2a7404d9d6ae9845bae93b9b438d6b31266b13a85f2df9",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/portal-hero-5.png",
+      "sha256": "0bc20859d5e212deb41ee015347bca6e5ab636ced9089ff2ebd60031b2d15621",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/portal-hero-5.png",
+      "source_sha256": "0bc20859d5e212deb41ee015347bca6e5ab636ced9089ff2ebd60031b2d15621",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/topbar-xiaoguanjia.png",
+      "sha256": "e1fc9bc57b3139383bf509ea5ffb03416d56c613a607a0398c8cfedb58c2d090",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/topbar-xiaoguanjia.png",
+      "source_sha256": "e1fc9bc57b3139383bf509ea5ffb03416d56c613a607a0398c8cfedb58c2d090",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/media/user-avatar.png",
+      "sha256": "8a8f3940bd2b5ec6f819cca944d88a9b0298f16d916526462ab15bbe06386d10",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/media/user-avatar.png",
+      "source_sha256": "8a8f3940bd2b5ec6f819cca944d88a9b0298f16d916526462ab15bbe06386d10",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/shell/chat-flow.html",
+      "sha256": "1acd34b7f7c5a4b9030c0291f9428ae0e3c555a3fd8587438b4c667828d9f8ee",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/shell/chat-flow.html",
+      "source_sha256": "1acd34b7f7c5a4b9030c0291f9428ae0e3c555a3fd8587438b4c667828d9f8ee",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/shell/drawer-half.html",
+      "sha256": "90fd0054853791ad9240d30c24be11918be116dacb100f3a83b1dfa8e3f72a1c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/shell/drawer-half.html",
+      "source_sha256": "90fd0054853791ad9240d30c24be11918be116dacb100f3a83b1dfa8e3f72a1c",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/shell/drawer.html",
+      "sha256": "f7f9ca170eb1574d9e4d0da6da96ea39c53528756f114b2d81117beb0b40fa8a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/shell/drawer.html",
+      "source_sha256": "f7f9ca170eb1574d9e4d0da6da96ea39c53528756f114b2d81117beb0b40fa8a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/shell/home-portal.html",
+      "sha256": "32bc35e65d9367ea71f1b0686603fb788e510133cd717ec50b497391bdd9f71a",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/shell/home-portal.html",
+      "source_sha256": "32bc35e65d9367ea71f1b0686603fb788e510133cd717ec50b497391bdd9f71a",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/shell-mobile/chat-flow.html",
+      "sha256": "790f51aa9e47ef4c0ab1fcd4b068233261f788384305b17c3a7b6e19d37d04b2",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/shell-mobile/chat-flow.html",
+      "source_sha256": "790f51aa9e47ef4c0ab1fcd4b068233261f788384305b17c3a7b6e19d37d04b2",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/shell-mobile/portal.html",
+      "sha256": "a88f3460acf87bc17145a217589ae494a63b3ddad9ad1b0a3b3d456a3168618e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/shell-mobile/portal.html",
+      "source_sha256": "a88f3460acf87bc17145a217589ae494a63b3ddad9ad1b0a3b3d456a3168618e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/shell-mobile/sheet.html",
+      "sha256": "75a7c34a05cdd4ca9b56da8b8448c0877161faaf1726b77fb31447266a3d4251",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/shell-mobile/sheet.html",
+      "source_sha256": "75a7c34a05cdd4ca9b56da8b8448c0877161faaf1726b77fb31447266a3d4251",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "assets/tokens.css",
+      "sha256": "b31265a05043e07ab9bf27556779509ade5a66611114743808e07f900b915f3e",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/tokens.css",
+      "source_sha256": "b31265a05043e07ab9bf27556779509ade5a66611114743808e07f900b915f3e",
+      "changes": "copied unchanged; original sample business data is illustrative, not a product requirement"
+    },
+    {
+      "path": "checks/check-platform.py",
+      "sha256": "4529f5bc02803aa41b7525b872b7adbebbcb28d9cb262ecb41d6c2ea58242434",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/scripts/check-platform.py",
+      "source_sha256": "4529f5bc02803aa41b7525b872b7adbebbcb28d9cb262ecb41d6c2ea58242434",
+      "changes": "copied unchanged; optional explicit-file platform check only"
+    },
+    {
+      "path": "assets/standalone/history-rail.html",
+      "sha256": "cf2a9b9503a74ddc3141248e2e3ba03d13bd5a5ba2e2486f9c19c466433db801",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/assets/components/history-rail.html",
+      "source_sha256": "f6ee8f11bf153ebb0ce1802e70ec267106774c71a119fdf9d4bd2892b9d36de2",
+      "changes": "copied exact .v5-history-rail CSS, aside markup and initializer into a standalone document; removed original global 1440px preview wrapper; added explanatory text and native modal controls using the original hidden-attribute observer contract"
+    },
+    {
+      "path": "references/README.md",
+      "sha256": "a5c5e40c481de078abe10440b4b60dbfa14509852c667c067453a7af5c33a8c4",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/00-page-archetypes.md",
+      "source_sha256": "1f1a135c906ec89f0faff4d572ad871f4925f734b585bfdcd2f8e3216bfc0c5c",
+      "changes": "normalized specification authored during migration; not a byte copy; all source inputs and explicit conflict resolutions recorded in references/source-coverage.json and verification.md"
+    },
+    {
+      "path": "references/conversation.md",
+      "sha256": "9302eb173af59dfa053231bb8e49dd6a3ccc736ba5d20210e98862f26b1eec53",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/05-ai-patterns.md",
+      "source_sha256": "f0393b3b31cd4018391b62fa77e61b4edfa3f60c98179045252de539246cc80b",
+      "changes": "normalized specification authored during migration; not a byte copy; all source inputs and explicit conflict resolutions recorded in references/source-coverage.json and verification.md"
+    },
+    {
+      "path": "references/geometry-components.md",
+      "sha256": "130c1ecbacf9715a4d0d0a58b24cdea83c9f89966d00e8bf209ec2468fa8f3d5",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/03-components.md",
+      "source_sha256": "f5a686c20aa8bf012f7c522ca91f42b2d9b1cc44bec5321c200a6bdb9ac7533d",
+      "changes": "normalized specification authored during migration; not a byte copy; all source inputs and explicit conflict resolutions recorded in references/source-coverage.json and verification.md"
+    },
+    {
+      "path": "references/mobile.md",
+      "sha256": "3a10245a77fd88415fd4c3d766313aa1ec6bb6eac77d0af9cb7c9eb0b7ffe1bc",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/09-mobile-ui.md",
+      "source_sha256": "3661230293a08bec2f2c084892ca57cbd966a254ec9961f7838487bce18adac8",
+      "changes": "normalized specification authored during migration; not a byte copy; all source inputs and explicit conflict resolutions recorded in references/source-coverage.json and verification.md"
+    },
+    {
+      "path": "references/result-cards.md",
+      "sha256": "ce589f877c65b625be574358bc004a41bd52bbffa1e026a820aede5f42d75cbe",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/07-card-anatomy.md",
+      "source_sha256": "e8ce2d6c4fef762cec50952392528b64208c9f1cccc329d37afbca0d11fdab22",
+      "changes": "normalized specification authored during migration; not a byte copy; all source inputs and explicit conflict resolutions recorded in references/source-coverage.json and verification.md"
+    },
+    {
+      "path": "references/source-coverage.json",
+      "sha256": "db1c3844636a05b2723a04ff02515582983c574c302d263c8cee70a105620c3c",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/99-review-checklist.md",
+      "source_sha256": "c8cc999271591fd1bc2e127baefc57e3b1ab7e6556ae3b1f7559a1cc6170d2bf",
+      "changes": "normalized specification authored during migration; not a byte copy; all source inputs and explicit conflict resolutions recorded in references/source-coverage.json and verification.md"
+    },
+    {
+      "path": "references/verification.md",
+      "sha256": "5e12ce782f5cd720ca5499829c0d038be2093c2751a4292cb48227102e8abf2d",
+      "source_path": "/Users/xiaolongxiong/.codex/skills/v5-ux-rule/references/99-review-checklist.md",
+      "source_sha256": "c8cc999271591fd1bc2e127baefc57e3b1ab7e6556ae3b1f7559a1cc6170d2bf",
+      "changes": "normalized specification authored during migration; not a byte copy; all source inputs and explicit conflict resolutions recorded in references/source-coverage.json and verification.md"
+    }
+  ],
+  "specification": {
+    "entry": "references/README.md",
+    "coverage": "references/source-coverage.json",
+    "precedence": "Current normalized rules take precedence for explicitly documented corrections; preserved visual source code is not proof all interactions are wired.",
+    "files": [
+      "references/README.md",
+      "references/conversation.md",
+      "references/geometry-components.md",
+      "references/mobile.md",
+      "references/result-cards.md",
+      "references/verification.md",
+      "references/source-coverage.json"
+    ]
+  }
+}

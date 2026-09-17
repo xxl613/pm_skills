@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "usages": [
+    {
+      "id": "resource-note",
+      "version": "1.0.0",
+      "package": "standards/resource-note/1.0.0",
+      "pack_sha256": "408c67a3da63a89a7e70d5b7497b5a62414787def9aff25312623f6a0d30846c",
+      "mode": "isolated-frame",
+      "page": "index.html",
+      "scope": "resource-note",
+      "entry": "index.html",
+      "src": "standards/resource-note/1.0.0/index.html"
+    },
+    {
+      "id": "resource-note",
+      "version": "1.0.0",
+      "package": "standards/resource-note/1.0.0",
+      "pack_sha256": "408c67a3da63a89a7e70d5b7497b5a62414787def9aff25312623f6a0d30846c",
+      "mode": "isolated-frame",
+      "page": "second.html",
+      "scope": "resource-note",
+      "entry": "index.html",
+      "src": "standards/resource-note/1.0.0/index.html"
+    }
+  ]
+}

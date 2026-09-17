@@ -16,8 +16,11 @@
 
 当前同步的 skill 列表见 `../pm_skills.manifest.yaml`。
 
+`prototype-studio/` 是完整插件包，6 个技能位于其 `skills/` 子目录，公共资源位于包根目录。使用时保留完整目录结构，入口见 [原型工作室](prototype-studio/skills/prototype-studio/SKILL.md)。单独更新可运行 `./tools/sync_pm_skills.sh prototype-studio`（从仓库根目录执行）。
+
 ## 当前包含
 
+- `prototype-studio`（含 `prototype-spec`、`prototype-build`、`prototype-components`、`prototype-qa`、`prototype-delivery`）
 - `project-workspace-init`
 - `html-prototype-to-figma`
 - `figma-prototype-system`

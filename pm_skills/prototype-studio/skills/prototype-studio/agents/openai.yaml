@@ -1,0 +1,4 @@
+interface:
+  display_name: "原型工作室"
+  short_description: "组织原型规格、设计实现、标准件与验收交付，保持页面和 PRD 一致"
+  default_prompt: "请使用 $prototype-studio 创建或修改原型，并同步页面 PRD、数据规则与验证记录。"

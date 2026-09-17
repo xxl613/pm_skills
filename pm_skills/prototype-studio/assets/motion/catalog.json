@@ -1,0 +1,235 @@
+[
+  {
+    "recipe": "01-card-resize.md",
+    "snippets": [
+      "snippets/01-card-resize.html",
+      "snippets/01-card-resize.css",
+      "snippets/01-card-resize-2.css"
+    ]
+  },
+  {
+    "recipe": "02-number-pop-in.md",
+    "snippets": [
+      "snippets/02-number-pop-in.html",
+      "snippets/02-number-pop-in.css",
+      "snippets/02-number-pop-in-2.css",
+      "snippets/02-number-pop-in.js"
+    ]
+  },
+  {
+    "recipe": "03-notification-badge.md",
+    "snippets": [
+      "snippets/03-notification-badge.html",
+      "snippets/03-notification-badge.css",
+      "snippets/03-notification-badge-2.css"
+    ]
+  },
+  {
+    "recipe": "04-text-states-swap.md",
+    "snippets": [
+      "snippets/04-text-states-swap.html",
+      "snippets/04-text-states-swap.css",
+      "snippets/04-text-states-swap-2.css",
+      "snippets/04-text-states-swap.js"
+    ]
+  },
+  {
+    "recipe": "05-menu-dropdown.md",
+    "snippets": [
+      "snippets/05-menu-dropdown.html",
+      "snippets/05-menu-dropdown.css",
+      "snippets/05-menu-dropdown-2.css",
+      "snippets/05-menu-dropdown.js"
+    ]
+  },
+  {
+    "recipe": "06-modal.md",
+    "snippets": [
+      "snippets/06-modal.html",
+      "snippets/06-modal.css",
+      "snippets/06-modal-2.css",
+      "snippets/06-modal.js"
+    ]
+  },
+  {
+    "recipe": "07-panel-reveal.md",
+    "snippets": [
+      "snippets/07-panel-reveal.html",
+      "snippets/07-panel-reveal.css",
+      "snippets/07-panel-reveal-2.css"
+    ]
+  },
+  {
+    "recipe": "08-page-side-by-side.md",
+    "snippets": [
+      "snippets/08-page-side-by-side.html",
+      "snippets/08-page-side-by-side.css",
+      "snippets/08-page-side-by-side-2.css",
+      "snippets/08-page-side-by-side.js"
+    ]
+  },
+  {
+    "recipe": "09-icon-swap.md",
+    "snippets": [
+      "snippets/09-icon-swap.html",
+      "snippets/09-icon-swap.css",
+      "snippets/09-icon-swap-2.css"
+    ]
+  },
+  {
+    "recipe": "10-success-check.md",
+    "snippets": [
+      "snippets/10-success-check.html",
+      "snippets/10-success-check.css",
+      "snippets/10-success-check-2.css",
+      "snippets/10-success-check.js",
+      "snippets/10-success-check-2.js",
+      "snippets/10-success-check-3.js"
+    ]
+  },
+  {
+    "recipe": "11-avatar-group-hover.md",
+    "snippets": [
+      "snippets/11-avatar-group-hover.html",
+      "snippets/11-avatar-group-hover.css",
+      "snippets/11-avatar-group-hover-2.css",
+      "snippets/11-avatar-group-hover.js"
+    ]
+  },
+  {
+    "recipe": "12-error-state-shake.md",
+    "snippets": [
+      "snippets/12-error-state-shake.html",
+      "snippets/12-error-state-shake.css",
+      "snippets/12-error-state-shake-2.css",
+      "snippets/12-error-state-shake.js"
+    ]
+  },
+  {
+    "recipe": "13-input-clear-dissolve.md",
+    "snippets": [
+      "snippets/13-input-clear-dissolve.html",
+      "snippets/13-input-clear-dissolve.css",
+      "snippets/13-input-clear-dissolve-2.css",
+      "snippets/13-input-clear-dissolve.js"
+    ]
+  },
+  {
+    "recipe": "14-skeleton-reveal.md",
+    "snippets": [
+      "snippets/14-skeleton-reveal.html",
+      "snippets/14-skeleton-reveal.css",
+      "snippets/14-skeleton-reveal-2.css",
+      "snippets/14-skeleton-reveal.js"
+    ]
+  },
+  {
+    "recipe": "15-shimmer-text.md",
+    "snippets": [
+      "snippets/15-shimmer-text.html",
+      "snippets/15-shimmer-text.css",
+      "snippets/15-shimmer-text-2.css"
+    ]
+  },
+  {
+    "recipe": "16-tabs-sliding.md",
+    "snippets": [
+      "snippets/16-tabs-sliding.html",
+      "snippets/16-tabs-sliding.css",
+      "snippets/16-tabs-sliding-2.css",
+      "snippets/16-tabs-sliding.js"
+    ]
+  },
+  {
+    "recipe": "17-tooltip.md",
+    "snippets": [
+      "snippets/17-tooltip.html",
+      "snippets/17-tooltip.css",
+      "snippets/17-tooltip-2.css"
+    ]
+  },
+  {
+    "recipe": "18-texts-reveal.md",
+    "snippets": [
+      "snippets/18-texts-reveal.html",
+      "snippets/18-texts-reveal.css",
+      "snippets/18-texts-reveal-2.css",
+      "snippets/18-texts-reveal.js"
+    ]
+  },
+  {
+    "recipe": "19-card-tilt.md",
+    "snippets": [
+      "snippets/19-card-tilt.html",
+      "snippets/19-card-tilt.css",
+      "snippets/19-card-tilt-2.css",
+      "snippets/19-card-tilt.js"
+    ]
+  },
+  {
+    "recipe": "20-plus-menu-morph.md",
+    "snippets": [
+      "snippets/20-plus-menu-morph.html",
+      "snippets/20-plus-menu-morph.css",
+      "snippets/20-plus-menu-morph-2.css",
+      "snippets/20-plus-menu-morph.js"
+    ]
+  },
+  {
+    "recipe": "21-accordion.md",
+    "snippets": [
+      "snippets/21-accordion.html",
+      "snippets/21-accordion.css",
+      "snippets/21-accordion-2.css",
+      "snippets/21-accordion.js"
+    ]
+  },
+  {
+    "recipe": "22-toast.md",
+    "snippets": [
+      "snippets/22-toast.html",
+      "snippets/22-toast.css",
+      "snippets/22-toast-2.css"
+    ]
+  },
+  {
+    "recipe": "23-like-button.md",
+    "snippets": [
+      "snippets/23-like-button.html",
+      "snippets/23-like-button.css",
+      "snippets/23-like-button-2.css"
+    ]
+  },
+  {
+    "recipe": "24-learn-more-hover.md",
+    "snippets": [
+      "snippets/24-learn-more-hover.html",
+      "snippets/24-learn-more-hover.css",
+      "snippets/24-learn-more-hover-2.css"
+    ]
+  },
+  {
+    "recipe": "25-checkbox-check.md",
+    "snippets": [
+      "snippets/25-checkbox-check.html",
+      "snippets/25-checkbox-check.css",
+      "snippets/25-checkbox-check-2.css"
+    ]
+  },
+  {
+    "recipe": "26-spinning-counter.md",
+    "snippets": [
+      "snippets/26-spinning-counter.html",
+      "snippets/26-spinning-counter.css",
+      "snippets/26-spinning-counter-2.css"
+    ]
+  },
+  {
+    "recipe": "27-toggle.md",
+    "snippets": [
+      "snippets/27-toggle.html",
+      "snippets/27-toggle.css",
+      "snippets/27-toggle-2.css"
+    ]
+  }
+]

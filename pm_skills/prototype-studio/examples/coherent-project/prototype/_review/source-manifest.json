@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "sourceHash": "60735beb4d8e54ac43a00e4b7b7e32ab73535b77348990a36543b82f13534447",
+  "sources": {
+    "data.json": "ee3f450931f218f59eea5d7b91bfe7ce61d0968f5cbdd3adf048d0b94ee96628",
+    "decisions.json": "4f7278c82326ef31b252521f31fd3396da49f299999c6dd381ba9c77657cc3ef",
+    "pages.json": "798f0829c56fe4593a71e5280a2eb6ff32ad27d8081835ebff0967c48e257949",
+    "prd/active.md": "1a4fbe0732facbbb2ce19d205572469a53b06ecdf38ca6f534689f5f491abcd3",
+    "prd/records.md": "2f772846dc6df553ba1d3da21dfe471fc23a13c23876c2cc6d652532b40cd708",
+    "prd/summary.md": "932c49c8ed2b0feba185b014a773413d9481ed798f6e0f7f5c598815ecca73ba"
+  },
+  "generated": {
+    "review-data.js": "820ca34c254f7b45c11489f504284037a60eb8b498f72c41f15918b2e4ebc252",
+    "performance-review.md": "a39f2fcdf16b20425c730d5897b2e9b03fed9421127120360a1449ac66e533b0",
+    "review-shell.js": "d260aae8898a442cbe1a51558067c682ae56bdbdadf52b8f6c096ec7e65a51c9",
+    "review-shell.css": "fb8739b455ce1590b060626e0a547600d8d05155a8c5efb7e60ce2d4be797311"
+  }
+}

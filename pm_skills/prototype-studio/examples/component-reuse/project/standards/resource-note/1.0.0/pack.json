@@ -1,0 +1,55 @@
+{
+  "id": "resource-note",
+  "version": "1.0.0",
+  "title": "资料说明标准件",
+  "platforms": [
+    "web"
+  ],
+  "scope": "A user-selected content region; isolated example only",
+  "locked": [
+    "card hierarchy",
+    "expand/collapse action and aria-expanded",
+    "scoped component styles"
+  ],
+  "slots": [],
+  "states": [
+    "collapsed",
+    "expanded"
+  ],
+  "examples": [
+    "index.html"
+  ],
+  "source": {
+    "type": "bundled-example",
+    "path": "examples/component-reuse/source",
+    "note": "Created for validating registration and reuse; not an adopted business component"
+  },
+  "license": {
+    "status": "not-specified",
+    "note": "No external artwork or borrowed runtime dependency"
+  },
+  "format_version": 1,
+  "files": [
+    {
+      "path": "card.css",
+      "sha256": "e0492d09e9bcf605d4ad3f4555a51420de27a7a0caa7fe06a865e40f6c52ce63",
+      "source_path": "/Users/xiaolongxiong/Documents/Codex/2026-09-06/new-chat/outputs/prototype-studio/examples/component-reuse/source/card.css",
+      "source_sha256": "e0492d09e9bcf605d4ad3f4555a51420de27a7a0caa7fe06a865e40f6c52ce63",
+      "changes": "copied unchanged"
+    },
+    {
+      "path": "card.js",
+      "sha256": "6ca20c59594a621744b545e5b5473527045028c593ec8cddeec685f0651eff64",
+      "source_path": "/Users/xiaolongxiong/Documents/Codex/2026-09-06/new-chat/outputs/prototype-studio/examples/component-reuse/source/card.js",
+      "source_sha256": "6ca20c59594a621744b545e5b5473527045028c593ec8cddeec685f0651eff64",
+      "changes": "copied unchanged"
+    },
+    {
+      "path": "index.html",
+      "sha256": "4e85b2ed6cf4921b40ecf4811d738ab62303152b7b7208152826a2fc7fa93f1d",
+      "source_path": "/Users/xiaolongxiong/Documents/Codex/2026-09-06/new-chat/outputs/prototype-studio/examples/component-reuse/source/index.html",
+      "source_sha256": "4e85b2ed6cf4921b40ecf4811d738ab62303152b7b7208152826a2fc7fa93f1d",
+      "changes": "copied unchanged"
+    }
+  ]
+}

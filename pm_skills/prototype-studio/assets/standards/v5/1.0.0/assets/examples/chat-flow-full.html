@@ -1,0 +1,448 @@
+<!doctype html>
+<!-- 成品样例页 · 对话流全生命周期（展开态）
+     忠于 Figma「全自动课程助教 V5」frame 2117:1928「追问建议+已完成当前任务」逐像素实测。
+     覆盖：用户提问 → 小管家接收/派发（过程卡）→ 拍了拍交接 → 场景专员链式处理 → 小管家最终回答
+           → 完成操作栏（已完成pill/播放文字/复制/举报/赞/踩）→ 追问建议 ×3 → 关闭追问建议 → V5 History Rail。
+     交互口径：任务完成后过程卡默认收起（只留最终回答），点击可展开回看全链——本页画【展开态】。
+     真实素材：../icons/*.svg 与 ../media/*.png 均从该 Figma 文件导出，新项目 copy 本页时必须连同
+     icons/ media/ 一起 copy，禁止用手绘 SVG 近似替代。
+     ⚠ 与 Figma 的有意偏差（2 处）：
+       ① Figma 第三段专员名重复写作「教学活动专员」，与其上方拍了拍接收方「@课程管理专员」
+         矛盾，本页按语义改为「课程管理专员」；
+       ② Figma 最终回答区整体右移 44px、与过程卡头像竖线不齐（用户评审指出），本页按
+         对齐修正：最终回答头像/正文列与过程卡内部网格同 x（列左+16 / 列左+64）。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 对话流成品样例 chat-flow-full</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100vh; display: flex; overflow: hidden;
+    font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg); }
+  img { display: block; }
+
+  /* ================= 左侧导航 80（Figma 2573:8231） ================= */
+  .v5-nav { width: var(--v5-nav-width); flex: none; height: 100%; background: var(--v5-color-surface);
+    border-right: 1px solid var(--v5-color-border); display: flex; flex-direction: column; align-items: center;
+    padding: 12px 0 20px; position: relative; }
+  .v5-nav__logo { width: 40px; height: 40px; margin-bottom: 40px; }
+  .v5-nav__logo img { width: 100%; height: 100%; }
+  .v5-nav__items { flex: 1; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+  .v5-nav__item { display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer; text-decoration: none; }
+  .v5-nav__ico { width: 36px; height: 36px; border-radius: 8px; background: var(--v5-color-bg);
+    display: grid; place-items: center; }
+  .v5-nav__ico img { width: 24px; height: 24px; }
+  .v5-nav__cap { font-size: 12px; line-height: 20px; color: var(--v5-color-text-tertiary); }
+  .v5-nav__item--active .v5-nav__ico { background: var(--v5-color-border); }
+  .v5-nav__item--active .v5-nav__cap { font-weight: 600; color: var(--v5-color-text); }
+  .v5-nav__avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; }
+  .v5-nav__avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ================= 主列 ================= */
+  .v5-main { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; position: relative; }
+
+  /* 顶栏 60（Figma 5541:4302）：图标钮 34 白底 0.5 描边 */
+  .v5-topbar { height: var(--v5-topbar-height); flex: none; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; border-bottom: 1px solid var(--v5-color-fill); background: var(--v5-color-surface); }
+  .v5-topbar__l, .v5-topbar__r { display: flex; align-items: center; }
+  .v5-topbar__l { gap: 16px; }
+  .v5-topbar__r { gap: 16px; }
+  .v5-iconbtn { width: 34px; height: 34px; flex: none; display: grid; place-items: center; cursor: pointer;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border); border-radius: 8px; padding: 0; }
+  .v5-iconbtn img { width: 20px; height: 20px; }
+  .v5-iconbtn--flat { border: none; }
+  .v5-topbar__divider { width: 1px; height: 22px; background: var(--v5-color-border); }
+  .v5-topbar__avatar { width: 32px; height: 32px; border-radius: 50%; background: #edf0f4; overflow: hidden; }
+  .v5-topbar__avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .v5-topbar__title { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .v5-topbar__tag { height: 24px; display: inline-flex; align-items: center; padding: 0 10px;
+    background: var(--v5-color-info-bg); border-radius: 6px;
+    font-size: 12px; line-height: 16px; font-weight: 500; color: var(--v5-color-brand); }
+
+  /* ================= 对话列（840 居中） ================= */
+  .v5-timeline { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center;
+    padding: 24px 0 180px; }
+  .v5-thread { width: var(--v5-content-max); display: flex; flex-direction: column; }
+
+  .v5-time { align-self: flex-end; font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  /* 用户气泡（Figma 2117:2004）：#e5e6eb 底 · 圆角16 · 16px/28 内距 16/10 */
+  .v5-msg-user { align-self: flex-end; max-width: 70%; margin-top: 4px;
+    background: var(--v5-color-border); border-radius: 16px; padding: 10px 16px;
+    font-size: 16px; line-height: 28px; color: var(--v5-color-text); }
+
+  /* ================= 过程卡（Figma 2117:2074）：白卡 · 0.5 描边 · 圆角16 ================= */
+  .v5-process { position: relative; margin-top: 24px; background: var(--v5-color-surface);
+    border: 0.5px solid var(--v5-color-border); border-radius: 16px; padding: 16px 16px 0; overflow: hidden; }
+  .v5-process__seg { position: relative; padding-bottom: 20px; }
+
+  /* 消息头：头像36 + 名称14灰 + 竖线 + ⚡技能标签（全 14px #86909c，名称不加深不加粗） */
+  .v5-agent { display: flex; gap: 12px; }
+  .v5-agent__avatar { width: 36px; height: 36px; flex: none; border-radius: 10px; overflow: hidden; }
+  .v5-agent__avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .v5-agent__body { flex: 1; min-width: 0; }
+  .v5-agent__head { display: flex; align-items: center; gap: 12px; height: 22px; margin-top: 7px;
+    font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  .v5-agent__divider { width: 1px; height: 12px; background: var(--v5-color-border); }
+  .v5-agent__skill { display: inline-flex; align-items: center; gap: 4px; }
+  .v5-agent__skill img { width: 16px; height: 16px; }
+
+  /* 头像底色：每个 Agent 专属（Figma 实测） */
+  .v5-agent__avatar--xiaoguanjia { background: #7b859f; }
+  .v5-agent__avatar--a { background: #979f7b; }
+  .v5-agent__avatar--b { background: #927b9f; }
+
+  /* 正文 16/28；渐进置灰规则：流式生成中「较早段落 #86909c、最新段落正文色」，
+     展开回看态（本页）全部正文色。缩进 48 = 头像36+gap12 */
+  .v5-agent__text { margin: 12px 0 0 48px; font-size: 16px; line-height: 28px; color: var(--v5-color-text); }
+  .v5-agent__text--wide { max-width: 582px; }
+
+  /* 拍了拍行（消息末尾子元素，非独立居中 pill）：chip 高30 圆角4 #f7f8fa 底 semibold；
+     派发方灰 #86909c，接收方绿 #00c261（Figma 实测，非品牌蓝） */
+  .v5-pat { display: flex; align-items: center; gap: 12px; margin: 24px 0 0 48px;
+    font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  .v5-pat__chip { display: inline-flex; align-items: center; height: 30px; padding: 0 8px;
+    background: var(--v5-color-bg); border-radius: 4px; font-weight: 600; }
+  .v5-pat__chip--from { color: var(--v5-color-text-secondary); }
+  .v5-pat__chip--to { color: var(--v5-color-success); }
+
+  /* 角色插画 178×112：贴卡片右缘（数字员工隐喻，每个 Agent 一张专属） */
+  .v5-process__art { position: absolute; right: -16.5px; width: 178px; height: 112px; object-fit: cover; }
+
+  /* ================= 最终回答（无卡容器 · 无插画，Figma 2117:2150–2169） ================= */
+  /* 与过程卡内部网格对齐：头像列同 x（列左+16），正文列同 x（列左+64）。
+     Figma 原稿此区整体右移 44px，与过程卡竖线不齐，按对齐修正（有意偏差第 2 处）。 */
+  .v5-answer { display: flex; gap: 12px; margin-top: 32px; padding-left: 16px; }
+  .v5-answer__avatar { width: 36px; height: 36px; flex: none; border-radius: 10px; overflow: hidden; background: #7b859f; }
+  .v5-answer__avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .v5-answer__body { flex: 1; min-width: 0; }
+  .v5-answer__head { display: flex; align-items: center; gap: 12px; height: 22px; margin-top: 7px;
+    font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  .v5-answer__text { margin-top: 12px; max-width: 744px; font-size: 16px; line-height: 28px; color: var(--v5-color-text); }
+  .v5-answer__text + .v5-answer__text { margin-top: 12px; }
+
+  /* 完成操作栏（Figma 2117:2170–2256）：pill 高38 圆角19；图标钮 38 圆 */
+  .v5-msg-actions { display: flex; align-items: center; margin: 24px 0 0; }
+  .v5-msg-actions__pill { display: inline-flex; align-items: center; gap: 4px; height: 38px; padding: 0 12px;
+    border: none; border-radius: 19px; cursor: pointer;
+    font-family: inherit; font-size: 14px; line-height: 22px; color: var(--v5-color-text-tertiary); }
+  .v5-msg-actions__pill img { width: 18px; height: 18px; }
+  .v5-msg-actions__pill--done { background: var(--v5-color-bg); margin-right: 16px; }
+  .v5-msg-actions__pill--voice { background: var(--v5-color-surface); margin-right: 8px; }
+  .v5-msg-actions__icon { width: 38px; height: 38px; flex: none; display: grid; place-items: center;
+    border: none; border-radius: 19px; background: var(--v5-color-surface); cursor: pointer; margin-right: 8px; }
+  .v5-msg-actions__icon img { width: 18px; height: 18px; }
+  .v5-msg-actions__icon:hover, .v5-msg-actions__icon--active { background: var(--v5-color-bg); }
+  .v5-msg-actions__icon--flip img { transform: rotate(180deg); }
+
+  /* 追问建议（Figma 2117:2179–2215）：整行可点 · 白底 0.5 描边 · 圆角19 · 高36 */
+  .v5-followup { display: flex; flex-direction: column; gap: 8px; margin-top: 32px; max-width: 744px; }
+  .v5-followup__item { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border); border-radius: 19px;
+    font-size: 12px; line-height: 20px; color: var(--v5-color-text-secondary); cursor: pointer; }
+  .v5-followup__item img { width: 16px; height: 16px; }
+  .v5-followup__item:hover { background: var(--v5-color-fill); }
+  .v5-followup__close { display: flex; align-items: center; gap: 4px; align-self: flex-end; margin-top: 8px;
+    font-size: 12px; line-height: 20px; color: var(--v5-color-text-secondary); cursor: pointer; }
+  .v5-followup__close img { width: 14px; height: 14px; }
+
+  /* ================= 输入台（Figma 2117:2369）：840×136 · 圆角24 · 浮层影 ================= */
+  .v5-dock-wrap { position: absolute; left: 0; right: 0; bottom: 24px; display: flex; justify-content: center;
+    pointer-events: none; }
+  .v5-composer { pointer-events: auto; width: var(--v5-content-max); height: 136px; position: relative;
+    background: var(--v5-color-surface); border: 1px solid var(--v5-color-border); border-radius: 24px;
+    box-shadow: var(--v5-shadow-overlay); padding: 15px 16px; }
+  .v5-composer__field { font-size: 16px; line-height: 26px; color: var(--v5-color-text-disabled); }
+  .v5-composer__actions { position: absolute; left: 12px; right: 12px; bottom: 12px;
+    display: flex; align-items: center; }
+  .v5-composer__btn { width: 40px; height: 40px; flex: none; display: grid; place-items: center; cursor: pointer;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border); border-radius: 20px; padding: 0; }
+  .v5-composer__btn img { width: 20px; height: 20px; }
+  .v5-composer__btn + .v5-composer__btn { margin-left: 12px; }
+  .v5-composer__spacer { flex: 1; }
+  .v5-composer__divider { width: 1px; height: 22px; background: var(--v5-color-border); margin: 0 12px; }
+  .v5-composer__btn--send { background: var(--v5-color-bg); border: none; }
+
+.v5-main { position: relative; }
+  .v5-history-rail { width: 32px; height: 168px; position: absolute; right: 0; top: 50%; z-index: 12; transform: translateY(-50%); outline: none; }
+  .v5-history-rail:focus-visible { outline: 2px solid #165dff; outline-offset: 4px; }
+  .v5-history-rail[hidden] { display: none; }
+  .v5-history-rail__ticks { width: 32px; height: 168px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
+  .v5-history-rail__ticks i { width: 24px; height: 3px; flex: none; border-radius: 2px; background: #e5e6eb; }
+  .v5-history-rail__ticks i.md { width: 26px; }
+  .v5-history-rail__ticks i.lg { width: 28px; }
+  .v5-history-rail__ticks i.current { width: 32px; background: #1d2129; }
+  .v5-history-rail__panel { width: 300px; height: 244px; position: absolute; right: 0; top: 50%; padding: 8px; border: 1px solid #e5e6eb; border-radius: 16px; background: #fff; box-shadow: 0 6px 40px rgba(0, 0, 0, .08); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-50%); transition: opacity .12s ease; }
+  .v5-history-rail__list { width: 100%; height: 100%; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d8dbe0 transparent; }
+  .v5-history-rail__list::-webkit-scrollbar { width: 4px; }
+  .v5-history-rail__list::-webkit-scrollbar-thumb { border-radius: 2px; background: #d8dbe0; }
+  .v5-history-rail__item { width: 100%; height: 38px; padding: 0 12px; border-radius: 12px; display: flex; align-items: center; overflow: hidden; color: #4e5969; font-size: 14px; line-height: 22px; font-weight: 400; letter-spacing: 0; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; }
+  .v5-history-rail__item:hover, .v5-history-rail__item:focus-visible, .v5-history-rail__item.is-current { background: #f7f8fa; color: #1d2129; }
+  .v5-history-rail:hover .v5-history-rail__panel, .v5-history-rail:focus-within .v5-history-rail__panel { opacity: 1; visibility: visible; pointer-events: auto; }
+  .v5-history-rail:hover .v5-history-rail__ticks, .v5-history-rail:focus-within .v5-history-rail__ticks { opacity: 0; }
+  .v5-history-rail.is-dismissed .v5-history-rail__panel { opacity: 0; visibility: hidden; pointer-events: none; }
+  .v5-history-rail.is-dismissed .v5-history-rail__ticks { opacity: 1; }
+</style>
+</head>
+<body>
+  <!-- ===== 左侧导航（真实素材：logo 合成 PNG + vuesax 线性图标） ===== -->
+  <nav class="v5-nav">
+    <div class="v5-nav__logo"><img src="../media/logo-v5.png" alt="logo" /></div>
+    <div class="v5-nav__items">
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-calendar.svg" alt="" /></span><span class="v5-nav__cap">日历</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-course.svg" alt="" /></span><span class="v5-nav__cap">课程</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-ai-research.svg" alt="" /></span><span class="v5-nav__cap">AI教研</span></a>
+      <a class="v5-nav__item v5-nav__item--active"><span class="v5-nav__ico"><img src="../icons/nav-v5-assistant.svg" alt="" /></span><span class="v5-nav__cap">V5小管家</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-ai-tutor.svg" alt="" /></span><span class="v5-nav__cap">AI助教</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-knowledge.svg" alt="" /></span><span class="v5-nav__cap">知识发现</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-resource-lib.svg" alt="" /></span><span class="v5-nav__cap">资源库</span></a>
+    </div>
+    <div class="v5-nav__avatar"><img src="../media/user-avatar.png" alt="用户头像" /></div>
+  </nav>
+
+  <main class="v5-main">
+    <!-- ===== 顶栏 ===== -->
+    <header class="v5-topbar">
+      <div class="v5-topbar__l">
+        <button class="v5-iconbtn v5-iconbtn--flat" aria-label="折叠边栏"><img src="../icons/topbar-collapse.svg" alt="" /></button>
+        <span class="v5-topbar__divider"></span>
+        <span class="v5-topbar__avatar"><img src="../media/topbar-xiaoguanjia.png" alt="" /></span>
+        <span class="v5-topbar__title">小管家</span>
+        <span class="v5-topbar__tag">AI助教</span>
+      </div>
+      <div class="v5-topbar__r">
+        <button class="v5-iconbtn" aria-label="朗读"><img src="../icons/topbar-speaker.svg" alt="" /></button>
+        <button class="v5-iconbtn" aria-label="清除记忆"><img src="../icons/topbar-clear-memory.svg" alt="" /></button>
+        <button class="v5-iconbtn" aria-label="更多"><img src="../icons/topbar-more.svg" alt="" /></button>
+      </div>
+    </header>
+
+    <div class="v5-timeline">
+      <div class="v5-thread">
+        <div class="v5-time">2026 5.6 14:12</div>
+        <div class="v5-msg-user">今天《计算机网络》班级1的作业完成情况怎么样?</div>
+
+        <!-- ===== 过程卡（展开态）：小管家派发 → 拍了拍 → 专员链式处理 ===== -->
+        <section class="v5-process">
+          <!-- 段1 · 小管家（派发） -->
+          <div class="v5-process__seg">
+            <img class="v5-process__art" style="top: 12px;" src="../media/illustration-desk-2.png" alt="" />
+            <div class="v5-agent">
+              <span class="v5-agent__avatar v5-agent__avatar--xiaoguanjia"><img src="../media/agent-xiaoguanjia.png" alt="" /></span>
+              <div class="v5-agent__body">
+                <div class="v5-agent__head">
+                  <span>小管家</span>
+                  <span class="v5-agent__divider"></span>
+                  <span class="v5-agent__skill"><img src="../icons/msg-skill-bolt.svg" alt="" />调用技能：作业完成度分析</span>
+                </div>
+              </div>
+            </div>
+            <p class="v5-agent__text">已经收到你的请求，让我思考一下派谁来完成任务</p>
+            <p class="v5-agent__text">现在派你来完成该任务</p>
+            <div class="v5-pat">
+              <span class="v5-pat__chip v5-pat__chip--from">@小管家</span>
+              <span>拍了拍</span>
+              <span class="v5-pat__chip v5-pat__chip--to">@教学活动专员</span>
+              <span>说，开整吧，流程走起</span>
+            </div>
+          </div>
+
+          <!-- 段2 · 教学活动专员（处理 + 链式再派发） -->
+          <div class="v5-process__seg">
+            <img class="v5-process__art" style="top: 120px;" src="../media/illustration-desk-1.png" alt="" />
+            <div class="v5-agent">
+              <span class="v5-agent__avatar v5-agent__avatar--a"><img src="../media/agent-portrait-a.png" alt="" /></span>
+              <div class="v5-agent__body">
+                <div class="v5-agent__head">
+                  <span>教学活动专员</span>
+                  <span class="v5-agent__divider"></span>
+                  <span class="v5-agent__skill"><img src="../icons/msg-skill-bolt.svg" alt="" />作业完成度分析 进行中...</span>
+                </div>
+              </div>
+            </div>
+            <p class="v5-agent__text">收到，现在开始处理你的任务~</p>
+            <p class="v5-agent__text v5-agent__text--wide">就由我来为你准备明天的计算机网络课程吧，首先让我看看信息，我来帮你先补全吧！就由我来为你布置一份第三章的练习题吧，首先让我看看信息，我来帮你先补全吧！</p>
+            <p class="v5-agent__text">学情分析师已完成32人，学情画像分析发现3名同学数学基础薄弱需关注</p>
+            <p class="v5-agent__text v5-agent__text--wide">晴空白云、清秋明月喻义：品格高洁、光明磊落、胸襟洒落出处：《宋史・文同传》"与可襟韵洒落，如晴云秋月，尘埃不到</p>
+            <div class="v5-pat">
+              <span class="v5-pat__chip v5-pat__chip--from">@教学活动专员</span>
+              <span>拍了拍</span>
+              <span class="v5-pat__chip v5-pat__chip--to">@课程管理专员</span>
+              <span>说，开整吧，流程走起</span>
+            </div>
+          </div>
+
+          <!-- 段3 · 课程管理专员（接力处理；Figma 原稿此处名称误作「教学活动专员」，按语义修正） -->
+          <div class="v5-process__seg">
+            <img class="v5-process__art" style="bottom: 0;" src="../media/illustration-desk-3.png" alt="" />
+            <div class="v5-agent">
+              <span class="v5-agent__avatar v5-agent__avatar--b"><img src="../media/agent-portrait-b.png" alt="" /></span>
+              <div class="v5-agent__body">
+                <div class="v5-agent__head">
+                  <span>课程管理专员</span>
+                  <span class="v5-agent__divider"></span>
+                  <span class="v5-agent__skill"><img src="../icons/msg-skill-bolt.svg" alt="" />作业完成度分析 进行中...</span>
+                </div>
+              </div>
+            </div>
+            <p class="v5-agent__text">收到，现在开始处理你的任务~</p>
+            <p class="v5-agent__text v5-agent__text--wide">就由我来为你准备明天的计算机网络课程吧，首先让我看看信息，我来帮你先补全吧！就由我来为你布置一份第三章的练习题吧，首先让我看看信息，我来帮你先补全吧！</p>
+            <p class="v5-agent__text">学情分析师已完成32人，学情画像分析发现3名同学数学基础薄弱需关注</p>
+            <p class="v5-agent__text v5-agent__text--wide">晴空白云、清秋明月喻义：品格高洁、光明磊落、胸襟洒落出处：《宋史・文同传》"与可襟韵洒落，如晴云秋月，尘埃不到</p>
+          </div>
+        </section>
+
+        <!-- ===== 最终回答（小管家 · 无卡容器）+ 操作栏 + 追问建议 ===== -->
+        <div class="v5-answer">
+          <span class="v5-answer__avatar"><img src="../media/agent-xiaoguanjia.png" alt="" /></span>
+          <div class="v5-answer__body">
+            <div class="v5-answer__head">
+              <span>小管家</span>
+              <span class="v5-agent__divider"></span>
+              <span>2026 5.6 14:12</span>
+              <span class="v5-agent__divider"></span>
+              <span class="v5-agent__skill"><img src="../icons/msg-skill-bolt.svg" alt="" />调用技能：作业完成度分析</span>
+            </div>
+            <p class="v5-answer__text">这是一张智慧农业/精准种植主题的概念图。</p>
+            <p class="v5-answer__text">画面中央是一株绿色植物幼苗（疑似西瓜或南瓜苗），背景虚化为绿色植物群落。植物周围叠加了四个半透明的白色科技感 UI 图标</p>
+            <p class="v5-answer__text">位置图标含义 左上含太阳符号的仪表盘光照强度/光合作用监测中央多层同心圆环形仪表植物生长状态/健康指数右上三个水滴符号的仪表土壤湿度/水分监测右下昆虫剪影图标病虫害监测/生态预警</p>
+            <p class="v5-answer__text">整体传达的是通过传感器、物联网、AI 等技术对植物生长环境进行实时数字化监控的理念，常用于农业科技、物联网应用等领域的宣传或科普材料。</p>
+
+            <!-- 操作栏：完成pill(灰底) + 播放文字pill(白底) + 复制/举报/赞/踩（38圆钮，复制示 hover 态） -->
+            <div class="v5-msg-actions">
+              <button class="v5-msg-actions__pill v5-msg-actions__pill--done"><img src="../icons/action-check.svg" alt="" />已完成当前任务</button>
+              <button class="v5-msg-actions__pill v5-msg-actions__pill--voice"><img src="../icons/action-voice-bars.svg" alt="" />播放文字</button>
+              <button class="v5-msg-actions__icon v5-msg-actions__icon--active" aria-label="复制"><img src="../icons/action-copy.svg" alt="" /></button>
+              <button class="v5-msg-actions__icon" aria-label="举报反馈"><img src="../icons/action-report.svg" alt="" /></button>
+              <button class="v5-msg-actions__icon" aria-label="点赞"><img src="../icons/action-like.svg" alt="" /></button>
+              <button class="v5-msg-actions__icon v5-msg-actions__icon--flip" aria-label="点踩"><img src="../icons/action-dislike.svg" alt="" /></button>
+            </div>
+
+            <!-- 追问建议：完整问句 ×3，整行可点；右下角可关闭 -->
+            <div class="v5-followup">
+              <div class="v5-followup__item"><img src="../icons/followup-bubble.svg" alt="" />计算机网络的发展历程是怎样的?</div>
+              <div class="v5-followup__item"><img src="../icons/followup-bubble.svg" alt="" />计算机网络的应用领域有哪些?</div>
+              <div class="v5-followup__item"><img src="../icons/followup-bubble.svg" alt="" />如何保障计算机网络的安全?</div>
+              <div class="v5-followup__close"><img src="../icons/close-x.svg" alt="" />关闭追问建议</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 输入台 ===== -->
+    <aside class="v5-history-rail" data-v5-history-rail tabindex="0" aria-label="历史对话">
+      <div class="v5-history-rail__ticks" aria-hidden="true">
+        <i class="current"></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+      </div>
+      <nav class="v5-history-rail__panel" aria-label="历史对话列表">
+        <div class="v5-history-rail__list">
+          <a class="v5-history-rail__item is-current" href="?conversation=01" aria-current="page" title="当前对话">当前对话</a>
+          <a class="v5-history-rail__item" href="?conversation=02" title="历史对话 02">历史对话 02</a>
+          <a class="v5-history-rail__item" href="?conversation=03" title="历史对话 03">历史对话 03</a>
+          <a class="v5-history-rail__item" href="?conversation=04" title="历史对话 04">历史对话 04</a>
+          <a class="v5-history-rail__item" href="?conversation=05" title="历史对话 05">历史对话 05</a>
+          <a class="v5-history-rail__item" href="?conversation=06" title="历史对话 06">历史对话 06</a>
+          <a class="v5-history-rail__item" href="?conversation=07" title="历史对话 07">历史对话 07</a>
+          <a class="v5-history-rail__item" href="?conversation=08" title="历史对话 08">历史对话 08</a>
+          <a class="v5-history-rail__item" href="?conversation=09" title="历史对话 09">历史对话 09</a>
+          <a class="v5-history-rail__item" href="?conversation=10" title="历史对话 10">历史对话 10</a>
+          <a class="v5-history-rail__item" href="?conversation=11" title="历史对话 11">历史对话 11</a>
+          <a class="v5-history-rail__item" href="?conversation=12" title="历史对话 12">历史对话 12</a>
+          <a class="v5-history-rail__item" href="?conversation=13" title="历史对话 13">历史对话 13</a>
+          <a class="v5-history-rail__item" href="?conversation=14" title="历史对话 14">历史对话 14</a>
+          <a class="v5-history-rail__item" href="?conversation=15" title="历史对话 15">历史对话 15</a>
+          <a class="v5-history-rail__item" href="?conversation=16" title="历史对话 16">历史对话 16</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="v5-dock-wrap">
+      <div class="v5-composer">
+        <div class="v5-composer__field">继续和 V5 小管家说说你要处理的教学事务，可以使用@挑选你的小帮手哦</div>
+        <div class="v5-composer__actions">
+          <button class="v5-composer__btn" aria-label="提及"><img src="../icons/composer-at.svg" alt="" /></button>
+          <button class="v5-composer__btn" aria-label="添加"><img src="../icons/composer-plus.svg" alt="" /></button>
+          <span class="v5-composer__spacer"></span>
+          <button class="v5-composer__btn" aria-label="语音通话"><img src="../icons/composer-phone.svg" alt="" /></button>
+          <button class="v5-composer__btn" aria-label="语音输入"><img src="../icons/composer-mic.svg" alt="" /></button>
+          <span class="v5-composer__divider"></span>
+          <button class="v5-composer__btn v5-composer__btn--send" aria-label="发送"><img src="../icons/composer-send.svg" alt="" /></button>
+        </div>
+      </div>
+    </div>
+  </main>
+<script>
+(function () {
+  var modalSelector = '[aria-modal="true"], .v5-overlay, .v5-modal-mask';
+  var requestedConversation = new URLSearchParams(window.location.search).get('conversation');
+  var activeConversation = /^(?:0[1-9]|1[0-6])$/.test(requestedConversation || '') ? requestedConversation : '01';
+
+  function isVisibleModal(element) {
+    if (element.hidden || element.getAttribute('aria-hidden') === 'true') return false;
+    var style = window.getComputedStyle(element);
+    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return false;
+    return element.getClientRects().length > 0;
+  }
+
+  document.querySelectorAll('[data-v5-history-rail]').forEach(function (rail) {
+    var items = Array.prototype.slice.call(rail.querySelectorAll('.v5-history-rail__item'));
+    var ticks = Array.prototype.slice.call(rail.querySelectorAll('.v5-history-rail__ticks i'));
+    var modalBlocked = null;
+
+    items.forEach(function (item, index) {
+      var conversation = String(index + 1).padStart(2, '0');
+      var isCurrent = conversation === activeConversation;
+      item.classList.toggle('is-current', isCurrent);
+      if (isCurrent) item.setAttribute('aria-current', 'page');
+      else item.removeAttribute('aria-current');
+      if (ticks[index]) ticks[index].classList.toggle('current', isCurrent);
+    });
+
+    function syncModalState() {
+      var blocked = Array.prototype.some.call(document.querySelectorAll(modalSelector), isVisibleModal);
+      if (blocked === modalBlocked) return;
+      modalBlocked = blocked;
+      rail.hidden = blocked;
+      if (blocked) {
+        rail.setAttribute('aria-hidden', 'true');
+        rail.setAttribute('tabindex', '-1');
+        items.forEach(function (item) { item.setAttribute('tabindex', '-1'); });
+        return;
+      }
+      rail.removeAttribute('aria-hidden');
+      rail.setAttribute('tabindex', '0');
+      items.forEach(function (item) { item.removeAttribute('tabindex'); });
+    }
+
+    rail.addEventListener('pointerenter', function () {
+      rail.classList.remove('is-dismissed');
+    });
+    rail.addEventListener('focusout', function (event) {
+      if (!rail.contains(event.relatedTarget)) rail.classList.remove('is-dismissed');
+    });
+    rail.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      rail.classList.add('is-dismissed');
+      rail.focus({ preventScroll: true });
+    });
+
+    var observer = new MutationObserver(syncModalState);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['aria-hidden', 'aria-modal', 'class', 'hidden', 'style'],
+      childList: true,
+      subtree: true
+    });
+    syncModalState();
+  });
+}());
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<!-- 页面原型 A · 首页/门户壳层
+     结构忠于 Figma「首页-UI」528:59 / 主 frame 536:522：左导航(80) + 居中内容列(920)，无顶栏。
+     内容列：欢迎标题 → 概览副文 → 统一首页群像 → 中央提问台(920) → 快捷动作卡组。
+     左导航与 chat-flow / drawer 逐字一致。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 首页/门户 home-portal</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100vh; display: flex; overflow: hidden;
+    font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg); }
+
+  /* ===== 左侧导航（与 chat-flow / drawer 逐字一致） ===== */
+  .v5-nav { width: var(--v5-nav-width); flex: none; height: 100%; background: var(--v5-color-surface);
+    border-right: 1px solid var(--v5-color-border); display: flex; flex-direction: column; align-items: center; padding: 12px 0; }
+  .v5-nav__logo { width: 40px; height: 40px; border-radius: var(--v5-radius-md); background: var(--v5-color-brand); display: grid; place-items: center; margin-bottom: 20px; }
+  .v5-nav__items { flex: 1; display: flex; flex-direction: column; gap: var(--v5-space-4); align-items: center; }
+  .v5-nav__item { width: 56px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--v5-color-text-secondary); cursor: pointer; text-decoration: none; }
+  .v5-nav__ico { width: 36px; height: 36px; border-radius: var(--v5-radius-md); display: grid; place-items: center; }
+  .v5-nav__cap { font-size: 12px; line-height: 16px; }
+  .v5-nav__item--active { color: var(--v5-color-text); }
+  .v5-nav__item--active .v5-nav__ico { background: var(--v5-color-fill); }
+  .v5-nav__item--active .v5-nav__cap { font-weight: 600; }
+  .v5-nav__avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--v5-color-fill); border: 1px solid var(--v5-color-border); }
+
+  /* ===== 门户主区（居中 920，无顶栏） ===== */
+  .v5-portal { flex: 1; min-width: 0; height: 100%; overflow-y: auto; display: flex; justify-content: center; }
+  .v5-portal__col { width: var(--v5-portal-col); padding: 64px 0; display: flex; flex-direction: column; align-items: center; gap: var(--v5-space-6); }
+  .v5-welcome { font-size: 36px; line-height: 1.3; font-weight: 600; letter-spacing: 1px; }
+  .v5-welcome b { color: var(--v5-color-brand); }
+  .v5-overview { max-width: 540px; text-align: center; font-size: var(--v5-font-size-body); line-height: var(--v5-line-height-body); color: var(--v5-color-text-secondary); }
+  .v5-home-cast { width: 568px; height: auto; object-fit: contain; }
+
+  /* 中央提问台 920×~170 */
+  .v5-ask { width: 100%; min-height: 170px; background: var(--v5-color-surface); border: 1px solid var(--v5-color-border);
+    border-radius: var(--v5-radius-lg); padding: var(--v5-space-5); display: flex; flex-direction: column; justify-content: space-between; }
+  .v5-ask__ph { font-size: var(--v5-font-size-body); color: var(--v5-color-text-disabled); }
+  .v5-ask__row { display: flex; align-items: center; justify-content: space-between; }
+  .v5-cluster { display: flex; align-items: center; gap: var(--v5-space-2); }
+  .v5-chip { height: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 0 var(--v5-space-3);
+    border-radius: var(--v5-radius-pill); border: 1px solid var(--v5-color-border); font-size: var(--v5-font-size-caption); color: var(--v5-color-text-tertiary); text-decoration: none; }
+  .v5-iconbtn { width: 36px; height: 36px; display: grid; place-items: center; border: none; background: transparent;
+    border-radius: var(--v5-radius-pill); color: var(--v5-color-text-secondary); cursor: pointer; }
+  .v5-iconbtn:hover { background: var(--v5-color-fill); }
+  .v5-send { color: var(--v5-color-brand); background: color-mix(in srgb, var(--v5-color-brand) 12%, white); }
+
+  /* 快捷动作卡组（3 × 294×124） */
+  .v5-quick { width: 100%; display: flex; gap: var(--v5-space-4); }
+  .v5-qcard { flex: 1; height: 124px; background: var(--v5-color-surface); border: 1px solid var(--v5-color-border);
+    border-radius: var(--v5-radius-lg); padding: var(--v5-space-4); display: flex; flex-direction: column; gap: var(--v5-space-2); cursor: pointer; }
+  .v5-qcard__t { font-size: var(--v5-font-size-body); font-weight: 600; }
+  .v5-qcard__d { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); line-height: var(--v5-line-height-caption); }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <!-- ===== SLOT: 左侧导航栏（与 chat-flow 逐字一致） ===== -->
+  <nav class="v5-nav">
+    <div class="v5-nav__logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 22 L15 11 L20 22 Z" fill="#6f8bff"/><path d="M4 22 L11 6 L14 13 Z" fill="#fff"/></svg></div>
+    <div class="v5-nav__items">
+      <a class="v5-nav__item"><span class="v5-nav__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 9h17M8 3.5v3M16 3.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="v5-nav__cap">日历</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="v5-nav__cap">课程</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 5h14v11H8l-3 3V5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><span class="v5-nav__cap">AI教研</span></a>
+      <a class="v5-nav__item v5-nav__item--active"><span class="v5-nav__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="v5-nav__cap">V5小管家</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H4z" stroke="currentColor" stroke-width="1.5"/><path d="M8 20h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="v5-nav__cap">AI助教</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="v5-nav__cap">知识发现</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg></span><span class="v5-nav__cap">资源库</span></a>
+    </div>
+    <div class="v5-nav__avatar"></div>
+  </nav>
+
+  <main class="v5-portal">
+    <div class="v5-portal__col">
+      <!-- SLOT: 欢迎/概览 -->
+      <div class="v5-welcome">V5<b>✦</b>小管家</div>
+      <div class="v5-overview">我是你的 AI 教学工作入口，帮你处理备课、作业、教研会议与学情分析。把要做的事交给我，或在下方直接发起。</div>
+      <!-- SLOT: 统一首页群像（固定素材，不替换、不拆分） -->
+      <img class="v5-home-cast" src="../media/home-agent-cast.png" alt="V5 智能助手团队" />
+      <!-- SLOT: Agent 入口（中央提问台） -->
+      <div class="v5-ask">
+        <div class="v5-ask__ph">输入你的教学事务，或 @ 挑选专员帮你完成…</div>
+        <div class="v5-ask__row">
+          <div class="v5-cluster">
+            <!-- SLOT: @专员快捷 chips -->
+            <a class="v5-chip" href="../examples/chat-flow-full.html">@ 教学活动</a>
+            <a class="v5-chip" href="../examples/chat-flow-full.html">@ 学科管理</a>
+            <a class="v5-chip" href="../examples/chat-flow-full.html">@ 会议日程</a>
+            <a class="v5-chip" href="../examples/chat-flow-full.html">@ 备课管理</a>
+          </div>
+          <div class="v5-cluster">
+            <!-- SLOT: 右侧操作 -->
+            <button class="v5-iconbtn" aria-label="通话"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 4.5c0 6 4.5 10.5 10.5 10.5l-2-3-2.5.8a8 8 0 0 1-3.8-3.8L8 6.5 5 4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+            <button class="v5-iconbtn" aria-label="语音"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="7.5" y="3" width="5" height="9" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 9a5 5 0 0 0 10 0M10 14v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+            <button class="v5-iconbtn v5-send" aria-label="发送"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3.5 10 16 4l-4.5 12L9 11.5 3.5 10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <!-- SLOT: 快捷动作（入口卡组） -->
+      <div class="v5-quick">
+        <div class="v5-qcard"><div class="v5-qcard__t">布置练习</div><div class="v5-qcard__d">《第三章练习》待布置</div></div>
+        <div class="v5-qcard"><div class="v5-qcard__t">学情反馈</div><div class="v5-qcard__d">《高等数学》本周反馈</div></div>
+        <div class="v5-qcard"><div class="v5-qcard__t">教研会议</div><div class="v5-qcard__d">2 月 25 日教研会议</div></div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

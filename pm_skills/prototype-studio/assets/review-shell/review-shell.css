@@ -1,0 +1,24 @@
+#ps-review{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.6;color:#202734;position:relative;z-index:2147483000}
+#ps-review *{box-sizing:border-box}#ps-review [hidden]{display:none!important}
+#ps-review button,#ps-review a{font:inherit}#ps-review button{cursor:pointer;color:inherit}
+#ps-review :focus-visible{outline:3px solid #3069d9;outline-offset:3px}
+#ps-review nav{display:block;margin:0;padding:0}#ps-review .ps-toolbar button,#ps-review .ps-close{padding:0}
+#ps-review .ps-toolbar{position:fixed;left:12px;top:12px;display:flex;gap:6px;z-index:2147483001}
+#ps-review .ps-toolbar button{display:grid;place-items:center;width:40px;height:40px;border:1px solid #d6dce5;border-radius:12px;background:#fff;box-shadow:0 4px 14px #17243918}
+#ps-review .ps-toolbar button:hover{background:#eff4fd}#ps-review svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#ps-review .ps-backdrop{position:fixed;inset:0;background:#15243b45;z-index:2147483002}
+#ps-review .ps-panel{position:fixed;top:64px;left:12px;width:min(760px,calc(100vw - 24px));max-height:calc(100dvh - 80px);display:flex;flex-direction:column;background:#fff;border:1px solid #d5dce8;border-radius:16px;box-shadow:0 20px 60px #15243b35;overflow:hidden;z-index:2147483003}
+#ps-review .ps-panel>header{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 22px;border-bottom:1px solid #e5e9ef;background:#f8faff}
+#ps-review .ps-panel h2{margin:0;font-size:18px;line-height:1.5}#ps-review .ps-eyebrow{margin:0 0 2px;font-size:11px;color:#596577;letter-spacing:1px}
+#ps-review .ps-close{flex:none;display:grid;place-items:center;border:1px solid #d6dce5;background:white;border-radius:9px;width:36px;height:36px;font-size:25px;line-height:1}
+#ps-review .ps-body{overflow:auto;overscroll-behavior:contain;padding:20px 22px}#ps-review .ps-project{font-weight:650;margin:0 0 14px}
+#ps-review .ps-pages{list-style:none;padding:0;margin:0;display:grid;gap:12px}#ps-review .ps-pages li{border:1px solid #e0e6ef;border-radius:12px;padding:12px}
+#ps-review .ps-pages a{display:flex;flex-direction:column;text-decoration:none;color:#243247;border-radius:6px;padding:3px 4px}#ps-review .ps-pages a[aria-current]{background:#edf3ff;color:#174da7}
+#ps-review .ps-pages a span{font-weight:650}#ps-review .ps-pages small{font-size:12px;color:#5b687a;overflow-wrap:anywhere}
+#ps-review .ps-statuses{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}#ps-review .ps-status{font-size:11px;border:1px solid #d9e0eb;padding:2px 7px;border-radius:20px;color:#576376;background:#f8f9fc}#ps-review .ps-status.is-done{color:#246343;background:#eef8f1;border-color:#b5d8c3}
+#ps-review .ps-notice,#ps-review .ps-error,#ps-review .ps-empty{padding:12px;border-radius:10px;margin:0 0 16px;background:#fff7e7;border:1px solid #e9ca88;color:#795219}#ps-review .ps-error{background:#fff0f0;border-color:#efb8b8;color:#923b3b}
+#ps-review .ps-markdown h2{margin:24px 0 12px;font-size:21px}#ps-review .ps-markdown h3{margin:22px 0 10px;font-size:17px}#ps-review .ps-markdown h4{margin:18px 0 8px;font-size:15px}#ps-review .ps-markdown p{margin:9px 0}#ps-review .ps-markdown ul{padding-left:22px}
+#ps-review a{color:#1a56b4}#ps-review code{font-family:ui-monospace,monospace;font-size:.9em;background:#f0f3f8;padding:1px 4px;border-radius:4px}#ps-review pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f6f8fb;padding:12px;border-radius:8px;font-size:12px}
+#ps-review .ps-table-wrap{overflow:auto;margin:14px 0}#ps-review table{border-collapse:collapse;width:100%;font-size:12px}#ps-review th,#ps-review td{border:1px solid #dce3ed;text-align:left;padding:9px;vertical-align:top}#ps-review th{background:#edf3fc;white-space:nowrap}
+#ps-review .ps-source{margin-top:24px;border-top:1px solid #e4e8f0;padding-top:12px}#ps-review summary{cursor:pointer}#ps-review .ps-source-note{font-size:11px;color:#657185;overflow-wrap:anywhere;margin-top:16px}
+@media(max-width:480px){#ps-review .ps-panel>header,#ps-review .ps-body{padding:14px}#ps-review .ps-panel h2{font-size:16px}}

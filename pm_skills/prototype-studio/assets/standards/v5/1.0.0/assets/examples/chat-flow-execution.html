@@ -1,0 +1,552 @@
+<!doctype html>
+<!-- 成品样例页 · 任务执行中视图（执行计划抽屉 + 任务浮层 + 并行 Agent 胶囊）
+     忠于 Figma「全自动课程助教 V5」frame 2907:2110「工作日志」逐像素实测。
+     覆盖：执行中的对话（过程卡进行态 + 用户气泡 hover 操作）
+           + 右侧「执行计划」抽屉（任务卡·进度64%·暂停/终止 + 运行日志时间线·并行分组）
+           + 左下「任务总数 1/4」浮层（任务一/二/三 · 状态 + 负责 Agent chip）
+           + 输入台上方并行 Agent 状态胶囊（展开1 + 收起2）。
+     抽屉宽 500 = var(--v5-drawer-width-third)；抽屉打开时主列 860、内容列收窄为 812。
+     真实素材：../icons/*.svg ../media/*.png，copy 本页必须连同素材目录一起。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 任务执行中 chat-flow-execution</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100vh; display: flex; overflow: hidden;
+    font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg); }
+  img { display: block; }
+
+  /* ============ 左侧导航（同 chat-flow-full） ============ */
+  .v5-nav { width: var(--v5-nav-width); flex: none; height: 100%; background: var(--v5-color-surface);
+    border-right: 1px solid var(--v5-color-border); display: flex; flex-direction: column; align-items: center;
+    padding: 12px 0 20px; }
+  .v5-nav__logo { width: 40px; height: 40px; margin-bottom: 40px; }
+  .v5-nav__logo img { width: 100%; height: 100%; }
+  .v5-nav__items { flex: 1; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+  .v5-nav__item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; }
+  .v5-nav__ico { width: 36px; height: 36px; border-radius: 8px; background: var(--v5-color-bg); display: grid; place-items: center; }
+  .v5-nav__ico img { width: 24px; height: 24px; }
+  .v5-nav__cap { font-size: 12px; line-height: 20px; color: var(--v5-color-text-tertiary); }
+  .v5-nav__item--active .v5-nav__ico { background: var(--v5-color-border); }
+  .v5-nav__item--active .v5-nav__cap { font-weight: 600; color: var(--v5-color-text); }
+  .v5-nav__avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; }
+  .v5-nav__avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ============ 主列（抽屉打开 → 860） ============ */
+  .v5-main { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; position: relative; }
+  .v5-topbar { height: var(--v5-topbar-height); flex: none; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; border-bottom: 1px solid var(--v5-color-fill); background: var(--v5-color-surface); }
+  .v5-topbar__l, .v5-topbar__r { display: flex; align-items: center; }
+  .v5-topbar__l { gap: 16px; } .v5-topbar__r { gap: 16px; }
+  .v5-iconbtn { width: 34px; height: 34px; flex: none; display: grid; place-items: center; cursor: pointer;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border); border-radius: 8px; padding: 0; }
+  .v5-iconbtn img { width: 20px; height: 20px; }
+  .v5-iconbtn--flat { border: none; }
+  .v5-topbar__divider { width: 1px; height: 22px; background: var(--v5-color-border); }
+  .v5-topbar__avatar { width: 32px; height: 32px; border-radius: 50%; background: #edf0f4; overflow: hidden; }
+  .v5-topbar__avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .v5-topbar__title { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .v5-topbar__tag { height: 24px; display: inline-flex; align-items: center; padding: 0 10px;
+    background: var(--v5-color-info-bg); border-radius: 6px;
+    font-size: 12px; line-height: 16px; font-weight: 500; color: var(--v5-color-brand); }
+
+  /* ============ 对话列（收窄 812） ============ */
+  .v5-timeline { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 24px 0 260px; }
+  .v5-thread { width: 812px; display: flex; flex-direction: column; }
+  .v5-time { align-self: flex-end; font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  .v5-msg-user-wrap { align-self: flex-end; margin-top: 4px; display: flex; flex-direction: column; align-items: flex-end; }
+  .v5-msg-user { max-width: 70%; background: var(--v5-color-border); border-radius: 16px; padding: 10px 16px;
+    font-size: 16px; line-height: 28px; color: var(--v5-color-text); }
+  /* 用户气泡 hover 操作（Figma 2907:2182）：编辑 + 复制，28 方钮 */
+  .v5-msg-user-ops { display: flex; gap: 4px; margin-top: 4px; background: var(--v5-color-surface);
+    border-radius: 8px; padding: 4px; }
+  .v5-msg-user-ops button { width: 28px; height: 28px; display: grid; place-items: center; border: none;
+    background: var(--v5-color-surface); border-radius: 6px; cursor: pointer; padding: 0; }
+  .v5-msg-user-ops button:first-child { background: var(--v5-color-bg); }
+  .v5-msg-user-ops img { width: 16px; height: 16px; }
+
+  /* 过程卡（进行态·仅小管家段） */
+  .v5-process { position: relative; margin-top: 24px; background: var(--v5-color-surface);
+    border: 0.5px solid var(--v5-color-border); border-radius: 16px; padding: 16px 16px 20px; overflow: hidden; }
+  .v5-agent { display: flex; gap: 12px; }
+  .v5-agent__avatar { width: 36px; height: 36px; flex: none; border-radius: 10px; overflow: hidden; background: #7b859f; }
+  .v5-agent__avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .v5-agent__head { display: flex; align-items: center; gap: 12px; height: 22px; margin-top: 7px;
+    font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  .v5-agent__divider { width: 1px; height: 12px; background: var(--v5-color-border); }
+  .v5-agent__skill { display: inline-flex; align-items: center; gap: 4px; }
+  .v5-agent__skill img { width: 16px; height: 16px; }
+  /* 流式渐进置灰：较早段落次要色，最新段落正文色 */
+  .v5-agent__text { margin: 12px 0 0 48px; font-size: 16px; line-height: 28px; color: var(--v5-color-text-secondary); }
+  .v5-agent__text--latest { color: var(--v5-color-text); }
+  .v5-pat { display: flex; align-items: center; gap: 12px; margin: 24px 0 0 48px;
+    font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  .v5-pat__chip { display: inline-flex; align-items: center; height: 30px; padding: 0 8px;
+    background: var(--v5-color-bg); border-radius: 4px; font-weight: 600; }
+  .v5-pat__chip--from { color: var(--v5-color-text-secondary); }
+  .v5-pat__chip--to { color: var(--v5-color-success); }
+  .v5-process__art { position: absolute; right: -16.5px; top: 40px; width: 178px; height: 112px; object-fit: cover; }
+
+  /* ============ 任务总数浮层（Figma 2907:2434 · 320×408） ============ */
+  .v5-taskfloat { position: absolute; left: 24px; bottom: 256px; width: 320px; background: var(--v5-color-surface);
+    border: 1px solid var(--v5-color-border); border-radius: 16px; box-shadow: var(--v5-shadow-overlay);
+    padding: 8px; z-index: 5; }
+  .v5-taskfloat__head { display: flex; align-items: center; justify-content: space-between; padding: 8px 8px 8px 8px;
+    font-size: 12px; line-height: 20px; color: var(--v5-color-text-secondary); }
+  .v5-taskfloat__head b { font-weight: 600; color: var(--v5-color-success); }
+  .v5-taskfloat__head b + b { color: var(--v5-color-text); }
+  .v5-taskfloat__head img { width: 16px; height: 16px; cursor: pointer; }
+  .v5-task { position: relative; border-radius: 8px; background: var(--v5-color-surface); padding: 12px 8px 12px 32px; }
+  .v5-task--active { background: var(--v5-color-bg); }
+  .v5-task__status-ico { position: absolute; left: 8px; top: 15px; width: 16px; height: 16px; }
+  .v5-task__title { display: flex; align-items: center; justify-content: space-between;
+    font-size: 14px; line-height: 22px; font-weight: 600; color: var(--v5-color-text); }
+  .v5-task--waiting .v5-task__title { color: var(--v5-color-text-tertiary); }
+  .v5-task__state { font-size: 12px; line-height: 20px; font-weight: 600; }
+  .v5-task__state--done { color: var(--v5-color-success); }
+  .v5-task__state--doing { color: var(--v5-color-brand); }
+  .v5-task__state--wait { color: var(--v5-color-text-secondary); font-weight: 400; }
+  .v5-task__desc { margin-top: 4px; font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  .v5-task__agent { display: inline-flex; align-items: center; gap: 4px; height: 24px; margin-top: 8px;
+    padding: 4px 10px 4px 4px; border-radius: 20px; background: var(--v5-color-bg);
+    font-size: 12px; line-height: 16px; color: var(--v5-color-text-secondary); }
+  .v5-task--active .v5-task__agent { background: var(--v5-color-surface); }
+  .v5-task__agent i { width: 16px; height: 16px; border-radius: 50%; overflow: hidden; flex: none; }
+  .v5-task__agent i img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  /* 任务节点间连接线 */
+  .v5-task + .v5-task { margin-top: 8px; }
+  .v5-taskfloat__line { position: absolute; left: 24px; width: 0; border-left: 1px dashed var(--v5-color-border); }
+
+  /* ============ 并行 Agent 状态胶囊（Figma 2907:2402） ============ */
+  .v5-agentpills { position: absolute; left: 50%; transform: translateX(-50%); bottom: 172px;
+    width: 812px; display: flex; gap: 16px; align-items: center; z-index: 4; }
+  .v5-agentpill { position: relative; display: flex; align-items: center; height: 62px; border-radius: 40px;
+    background: var(--v5-color-bg); padding: 12px 16px 12px 10px; }
+  .v5-agentpill--expanded { background: var(--v5-color-fill); width: 320px; }
+  .v5-agentpill__avatar { width: 38px; height: 38px; flex: none; border-radius: 50%; overflow: hidden; margin-right: 8px; }
+  .v5-agentpill__avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .v5-agentpill__meta { min-width: 0; }
+  .v5-agentpill__name { font-size: 14px; line-height: 22px; font-weight: 600; color: var(--v5-color-text); }
+  .v5-agentpill__desc { font-size: 12px; line-height: 20px; color: var(--v5-color-text-secondary); white-space: nowrap; }
+  .v5-agentpill__state { font-size: 14px; line-height: 22px; color: var(--v5-color-text-secondary); }
+  .v5-agentpill__pause { width: 28px; height: 28px; flex: none; margin-left: auto; display: grid; place-items: center;
+    background: var(--v5-color-surface); border: none; border-radius: 14px; cursor: pointer; padding: 0; }
+  .v5-agentpill__pause img { width: 18px; height: 18px; }
+  /* 进度弧线（Figma 导出矢量，收起=环绕整胶囊 / 展开=底部半弧） */
+  .v5-agentpill__ring { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .v5-agentpill__arc { position: absolute; left: 89px; bottom: 0; width: 231px; height: 31px; pointer-events: none; }
+
+  /* ============ 输入台（812） ============ */
+  .v5-dock-wrap { position: absolute; left: 0; right: 0; bottom: 24px; display: flex; justify-content: center; pointer-events: none; }
+  .v5-composer { pointer-events: auto; width: 812px; height: 136px; position: relative;
+    background: var(--v5-color-surface); border: 1px solid var(--v5-color-border); border-radius: 24px;
+    box-shadow: var(--v5-shadow-overlay); padding: 15px 16px; }
+  .v5-composer__field { font-size: 16px; line-height: 26px; color: var(--v5-color-text-disabled); }
+  .v5-composer__actions { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; }
+  .v5-composer__btn { width: 40px; height: 40px; flex: none; display: grid; place-items: center; cursor: pointer;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border); border-radius: 20px; padding: 0; }
+  .v5-composer__btn img { width: 20px; height: 20px; }
+  .v5-composer__btn + .v5-composer__btn { margin-left: 12px; }
+  .v5-composer__spacer { flex: 1; }
+  .v5-composer__divider { width: 1px; height: 22px; background: var(--v5-color-border); margin: 0 12px; }
+  .v5-composer__btn--send { background: var(--v5-color-bg); border: none; }
+
+  /* ============ 执行计划抽屉（Figma 2907:2273 · 500 全高） ============ */
+  .v5-drawer { width: var(--v5-drawer-width-third); flex: none; height: 100%; overflow-y: auto;
+    background: var(--v5-color-surface); border-left: 1px solid var(--v5-color-border);
+    box-shadow: 2px 0 31.9px rgba(0,0,0,0.15); padding: 18px 24px 24px 23px; }
+  .v5-drawer__head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px;
+    border-bottom: 1px solid var(--v5-color-border); }
+  .v5-drawer__title { font-size: 16px; line-height: 24px; font-weight: 500; }
+  .v5-drawer__close { width: 24px; height: 24px; border: none; background: transparent; padding: 0; cursor: pointer;
+    display: grid; place-items: center; }
+  .v5-drawer__close img { width: 14px; height: 14px; }
+
+  /* 任务卡：#f7f8fa · 452×164 · 圆角16 */
+  .v5-plan { position: relative; margin-top: 24px; height: 164px; background: var(--v5-color-bg); border-radius: 16px;
+    padding: 16px; }
+  .v5-plan__icon { position: absolute; left: 16px; top: 16px; width: 48px; height: 48px; border-radius: 50%;
+    background: var(--v5-color-surface); display: grid; place-items: center; }
+  .v5-plan__icon img { width: 24px; height: 24px; }
+  .v5-plan__title { margin-left: 60px; font-size: 16px; line-height: 24px; font-weight: 600; padding-right: 76px; }
+  .v5-plan__badge { position: absolute; right: 16px; top: 16px; height: 24px; display: inline-flex; align-items: center;
+    padding: 4px 10px; border-radius: 4px; background: var(--v5-color-brand);
+    font-size: 12px; line-height: 16px; color: #fff; }
+  .v5-plan__time { margin: 4px 0 0 60px; display: flex; align-items: center; gap: 4px;
+    font-size: 12px; line-height: 20px; color: var(--v5-color-text-secondary); }
+  .v5-plan__time img { width: 16px; height: 16px; }
+  .v5-plan__progress { position: absolute; left: 16px; top: 88px; width: 369px; height: 6px; border-radius: 20px;
+    background: var(--v5-color-border); }
+  .v5-plan__progress i { display: block; width: 73%; height: 100%; border-radius: 20px; background: var(--v5-color-text); }
+  .v5-plan__pct { position: absolute; right: 16px; top: 80px; font-size: 16px; line-height: 20px; font-weight: 600; }
+  .v5-plan__btns { position: absolute; left: 150px; top: 116px; display: flex; gap: 16px; }
+  .v5-plan__btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; cursor: pointer;
+    background: var(--v5-color-surface); border: 0.5px solid var(--v5-color-border); border-radius: 8px;
+    font-size: 12px; line-height: 20px; color: var(--v5-color-text); }
+  .v5-plan__btn img { width: 16px; height: 16px; }
+
+  /* 运行日志 */
+  .v5-runlog__head { display: flex; align-items: center; justify-content: space-between; margin-top: 28px; }
+  .v5-runlog__title { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .v5-runlog { position: relative; margin-top: 18px; }
+  .v5-runlog__rail { position: absolute; left: 15px; top: 34px; bottom: 10px; width: 0;
+    border-left: 1px dashed var(--v5-color-border); }
+  .v5-lognode { position: relative; padding: 0 0 24px 42px; }
+  .v5-lognode__avatar { position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%;
+    overflow: hidden; outline: 3px solid var(--v5-color-surface); }
+  .v5-lognode__avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .v5-lognode__avatar--a { background: #b16aba; }
+  .v5-lognode__avatar--b { background: #ffb84d; }
+  .v5-lognode__avatar--c { background: #b16bba; }
+  .v5-lognode__avatar--d { background: #4e9e96; }
+  .v5-lognode__avatar--parallel { background: var(--v5-color-warning); display: grid; place-items: center; }
+  .v5-lognode__avatar--parallel img { width: 18px; height: 18px; object-fit: contain; }
+  .v5-lognode__head { display: flex; align-items: baseline; justify-content: space-between;
+    font-size: 14px; line-height: 22px; font-weight: 600; color: var(--v5-color-text); }
+  .v5-lognode--doing .v5-lognode__head { color: var(--v5-color-brand); }
+  .v5-lognode--wait .v5-lognode__head { color: var(--v5-color-text-secondary); }
+  .v5-lognode__time { font-weight: 400; color: var(--v5-color-text-secondary); }
+  .v5-lognode__desc { margin-top: 8px; font-size: 14px; line-height: 26px; color: var(--v5-color-text-tertiary); max-width: 410px; }
+  .v5-lognode--doing .v5-lognode__desc { color: var(--v5-color-text); }
+  .v5-lognode--wait .v5-lognode__desc { color: var(--v5-color-text-secondary); }
+  .v5-lognode__chip { display: inline-flex; align-items: center; height: 24px; margin-top: 12px; padding: 4px 10px;
+    border-radius: 4px; font-size: 12px; line-height: 16px; }
+  .v5-lognode__chip--done { background: var(--v5-color-success-bg); color: var(--v5-color-success); }
+  .v5-lognode__chip--doing { background: var(--v5-color-info-bg); color: var(--v5-color-brand); }
+  .v5-lognode__chip--wait { background: var(--v5-color-bg); color: var(--v5-color-text-secondary); }
+  .v5-lognode__member { display: inline-flex; align-items: center; gap: 4px; height: 24px; margin-top: 12px;
+    padding: 4px 10px 4px 4px; border-radius: 20px; background: var(--v5-color-bg);
+    font-size: 12px; line-height: 16px; color: var(--v5-color-text-secondary); }
+  .v5-lognode__member i { width: 16px; height: 16px; border-radius: 50%; overflow: hidden; flex: none; }
+  .v5-lognode__member i img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .v5-lognode__sub { margin-top: 4px; }
+
+.v5-main { position: relative; }
+  .v5-history-rail { width: 32px; height: 168px; position: absolute; right: 0; top: 50%; z-index: 12; transform: translateY(-50%); outline: none; }
+  .v5-history-rail:focus-visible { outline: 2px solid #165dff; outline-offset: 4px; }
+  .v5-history-rail[hidden] { display: none; }
+  .v5-history-rail__ticks { width: 32px; height: 168px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
+  .v5-history-rail__ticks i { width: 24px; height: 3px; flex: none; border-radius: 2px; background: #e5e6eb; }
+  .v5-history-rail__ticks i.md { width: 26px; }
+  .v5-history-rail__ticks i.lg { width: 28px; }
+  .v5-history-rail__ticks i.current { width: 32px; background: #1d2129; }
+  .v5-history-rail__panel { width: 300px; height: 244px; position: absolute; right: 0; top: 50%; padding: 8px; border: 1px solid #e5e6eb; border-radius: 16px; background: #fff; box-shadow: 0 6px 40px rgba(0, 0, 0, .08); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-50%); transition: opacity .12s ease; }
+  .v5-history-rail__list { width: 100%; height: 100%; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d8dbe0 transparent; }
+  .v5-history-rail__list::-webkit-scrollbar { width: 4px; }
+  .v5-history-rail__list::-webkit-scrollbar-thumb { border-radius: 2px; background: #d8dbe0; }
+  .v5-history-rail__item { width: 100%; height: 38px; padding: 0 12px; border-radius: 12px; display: flex; align-items: center; overflow: hidden; color: #4e5969; font-size: 14px; line-height: 22px; font-weight: 400; letter-spacing: 0; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; }
+  .v5-history-rail__item:hover, .v5-history-rail__item:focus-visible, .v5-history-rail__item.is-current { background: #f7f8fa; color: #1d2129; }
+  .v5-history-rail:hover .v5-history-rail__panel, .v5-history-rail:focus-within .v5-history-rail__panel { opacity: 1; visibility: visible; pointer-events: auto; }
+  .v5-history-rail:hover .v5-history-rail__ticks, .v5-history-rail:focus-within .v5-history-rail__ticks { opacity: 0; }
+  .v5-history-rail.is-dismissed .v5-history-rail__panel { opacity: 0; visibility: hidden; pointer-events: none; }
+  .v5-history-rail.is-dismissed .v5-history-rail__ticks { opacity: 1; }
+</style>
+</head>
+<body>
+  <!-- ===== 左侧导航 ===== -->
+  <nav class="v5-nav">
+    <div class="v5-nav__logo"><img src="../media/logo-v5.png" alt="logo" /></div>
+    <div class="v5-nav__items">
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-calendar.svg" alt="" /></span><span class="v5-nav__cap">日历</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-course.svg" alt="" /></span><span class="v5-nav__cap">课程</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-ai-research.svg" alt="" /></span><span class="v5-nav__cap">AI教研</span></a>
+      <a class="v5-nav__item v5-nav__item--active"><span class="v5-nav__ico"><img src="../icons/nav-v5-assistant.svg" alt="" /></span><span class="v5-nav__cap">V5小管家</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-ai-tutor.svg" alt="" /></span><span class="v5-nav__cap">AI助教</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-knowledge.svg" alt="" /></span><span class="v5-nav__cap">知识发现</span></a>
+      <a class="v5-nav__item"><span class="v5-nav__ico"><img src="../icons/nav-resource-lib.svg" alt="" /></span><span class="v5-nav__cap">资源库</span></a>
+    </div>
+    <div class="v5-nav__avatar"><img src="../media/user-avatar.png" alt="用户头像" /></div>
+  </nav>
+
+  <main class="v5-main">
+    <header class="v5-topbar">
+      <div class="v5-topbar__l">
+        <button class="v5-iconbtn v5-iconbtn--flat" aria-label="折叠边栏"><img src="../icons/topbar-collapse.svg" alt="" /></button>
+        <span class="v5-topbar__divider"></span>
+        <span class="v5-topbar__avatar"><img src="../media/topbar-xiaoguanjia.png" alt="" /></span>
+        <span class="v5-topbar__title">小管家</span>
+        <span class="v5-topbar__tag">AI助教</span>
+      </div>
+      <div class="v5-topbar__r">
+        <button class="v5-iconbtn" aria-label="朗读"><img src="../icons/topbar-speaker.svg" alt="" /></button>
+        <button class="v5-iconbtn" aria-label="清除记忆"><img src="../icons/topbar-clear-memory.svg" alt="" /></button>
+        <button class="v5-iconbtn" aria-label="更多"><img src="../icons/topbar-more.svg" alt="" /></button>
+      </div>
+    </header>
+
+    <div class="v5-timeline">
+      <div class="v5-thread">
+        <div class="v5-time">2026 5.6 14:12</div>
+        <div class="v5-msg-user-wrap">
+          <div class="v5-msg-user">帮我布置一份第三章的练习题</div>
+          <!-- hover 操作：编辑 + 复制（本页固定展示 hover 态） -->
+          <div class="v5-msg-user-ops">
+            <button aria-label="编辑"><img src="../icons/edit-pencil.svg" alt="" /></button>
+            <button aria-label="复制"><img src="../icons/action-copy.svg" alt="" /></button>
+          </div>
+        </div>
+
+        <!-- 过程卡（进行态）：小管家派发 · 渐进置灰（首句已置灰，最新句正文色） -->
+        <section class="v5-process">
+          <img class="v5-process__art" src="../media/illustration-desk-2.png" alt="" />
+          <div class="v5-agent">
+            <span class="v5-agent__avatar"><img src="../media/agent-xiaoguanjia.png" alt="" /></span>
+            <div>
+              <div class="v5-agent__head">
+                <span>小管家</span>
+                <span class="v5-agent__divider"></span>
+                <span class="v5-agent__skill"><img src="../icons/msg-skill-bolt.svg" alt="" />调用技能：作业完成度分析</span>
+              </div>
+            </div>
+          </div>
+          <p class="v5-agent__text">已经收到你的请求，让我思考一下派谁来完成任务</p>
+          <p class="v5-agent__text v5-agent__text--latest">现在派你来完成该任务</p>
+          <div class="v5-pat">
+            <span class="v5-pat__chip v5-pat__chip--from">@小管家</span>
+            <span>拍了拍</span>
+            <span class="v5-pat__chip v5-pat__chip--to">@教学活动专员</span>
+            <span>说，开整吧，流程走起</span>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ===== 任务总数浮层 ===== -->
+    <aside class="v5-taskfloat">
+      <div class="v5-taskfloat__head">
+        <span>任务总数：<b>1</b><b>/4</b></span>
+        <img src="../icons/chevron-up.svg" alt="收起" />
+      </div>
+      <div class="v5-task">
+        <img class="v5-task__status-ico" src="../icons/status-check-green.svg" alt="" />
+        <div class="v5-task__title"><span>任务一：学情画像分析</span><span class="v5-task__state v5-task__state--done">已完成</span></div>
+        <div class="v5-task__desc">已完成32人学情画像分析</div>
+        <span class="v5-task__agent"><i><img src="../media/agent-portrait-b.png" alt="" /></i>学情分析师</span>
+      </div>
+      <div class="v5-task v5-task--active">
+        <img class="v5-task__status-ico" src="../icons/status-spinner.svg" alt="" />
+        <div class="v5-task__title"><span>任务二：学情画像分析</span><span class="v5-task__state v5-task__state--doing">正在执行</span></div>
+        <div class="v5-task__desc">已完成32人学情画像分析</div>
+        <span class="v5-task__agent"><i><img src="../media/agent-portrait-c.png" alt="" /></i>备课助手</span>
+      </div>
+      <div class="v5-task v5-task--waiting">
+        <img class="v5-task__status-ico" src="../icons/status-waiting.svg" alt="" />
+        <div class="v5-task__title"><span>任务三：学情画像分析</span><span class="v5-task__state v5-task__state--wait">等待中</span></div>
+        <div class="v5-task__desc">已完成32人学情画像分析</div>
+        <span class="v5-task__agent"><i><img src="../media/agent-portrait-b.png" alt="" /></i>学情分析师</span>
+      </div>
+    </aside>
+
+    <!-- ===== 并行 Agent 状态胶囊（展开1 + 收起2） ===== -->
+    <div class="v5-agentpills">
+      <div class="v5-agentpill v5-agentpill--expanded">
+        <span class="v5-agentpill__avatar" style="background:#b16aba"><img src="../media/agent-portrait-b.png" alt="" /></span>
+        <div class="v5-agentpill__meta">
+          <div class="v5-agentpill__name">备课助手</div>
+          <div class="v5-agentpill__desc">根据学情生成差异化教案</div>
+        </div>
+        <button class="v5-agentpill__pause" aria-label="暂停"><img src="../icons/pause-circle-lg.svg" alt="" /></button>
+        <img class="v5-agentpill__arc" src="../icons/pill-arc-expanded.svg" alt="" />
+      </div>
+      <div class="v5-agentpill">
+        <span class="v5-agentpill__avatar" style="background:#ffb84d"><img src="../media/agent-portrait-c.png" alt="" /></span>
+        <span class="v5-agentpill__state">生成中...</span>
+        <img class="v5-agentpill__ring" src="../icons/pill-ring-collapsed.svg" alt="" />
+      </div>
+      <div class="v5-agentpill">
+        <span class="v5-agentpill__avatar" style="background:#6fb7e9"><img src="../media/agent-portrait-a.png" alt="" /></span>
+        <span class="v5-agentpill__state">生成中...</span>
+        <img class="v5-agentpill__ring" src="../icons/pill-ring-collapsed.svg" alt="" />
+      </div>
+    </div>
+
+    <!-- ===== 输入台 ===== -->
+    <aside class="v5-history-rail" data-v5-history-rail tabindex="0" aria-label="历史对话">
+      <div class="v5-history-rail__ticks" aria-hidden="true">
+        <i class="current"></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+        <i></i><i class="md"></i><i class="lg"></i><i class="md"></i>
+      </div>
+      <nav class="v5-history-rail__panel" aria-label="历史对话列表">
+        <div class="v5-history-rail__list">
+          <a class="v5-history-rail__item is-current" href="?conversation=01" aria-current="page" title="当前对话">当前对话</a>
+          <a class="v5-history-rail__item" href="?conversation=02" title="历史对话 02">历史对话 02</a>
+          <a class="v5-history-rail__item" href="?conversation=03" title="历史对话 03">历史对话 03</a>
+          <a class="v5-history-rail__item" href="?conversation=04" title="历史对话 04">历史对话 04</a>
+          <a class="v5-history-rail__item" href="?conversation=05" title="历史对话 05">历史对话 05</a>
+          <a class="v5-history-rail__item" href="?conversation=06" title="历史对话 06">历史对话 06</a>
+          <a class="v5-history-rail__item" href="?conversation=07" title="历史对话 07">历史对话 07</a>
+          <a class="v5-history-rail__item" href="?conversation=08" title="历史对话 08">历史对话 08</a>
+          <a class="v5-history-rail__item" href="?conversation=09" title="历史对话 09">历史对话 09</a>
+          <a class="v5-history-rail__item" href="?conversation=10" title="历史对话 10">历史对话 10</a>
+          <a class="v5-history-rail__item" href="?conversation=11" title="历史对话 11">历史对话 11</a>
+          <a class="v5-history-rail__item" href="?conversation=12" title="历史对话 12">历史对话 12</a>
+          <a class="v5-history-rail__item" href="?conversation=13" title="历史对话 13">历史对话 13</a>
+          <a class="v5-history-rail__item" href="?conversation=14" title="历史对话 14">历史对话 14</a>
+          <a class="v5-history-rail__item" href="?conversation=15" title="历史对话 15">历史对话 15</a>
+          <a class="v5-history-rail__item" href="?conversation=16" title="历史对话 16">历史对话 16</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="v5-dock-wrap">
+      <div class="v5-composer">
+        <div class="v5-composer__field">请输入你的问题和我聊聊</div>
+        <div class="v5-composer__actions">
+          <button class="v5-composer__btn" aria-label="提及"><img src="../icons/composer-at.svg" alt="" /></button>
+          <button class="v5-composer__btn" aria-label="添加"><img src="../icons/composer-plus.svg" alt="" /></button>
+          <span class="v5-composer__spacer"></span>
+          <button class="v5-composer__btn" aria-label="语音通话"><img src="../icons/composer-phone.svg" alt="" /></button>
+          <button class="v5-composer__btn" aria-label="语音输入"><img src="../icons/composer-mic.svg" alt="" /></button>
+          <span class="v5-composer__divider"></span>
+          <button class="v5-composer__btn v5-composer__btn--send" aria-label="发送"><img src="../icons/composer-send.svg" alt="" /></button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== 执行计划抽屉（1/3 屏 500） ===== -->
+  <aside class="v5-drawer">
+    <div class="v5-drawer__head">
+      <span class="v5-drawer__title">执行计划</span>
+      <button class="v5-drawer__close" aria-label="关闭"><img src="../icons/close-x.svg" alt="" /></button>
+    </div>
+
+    <!-- 任务卡：执行中 · 64% · 暂停/终止 -->
+    <div class="v5-plan">
+      <span class="v5-plan__icon"><img src="../icons/nav-course.svg" alt="" /></span>
+      <div class="v5-plan__title">课程准备 计算机网络 第八讲</div>
+      <span class="v5-plan__badge">执行中</span>
+      <div class="v5-plan__time"><img src="../icons/time-clock.svg" alt="" />用时 02:21</div>
+      <div class="v5-plan__progress"><i></i></div>
+      <span class="v5-plan__pct">64%</span>
+      <div class="v5-plan__btns">
+        <button class="v5-plan__btn"><img src="../icons/pause-circle.svg" alt="" />暂停</button>
+        <button class="v5-plan__btn"><img src="../icons/stop-square.svg" alt="" />终止</button>
+      </div>
+    </div>
+
+    <!-- 运行日志时间线 -->
+    <div class="v5-runlog__head">
+      <span class="v5-runlog__title">运行日志</span>
+      <button class="v5-plan__btn"><img src="../icons/edit-pencil.svg" alt="" />编辑</button>
+    </div>
+    <div class="v5-runlog">
+      <span class="v5-runlog__rail"></span>
+      <!-- 已完成 -->
+      <div class="v5-lognode">
+        <span class="v5-lognode__avatar v5-lognode__avatar--a"><img src="../media/agent-portrait-b.png" alt="" /></span>
+        <div class="v5-lognode__head"><span>学情分析师</span><span class="v5-lognode__time">用时：45s</span></div>
+        <div class="v5-lognode__desc">将作业题目按基础（50%）、提升（35%）、拓展（15%）划分分析班级近2周作业完成度、识别薄弱知识点</div>
+        <span class="v5-lognode__chip v5-lognode__chip--done">任务已完成</span>
+      </div>
+      <!-- 执行中 -->
+      <div class="v5-lognode v5-lognode--doing">
+        <span class="v5-lognode__avatar v5-lognode__avatar--b"><img src="../media/agent-portrait-c.png" alt="" /></span>
+        <div class="v5-lognode__head"><span>备课助手</span><span class="v5-lognode__time">已用时：45s</span></div>
+        <div class="v5-lognode__desc">生成90分钟差异化教学流程(含5阶段)</div>
+        <span class="v5-lognode__chip v5-lognode__chip--doing">执行中...</span>
+      </div>
+      <!-- 等待中 -->
+      <div class="v5-lognode v5-lognode--wait">
+        <span class="v5-lognode__avatar v5-lognode__avatar--c"><img src="../media/agent-portrait-a.png" alt="" /></span>
+        <div class="v5-lognode__head"><span>课件设计师</span></div>
+        <div class="v5-lognode__desc">基于教案制作12页PPT课件</div>
+        <span class="v5-lognode__chip v5-lognode__chip--wait">等待中</span>
+      </div>
+      <div class="v5-lognode v5-lognode--wait">
+        <span class="v5-lognode__avatar v5-lognode__avatar--d"><img src="../media/agent-portrait-d.png" alt="" /></span>
+        <div class="v5-lognode__head"><span>作业设计师</span></div>
+        <div class="v5-lognode__desc">生成90分钟差异化教学流程(含5阶段)应包含以下模块：课程标题、副标题、讲师/单位、日期 ，章节结构概览，让学员建立整体认知，明确学完能做什么（知识/技能/态度），案例、故事、数据或问题，激发兴趣，按知识点拆分章节，每页一个核心观点</div>
+        <span class="v5-lognode__chip v5-lognode__chip--wait">等待中</span>
+      </div>
+      <!-- 并行分组 -->
+      <div class="v5-lognode v5-lognode--wait">
+        <span class="v5-lognode__avatar v5-lognode__avatar--parallel"><img src="../icons/parallel-agents.svg" alt="" /></span>
+        <div class="v5-lognode__head"><span>助手并行</span></div>
+        <div class="v5-lognode__sub">
+          <span class="v5-lognode__member"><i><img src="../media/agent-portrait-d.png" alt="" /></i>质量检查员</span>
+          <div class="v5-lognode__desc">设计5道分层课后练习题让学员建立整体认知，明确学完能做什么（知识/技能/态度），案例、故事、数据或问题，激发兴趣，按知识点拆分章节，每页一个核心观点</div>
+          <span class="v5-lognode__chip v5-lognode__chip--wait">等待中</span>
+        </div>
+        <div class="v5-lognode__sub" style="margin-top: 12px;">
+          <span class="v5-lognode__member"><i><img src="../media/agent-portrait-a.png" alt="" /></i>备课设计师</span>
+          <div class="v5-lognode__desc">设计5道分层课后练习题</div>
+          <span class="v5-lognode__chip v5-lognode__chip--wait">等待中</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+<script>
+(function () {
+  var modalSelector = '[aria-modal="true"], .v5-overlay, .v5-modal-mask';
+  var requestedConversation = new URLSearchParams(window.location.search).get('conversation');
+  var activeConversation = /^(?:0[1-9]|1[0-6])$/.test(requestedConversation || '') ? requestedConversation : '01';
+
+  function isVisibleModal(element) {
+    if (element.hidden || element.getAttribute('aria-hidden') === 'true') return false;
+    var style = window.getComputedStyle(element);
+    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return false;
+    return element.getClientRects().length > 0;
+  }
+
+  document.querySelectorAll('[data-v5-history-rail]').forEach(function (rail) {
+    var items = Array.prototype.slice.call(rail.querySelectorAll('.v5-history-rail__item'));
+    var ticks = Array.prototype.slice.call(rail.querySelectorAll('.v5-history-rail__ticks i'));
+    var modalBlocked = null;
+
+    items.forEach(function (item, index) {
+      var conversation = String(index + 1).padStart(2, '0');
+      var isCurrent = conversation === activeConversation;
+      item.classList.toggle('is-current', isCurrent);
+      if (isCurrent) item.setAttribute('aria-current', 'page');
+      else item.removeAttribute('aria-current');
+      if (ticks[index]) ticks[index].classList.toggle('current', isCurrent);
+    });
+
+    function syncModalState() {
+      var blocked = Array.prototype.some.call(document.querySelectorAll(modalSelector), isVisibleModal);
+      if (blocked === modalBlocked) return;
+      modalBlocked = blocked;
+      rail.hidden = blocked;
+      if (blocked) {
+        rail.setAttribute('aria-hidden', 'true');
+        rail.setAttribute('tabindex', '-1');
+        items.forEach(function (item) { item.setAttribute('tabindex', '-1'); });
+        return;
+      }
+      rail.removeAttribute('aria-hidden');
+      rail.setAttribute('tabindex', '0');
+      items.forEach(function (item) { item.removeAttribute('tabindex'); });
+    }
+
+    rail.addEventListener('pointerenter', function () {
+      rail.classList.remove('is-dismissed');
+    });
+    rail.addEventListener('focusout', function (event) {
+      if (!rail.contains(event.relatedTarget)) rail.classList.remove('is-dismissed');
+    });
+    rail.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      rail.classList.add('is-dismissed');
+      rail.focus({ preventScroll: true });
+    });
+
+    var observer = new MutationObserver(syncModalState);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['aria-hidden', 'aria-modal', 'class', 'hidden', 'style'],
+      childList: true,
+      subtree: true
+    });
+    syncModalState();
+  });
+}());
+</script>
+</body>
+</html>

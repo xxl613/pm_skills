@@ -1,0 +1,18 @@
+{
+  "project": "/Users/xiaolongxiong/Documents/Codex/2026-09-06/new-chat/outputs/prototype-studio/examples/coherent-project/prototype",
+  "fixtureOnly": true,
+  "ok": true,
+  "contractReady": false,
+  "errors": [],
+  "pending": [],
+  "warnings": [
+    "fixtureOnly: synthetic validation fixture; this report does not approve real product data"
+  ],
+  "counts": {
+    "pages": 3,
+    "objects": 2,
+    "fields": 6
+  },
+  "performanceDecisions": [],
+  "evidenceScope": "contract, physical HTML and static business-link coverage, and generated-file checks only; dynamic routes, browser behavior, source/evidence authenticity and semantic/visual quality require separate evidence"
+}

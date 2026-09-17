@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "projectId": "coherent-fixture",
+  "title": "记录管理 · 合成测试",
+  "pages": [
+    {"id":"records","title":"全部记录","path":"index.html","prd":"prd/records.md","dataObjects":["task","summary"],"status":{"implemented":true,"verified":true,"userReviewed":false}},
+    {"id":"summary","title":"记录统计","path":"summary.html","prd":"prd/summary.md","dataObjects":["task","summary"],"status":{"implemented":true,"verified":true,"userReviewed":false}},
+    {"id":"active","title":"仅未完成记录","path":"summary.html?view=active#records","prd":"prd/active.md","dataObjects":["task","summary"],"status":{"implemented":true,"verified":true,"userReviewed":false}}
+  ]
+}

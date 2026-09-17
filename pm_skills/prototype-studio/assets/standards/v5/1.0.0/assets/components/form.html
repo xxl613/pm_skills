@@ -1,0 +1,54 @@
+<!doctype html>
+<!-- 表单控件 form · 忠于 Figma「后台配置页」3910 系实测。
+     单行控件统一：高38 · 白底 · 1px描边 · 胶囊圆角 · 横距12 · 14/22。
+     输入框 / 下拉(右chevron) / 搜索(左icon)；态 default(实测) / focus·error·disabled(派生)。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 表单控件 form</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; flex-direction: column; gap: var(--v5-space-5); max-width: 520px; }
+  .demo-label { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .v5-field { display: flex; flex-direction: column; gap: var(--v5-space-2); }
+  .v5-field__l { font-size: var(--v5-font-size-caption); line-height: 22px; }
+  .v5-field__l b { color: var(--v5-color-error); }
+  .v5-control { height: 38px; border: 1px solid var(--v5-color-border); border-radius: var(--v5-radius-pill);
+    padding: 0 var(--v5-space-3); display: flex; align-items: center; gap: var(--v5-space-2); background: var(--v5-color-surface);
+    font-size: 14px; line-height: 22px; }
+  .v5-control input { border: none; outline: none; flex: 1; font: inherit; color: var(--v5-color-text); background: transparent; }
+  .v5-control input::placeholder { color: var(--v5-color-text-disabled); }
+  .v5-control--focus { border-color: var(--v5-color-brand); box-shadow: 0 0 0 2px color-mix(in srgb, var(--v5-color-brand) 18%, transparent); } /* 派生 */
+  .v5-control--error { border-color: var(--v5-color-error); }                         /* 派生 */
+  .v5-control--disabled { background: var(--v5-color-bg); color: var(--v5-color-text-disabled); }  /* 派生 */
+  .v5-control__val { color: var(--v5-color-text-tertiary); flex: 1; }                  /* 下拉默认值 */
+  .v5-err { font-size: 12px; color: var(--v5-color-error); }
+  .ico { color: var(--v5-color-text-secondary); display: grid; place-items: center; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <div class="demo-label">输入框（默认 / 聚焦 / 错误 / 禁用）</div>
+  <div class="v5-field"><span class="v5-field__l"><b>*</b> 技能名称</span>
+    <div class="v5-control"><input placeholder="请输入技能名称" /></div></div>
+  <div class="v5-field"><span class="v5-field__l">技能名称（聚焦）</span>
+    <div class="v5-control v5-control--focus"><input value="数据结构智能助教" /></div></div>
+  <div class="v5-field"><span class="v5-field__l"><b>*</b> 技能名称（错误）</span>
+    <div class="v5-control v5-control--error"><input value="" placeholder="请输入技能名称" /></div>
+    <span class="v5-err">技能名称不能为空</span></div>
+  <div class="v5-field"><span class="v5-field__l">技能名称（禁用）</span>
+    <div class="v5-control v5-control--disabled">系统预置，不可修改</div></div>
+
+  <div class="demo-label">下拉选择（触发器同输入框 + 右 chevron）</div>
+  <div class="v5-field"><span class="v5-field__l">所属学科</span>
+    <div class="v5-control"><span class="v5-control__val">请选择学科</span>
+      <span class="ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div>
+
+  <div class="demo-label">搜索框（左 icon）</div>
+  <div class="v5-field">
+    <div class="v5-control"><span class="ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M14 14l-3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+      <input placeholder="搜索技能名称 / 描述" /></div></div>
+</body>
+</html>

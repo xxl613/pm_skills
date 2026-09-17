@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- 派生组件：Figma 无此设计，按 V5 令牌与既有组件风格规格补充。
+     表格 table · 扁平：表头浅底+secondary 字，白行，1px 行分隔，外圆角16，无投影；含空数据态。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V5 · 表格 table</title>
+<link rel="stylesheet" href="../tokens.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--v5-font-family); color: var(--v5-color-text); background: var(--v5-color-bg);
+    padding: var(--v5-space-6); display: flex; flex-direction: column; gap: var(--v5-space-5); }
+  .demo-label { font-size: var(--v5-font-size-caption); color: var(--v5-color-text-secondary); }
+  .v5-table { width: 720px; background: var(--v5-color-surface); border: 1px solid var(--v5-color-border);
+    border-radius: var(--v5-radius-lg); overflow: hidden; border-collapse: collapse; }
+  .v5-table th, .v5-table td { text-align: left; padding: var(--v5-space-3) var(--v5-space-4); font-size: var(--v5-font-size-caption); line-height: var(--v5-line-height-caption); }
+  .v5-table thead th { background: var(--v5-color-bg); color: var(--v5-color-text-secondary); font-weight: 600; }
+  .v5-table tbody tr { border-top: 1px solid var(--v5-color-border); }
+  .v5-table td { color: var(--v5-color-text); }
+  .v5-status { display: inline-flex; align-items: center; gap: 6px; }
+  .v5-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .v5-dot--ok { background: var(--v5-color-success); }
+  .v5-dot--warn { background: var(--v5-color-warning); }
+  .v5-link-btn { background: transparent; border: none; color: var(--v5-color-text-tertiary); font: inherit; cursor: pointer; padding: 0 var(--v5-space-2); }
+  .v5-link-btn--danger { color: var(--v5-color-error); }
+  .v5-link-btn--danger:hover { background: var(--v5-color-error-bg); border-radius: var(--v5-radius-sm); }
+  .v5-empty { padding: var(--v5-space-6); text-align: center; color: var(--v5-color-text-secondary); }
+</style>
+</head>
+<body>
+  <div class="demo-label">表格（表头 + 数据行 + 状态 + 行操作）</div>
+  <table class="v5-table">
+    <thead><tr><th>作业名称</th><th>班级</th><th>提交率</th><th>状态</th><th>操作</th></tr></thead>
+    <tbody>
+      <tr><td>第三章·结构练习</td><td>计科 2101</td><td>92%</td><td><span class="v5-status"><span class="v5-dot v5-dot--ok"></span>已发布</span></td>
+        <td><button class="v5-link-btn">查看</button><button class="v5-link-btn v5-link-btn--danger">删除</button></td></tr>
+      <tr><td>第四章·算法分析</td><td>计科 2102</td><td>67%</td><td><span class="v5-status"><span class="v5-dot v5-dot--warn"></span>进行中</span></td>
+        <td><button class="v5-link-btn">查看</button><button class="v5-link-btn v5-link-btn--danger">删除</button></td></tr>
+      <tr><td>实验报告·网络抓包</td><td>计科 2101</td><td>—</td><td><span class="v5-status"><span class="v5-dot v5-dot--warn"></span>待发布</span></td>
+        <td><button class="v5-link-btn">查看</button><button class="v5-link-btn v5-link-btn--danger">删除</button></td></tr>
+    </tbody>
+  </table>
+
+  <div class="demo-label">空数据态</div>
+  <table class="v5-table">
+    <thead><tr><th>作业名称</th><th>班级</th><th>提交率</th><th>状态</th><th>操作</th></tr></thead>
+    <tbody><tr><td colspan="5"><div class="v5-empty">暂无数据</div></td></tr></tbody>
+  </table>
+</body>
+</html>

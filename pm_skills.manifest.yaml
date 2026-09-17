@@ -1,4 +1,10 @@
 skills:
+  - name: prototype-studio
+    source: /Users/xiaolongxiong/plugins/prototype-studio
+    target: pm_skills/prototype-studio
+    kind: codex-plugin
+    entry: skills/prototype-studio/SKILL.md
+
   - name: project-workspace-init
     source: /Users/xiaolongxiong/.codex/skills/project-workspace-init
     target: pm_skills/project-workspace-init

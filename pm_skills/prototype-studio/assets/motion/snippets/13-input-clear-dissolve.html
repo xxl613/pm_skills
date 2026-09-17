@@ -1,0 +1,13 @@
+<!-- Drop .t-clear on a wrapper that you've sized like an
+     input field (positioning, padding, border, radius are
+     yours). Inside it stack a real <input>, a mirror that
+     visualizes the value, a fake placeholder for the new
+     empty state, and a glow layer that gets the per-word
+     radial-gradient stack written into it from JS. -->
+<div class="t-clear has-value">
+  <input type="text" value="…" />
+  <div class="t-clear-mirror" aria-hidden="true">…</div>
+  <div class="t-clear-placeholder" aria-hidden="true">Search</div>
+  <div class="t-clear-glow" aria-hidden="true"></div>
+  <button class="t-clear-btn" aria-label="Clear">…</button>
+</div>

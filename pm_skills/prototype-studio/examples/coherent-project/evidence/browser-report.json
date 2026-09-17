@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "browser": "149.0.7827.55",
+  "project": "/Users/xiaolongxiong/Documents/Codex/2026-09-06/new-chat/work/offline-coherent",
+  "transport": "file://",
+  "network": "Playwright offline mode",
+  "checks": [
+    "offline complete PRD and separate user review status",
+    "offline create/edit/status share records and derived 4/2/2 across files",
+    "query/hash binding and unknown route rejection",
+    "cancel is inert; confirmed deletion updates cross-page counts to 3/2/1",
+    "page-list coverage and mobile review panel containment"
+  ],
+  "pageErrors": [],
+  "limits": "This fixture and Chromium only; not all project behaviors or other browser file-origin policies."
+}

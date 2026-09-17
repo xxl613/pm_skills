@@ -1,0 +1,53 @@
+/* The wrap clips the glow to its rounded box. The hairline
+   border is `inset` so it sits inside that clip — when the
+   glow's mix-blend-mode darkens its area, the border
+   underneath darkens with it. Bring your own width / height /
+   border-radius / surface color. */
+.t-clear {
+  position: relative;
+  overflow: hidden;
+}
+.t-clear-mirror,
+.t-clear-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 2;
+}
+.t-clear-mirror { opacity: 0; }
+.t-clear.has-value .t-clear-mirror,
+.t-clear.is-clearing .t-clear-mirror { opacity: 1; }
+/* Hide the input's own glyphs while the mirror owns them so
+   the cleared text doesn't double-render with the fly-up. */
+.t-clear.has-value > input,
+.t-clear.is-clearing > input {
+  -webkit-text-fill-color: transparent;
+}
+.t-clear.has-value .t-clear-placeholder { opacity: 0; }
+/* The streak overlay: empty by default; JS writes a stack of
+   `radial-gradient(...)` layers into background during a clear,
+   then animates opacity. mix-blend-mode: multiply darkens the
+   underlying input + hairline; flip to `screen` in dark mode
+   so the same alpha values lighten instead of vanish. */
+.t-clear-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 3;
+  mix-blend-mode: multiply;
+}
+
+/* The transitions live in JS (per-frame transform/opacity/
+   filter writes), so this stylesheet only owns the resting
+   state + the variables that JS reads. Read them with
+   `parseFloat(getComputedStyle(root).getPropertyValue(...))`
+   so live tweaks apply on the next clear without a reload. */
+
+@media (prefers-reduced-motion: reduce) {
+  .t-clear-glow { opacity: 0 !important; }
+}
